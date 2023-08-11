@@ -12,10 +12,12 @@ public class DiscoverHardware {
     public static class DeviceInfo {
         public String deviceName;
         public String deviceType;
+        public HardwareDevice device;
 
-        public DeviceInfo(String deviceName, String deviceType) {
+        public DeviceInfo(String deviceName, HardwareDevice device) {
             this.deviceName = deviceName;
-            this.deviceType = deviceType;
+            this.deviceType = device.getDeviceName();
+            this.device = device;
         }
     }
 
@@ -25,7 +27,7 @@ public class DiscoverHardware {
         Collection<DeviceInfo> devices = new ArrayList<>();
 
         for (Map.Entry<String, DEVICE_TYPE> entry : deviceMapping.entrySet()) {
-            DeviceInfo device = new DeviceInfo(entry.getKey(), entry.getValue().getDeviceName());
+            DeviceInfo device = new DeviceInfo(entry.getKey(), entry.getValue());
             devices.add(device);
         }
 
@@ -57,11 +59,10 @@ public class DiscoverHardware {
         devices.addAll(getDevices(hardwareMap.ultrasonicSensor));
         devices.addAll(getDevices(hardwareMap.voltageSensor));
 
-        /* Not found in current HardwareMap
-        devices.addAll(getDevices(hardwareMap.analogOutput));
-        devices.addAll(getDevices(hardwareMap.deviceInterfaceModuleSet));
-        devices.addAll(getDevices(hardwareMap.legacyModuleSet));
-        */
+        /*
+        Can look into adding other hardware devices, by getting all instances. This can work for
+        IMUs and the like.
+         */
     }
 
     public Collection<DeviceInfo> getDevices() {
