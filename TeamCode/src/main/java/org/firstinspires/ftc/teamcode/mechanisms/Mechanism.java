@@ -10,6 +10,20 @@ import java.util.Collection;
  * Mechanism is the base class for all mechanisms on the robot.
  */
 abstract public class Mechanism {
+
+    public final String deviceName;
+    public final String description;
+
+    /**
+     * Creates a new mechanism.
+     * @param deviceName the name of the mechanism.
+     * @param description a description of the mechanism.
+     */
+    public Mechanism(String deviceName, String description) {
+        this.deviceName = deviceName;
+        this.description = description;
+    }
+
     /**
      * init initializes the Mechanism.
      * 
@@ -31,6 +45,13 @@ abstract public class Mechanism {
      * @return the string representation for the mechanism.
      */
     public String toString() {
-        return this.getClass().getSimpleName();
+        StringBuilder str = new StringBuilder();
+        str.append("DeviceType: ");
+        str.append(this.getClass().getSimpleName());
+        str.append(", DeviceName: ");
+        str.append(deviceName);
+        str.append(", Description: ");
+        str.append(description);
+        return str.toString();
     }
 }
