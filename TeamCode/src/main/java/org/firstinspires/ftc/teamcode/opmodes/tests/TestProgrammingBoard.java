@@ -1,14 +1,13 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.tests.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp(name = "Programming Board", group = "Test")
+@TeleOp(name = "Test Programming Board", group = "test")
 public class TestProgrammingBoard extends OpMode {
     org.firstinspires.ftc.teamcode.ProgrammingBoard board = new org.firstinspires.ftc.teamcode.ProgrammingBoard();
     List<Test> tests;
