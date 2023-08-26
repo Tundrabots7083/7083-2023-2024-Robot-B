@@ -1,14 +1,10 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.robotcore.hardware.HardwareDevice;
-import com.qualcomm.robotcore.hardware.HardwareDeviceHealth;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Map;
 
 public class DiscoverHardware {
 
@@ -17,7 +13,7 @@ public class DiscoverHardware {
         public String deviceType;
         public HardwareDevice device;
 
-        public DeviceInfo(String deviceName, HardwareDevice device) {
+        public DeviceInfo(HardwareDevice device) {
             this.deviceName = device.getDeviceName();
             this.deviceType = device.getClass().getName();
             this.device = device;
@@ -26,24 +22,24 @@ public class DiscoverHardware {
 
     private final Collection<DeviceInfo> devices;
 
+    /*
     private static <DEVICE_TYPE extends HardwareDevice> Collection<DeviceInfo> getDevices(HardwareMap.DeviceMapping<DEVICE_TYPE> deviceMapping) {
         Collection<DeviceInfo> devices = new ArrayList<>();
 
         for (Map.Entry<String, DEVICE_TYPE> entry : deviceMapping.entrySet()) {
-            DeviceInfo device = new DeviceInfo(entry.getKey(), entry.getValue());
+            DeviceInfo device = new DeviceInfo(entry.getValue());
             devices.add(device);
         }
 
         return devices;
     }
+    */
 
     public DiscoverHardware(HardwareMap hwMap) {
         devices = new ArrayList<>();
 
-        Iterator<HardwareDevice> it = hwMap.iterator();
-        while (it.hasNext()) {
-            HardwareDevice hd = it.next();
-            DeviceInfo di = new DeviceInfo(hd.getDeviceName(), hd);
+        for (HardwareDevice hd : hwMap) {
+            DeviceInfo di = new DeviceInfo(hd);
             devices.add(di);
         }
         /*
