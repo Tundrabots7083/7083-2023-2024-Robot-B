@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.tests.Test;
 
@@ -16,10 +15,12 @@ public class Claw extends Mechanism {
 
     public Claw(String deviceName, String description) {
         super(deviceName, description);
+
+        claw = new Servo(deviceName, description);
     }
 
     public void init(HardwareMap hwMap) {
-        claw = hwMap.get(com.qualcomm.robotcore.hardware.Servo.class, deviceName);
+        claw.init(hwMap);
     }
 
     @Override

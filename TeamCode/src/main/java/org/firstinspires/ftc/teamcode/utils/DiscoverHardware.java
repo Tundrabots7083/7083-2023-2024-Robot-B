@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.HardwareDeviceHealth;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class DiscoverHardware {
@@ -15,8 +18,8 @@ public class DiscoverHardware {
         public HardwareDevice device;
 
         public DeviceInfo(String deviceName, HardwareDevice device) {
-            this.deviceName = deviceName;
-            this.deviceType = device.getDeviceName();
+            this.deviceName = device.getDeviceName();
+            this.deviceType = device.getClass().getName();
             this.device = device;
         }
     }
@@ -34,30 +37,52 @@ public class DiscoverHardware {
         return devices;
     }
 
-    public DiscoverHardware(HardwareMap hardwareMap) {
+    public DiscoverHardware(HardwareMap hwMap) {
         devices = new ArrayList<>();
 
-        devices.addAll(getDevices(hardwareMap.accelerationSensor));
-        devices.addAll(getDevices(hardwareMap.analogInput));
-        devices.addAll(getDevices(hardwareMap.colorSensor));
-        devices.addAll(getDevices(hardwareMap.compassSensor));
-        devices.addAll(getDevices(hardwareMap.crservo));
-        devices.addAll(getDevices(hardwareMap.dcMotor));
-        devices.addAll(getDevices(hardwareMap.dcMotorController));
-        devices.addAll(getDevices(hardwareMap.gyroSensor));
-        devices.addAll(getDevices(hardwareMap.i2cDevice));
-        devices.addAll(getDevices(hardwareMap.i2cDeviceSynch));
-        devices.addAll(getDevices(hardwareMap.irSeekerSensor));
-        devices.addAll(getDevices(hardwareMap.led));
-        devices.addAll(getDevices(hardwareMap.lightSensor));
-        devices.addAll(getDevices(hardwareMap.opticalDistanceSensor));
-        devices.addAll(getDevices(hardwareMap.pwmOutput));
-        devices.addAll(getDevices(hardwareMap.servo));
-        devices.addAll(getDevices(hardwareMap.servoController));
-        devices.addAll(getDevices(hardwareMap.touchSensor));
-        devices.addAll(getDevices(hardwareMap.touchSensorMultiplexer));
-        devices.addAll(getDevices(hardwareMap.ultrasonicSensor));
-        devices.addAll(getDevices(hardwareMap.voltageSensor));
+        Iterator<HardwareDevice> it = hwMap.iterator();
+        while (it.hasNext()) {
+            HardwareDevice hd = it.next();
+            DeviceInfo di = new DeviceInfo(hd.getDeviceName(), hd);
+            // DeviceInfo di = new DeviceInfo(hd.getClass().getName(), hd);
+            devices.add(di);
+
+            // "Expansion Hub Voltage Sensor"
+            // com.qualcomm.hardware.lynx.LynxVoltageSensor vs;
+            // vs.getVoltage();
+
+            // com.qualcomm.hardware.lynx.LynxModule lm;
+            // lm.getAuxiliaryVoltage();
+            // lm.getInputVoltage(<value>);
+
+            // expansion hub: com.qualcomm.hardware.lynx.LynxUsbDeviceDelegate
+            // Expansion Hub Servo Controller: com.qualcomm.hardware.lynx.LynxServoController
+            // Expansion Hub Voltage Sensor: com.qualcomm.hardware.lynx.LynxVoltageSensor
+            // Expansion Hub: com.qualcomm.hardware.lynx.LynxModule
+        }
+        /*
+        devices.addAll(getDevices(hwMap.accelerationSensor));
+        devices.addAll(getDevices(hwMap.analogInput));
+        devices.addAll(getDevices(hwMap.colorSensor));
+        devices.addAll(getDevices(hwMap.compassSensor));
+        devices.addAll(getDevices(hwMap.crservo));
+        devices.addAll(getDevices(hwMap.dcMotor));
+        devices.addAll(getDevices(hwMap.dcMotorController));
+        devices.addAll(getDevices(hwMap.gyroSensor));
+        devices.addAll(getDevices(hwMap.i2cDevice));
+        devices.addAll(getDevices(hwMap.i2cDeviceSynch));
+        devices.addAll(getDevices(hwMap.irSeekerSensor));
+        devices.addAll(getDevices(hwMap.led));
+        devices.addAll(getDevices(hwMap.lightSensor));
+        devices.addAll(getDevices(hwMap.opticalDistanceSensor));
+        devices.addAll(getDevices(hwMap.pwmOutput));
+        devices.addAll(getDevices(hwMap.servo));
+        devices.addAll(getDevices(hwMap.servoController));
+        devices.addAll(getDevices(hwMap.touchSensor));
+        devices.addAll(getDevices(hwMap.touchSensorMultiplexer));
+        devices.addAll(getDevices(hwMap.ultrasonicSensor));
+        devices.addAll(getDevices(hwMap.voltageSensor));
+        */
 
         /*
         Can look into adding other hardware devices, by getting all instances. This can work for

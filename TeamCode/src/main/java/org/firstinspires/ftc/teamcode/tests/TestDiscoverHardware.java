@@ -20,6 +20,11 @@ public class TestDiscoverHardware extends Test {
         for (DiscoverHardware.DeviceInfo device : devices) {
             telemetry.addData("Device Name: ", device.deviceName);
             telemetry.addData("Device Type: ", device.deviceType);
+            if (device.deviceType.equals("com.qualcomm.hardware.lynx.LynxDigitalChannelController")) {
+                com.qualcomm.hardware.lynx.LynxDigitalChannelController dc = (com.qualcomm.hardware.lynx.LynxDigitalChannelController) device.device;
+                telemetry.addData("Health Status: ", dc.getHealthStatus().toString());
+
+            }
         }
 
     }
