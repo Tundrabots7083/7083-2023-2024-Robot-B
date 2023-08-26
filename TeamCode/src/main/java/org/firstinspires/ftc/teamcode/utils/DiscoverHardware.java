@@ -44,21 +44,7 @@ public class DiscoverHardware {
         while (it.hasNext()) {
             HardwareDevice hd = it.next();
             DeviceInfo di = new DeviceInfo(hd.getDeviceName(), hd);
-            // DeviceInfo di = new DeviceInfo(hd.getClass().getName(), hd);
             devices.add(di);
-
-            // "Expansion Hub Voltage Sensor"
-            // com.qualcomm.hardware.lynx.LynxVoltageSensor vs;
-            // vs.getVoltage();
-
-            // com.qualcomm.hardware.lynx.LynxModule lm;
-            // lm.getAuxiliaryVoltage();
-            // lm.getInputVoltage(<value>);
-
-            // expansion hub: com.qualcomm.hardware.lynx.LynxUsbDeviceDelegate
-            // Expansion Hub Servo Controller: com.qualcomm.hardware.lynx.LynxServoController
-            // Expansion Hub Voltage Sensor: com.qualcomm.hardware.lynx.LynxVoltageSensor
-            // Expansion Hub: com.qualcomm.hardware.lynx.LynxModule
         }
         /*
         devices.addAll(getDevices(hwMap.accelerationSensor));
