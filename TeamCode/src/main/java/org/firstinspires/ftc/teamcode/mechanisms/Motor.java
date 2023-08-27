@@ -15,7 +15,7 @@ import java.util.Collection;
  * needed for the motor being used.
  */
 public class Motor implements Mechanism {
-    private static final boolean RUN_USING_ENCODER = false;
+    private static final boolean RUN_USING_ENCODER = true;
 
     private final String deviceName;
     private final String description;

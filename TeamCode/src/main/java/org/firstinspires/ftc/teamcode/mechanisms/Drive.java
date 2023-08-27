@@ -5,13 +5,20 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.tests.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Drive implements the drive chassis for the Robot.
  */
 public class Drive implements Mechanism {
+
+    private static final double MM_PER_IN = 25.4;
+
+    private static final double WHEEL_DIAM_IN = 96 / MM_PER_IN; // for a Mecanum wheel
+
     private final String deviceName;
     private final String description;
     private Motor rightFront, rightRear, leftFront, leftRear;
@@ -58,6 +65,22 @@ public class Drive implements Mechanism {
         return null;
     }
 
+    /**
+     * move sets the powers to the wheel motors to result in the robot moving
+     * in the direction provided on input.
+     * @param forward how much to move forward or, if a negative value, backward.
+     * @param right how much to move right or, if a negative value, left.
+     * @param rotate how much to rotate the robot.
+     */
+    public void move(double forward, double right, double rotate) {
+        double leftFrontPower = forward + right + rotate;
+        double leftRearPower = forward - right + rotate;
+        double rightFrontPower = forward - right - rotate;
+        double rightRearPower = forward + right - rotate;
+
+        setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+    }
+
     public void setMotorsFromCoordinates(double x1, double y1, double turn)
     {
         //Convert cartesian coordinates to polar coordinates
@@ -69,10 +92,58 @@ public class Drive implements Mechanism {
         double leftRearPower = (headingPower * Math.sin(headingAngle) + turn);
         double rightRearPower = (headingPower * Math.cos(headingAngle) - turn);
 
+        setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+    }
+
+    /**
+     * setMotorPowers sets the power for the wheels, normalizing for a maximum power of 1.0.
+     * @param leftFrontPower the power for the left front motor.
+     * @param leftRearPower the power for the left rear motor
+     * @param rightFrontPower the power for the right front motor.
+     * @param rightRearPower the power for the right rear motor.
+     */
+    public void setMotorPowers(double leftFrontPower, double leftRearPower, double rightFrontPower, double rightRearPower) {
+        double maxSpeed = 1.0;
+
+        maxSpeed = Math.max(maxSpeed, Math.abs(leftFrontPower));
+        maxSpeed = Math.max(maxSpeed, Math.abs(leftRearPower));
+        maxSpeed = Math.max(maxSpeed, Math.abs(rightFrontPower));
+        maxSpeed = Math.max(maxSpeed, Math.abs(rightRearPower));
+
+        leftFrontPower /= maxSpeed;
+        leftRearPower /= maxSpeed;
+        rightFrontPower /= maxSpeed;
+        rightRearPower /= maxSpeed;
+
         leftFront.setPower(leftFrontPower);
         leftRear.setPower(leftRearPower);
         rightFront.setPower(rightFrontPower);
         rightRear.setPower(rightRearPower);
+    }
+
+    /**
+     * ticksToInches converts the position as reported by the motor to a number of inches.
+     * @param ticks the position as reported by the motor.
+     * @return the number of inches the wheel has moved based on the number of ticks.
+     */
+    private double ticksToInches(double ticks, double ticksPerRotation) {
+        return WHEEL_DIAM_IN * Math.PI * ticks / ticksPerRotation;
+    }
+
+    /**
+     * getWheelPosition returns a list of positions for each of the four wheels. The order of the
+     * list is `left front`, `left rear`, `right front`, right rear`.
+     * @return a list of positions for each of the wheels.
+     */
+    public List<Double> getWheelPositions() {
+        List<Double> wheelPositions = new ArrayList<>();
+
+        wheelPositions.add(ticksToInches(leftFront.getCurrentPosition(), leftFront.getTicksPerRotation()));
+        wheelPositions.add(ticksToInches(leftRear.getCurrentPosition(), leftRear.getTicksPerRotation()));
+        wheelPositions.add(ticksToInches(rightFront.getCurrentPosition(), rightFront.getTicksPerRotation()));
+        wheelPositions.add(ticksToInches(rightRear.getCurrentPosition(), rightRear.getTicksPerRotation()));
+
+        return wheelPositions;
     }
 
     @Override
