@@ -103,18 +103,23 @@ public class Drive implements Mechanism {
      * @param rightRearPower the power for the right rear motor.
      */
     public void setMotorPowers(double leftFrontPower, double leftRearPower, double rightFrontPower, double rightRearPower) {
-        double maxSpeed = 1.0;
+        double maxPower = 1.0;
 
-        maxSpeed = Math.max(maxSpeed, Math.abs(leftFrontPower));
-        maxSpeed = Math.max(maxSpeed, Math.abs(leftRearPower));
-        maxSpeed = Math.max(maxSpeed, Math.abs(rightFrontPower));
-        maxSpeed = Math.max(maxSpeed, Math.abs(rightRearPower));
+        // Get the maximum power for any motor, or 1.0, whichever is greater
+        maxPower = Math.max(maxPower, Math.abs(leftFrontPower));
+        maxPower = Math.max(maxPower, Math.abs(leftRearPower));
+        maxPower = Math.max(maxPower, Math.abs(rightFrontPower));
+        maxPower = Math.max(maxPower, Math.abs(rightRearPower));
 
-        leftFrontPower /= maxSpeed;
-        leftRearPower /= maxSpeed;
-        rightFrontPower /= maxSpeed;
-        rightRearPower /= maxSpeed;
+        // Divide by the maximum power, which guarantees no motor's power will exceed 1.0.
+        // This also ensures that all motors get a proportional amount of power should the
+        // input power for any motor exceed 1.0.
+        leftFrontPower /= maxPower;
+        leftRearPower /= maxPower;
+        rightFrontPower /= maxPower;
+        rightRearPower /= maxPower;
 
+        // Now that the power have been normalized, go ahead and set power for the motors.
         leftFront.setPower(leftFrontPower);
         leftRear.setPower(leftRearPower);
         rightFront.setPower(rightFrontPower);
