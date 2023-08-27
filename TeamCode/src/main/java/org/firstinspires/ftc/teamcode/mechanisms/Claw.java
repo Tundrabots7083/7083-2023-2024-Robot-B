@@ -56,4 +56,9 @@ public class Claw implements Mechanism {
         claw.setPosition(OPEN_POS);
     }
 
+    @Override
+    public String toString() {
+        return string();
+    }
+
 }

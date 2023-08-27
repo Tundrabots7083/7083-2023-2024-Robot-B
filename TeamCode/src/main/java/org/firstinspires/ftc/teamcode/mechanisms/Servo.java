@@ -41,4 +41,9 @@ public class Servo implements Mechanism {
     public void setPosition(double position) {
         servo.setPosition(position);
     }
+
+    @Override
+    public String toString() {
+        return string();
+    }
 }

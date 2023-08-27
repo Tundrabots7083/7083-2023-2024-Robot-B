@@ -74,4 +74,9 @@ public class Drive implements Mechanism {
         rightFront.setPower(rightFrontPower);
         rightRear.setPower(rightRearPower);
     }
+
+    @Override
+    public String toString() {
+        return string();
+    }
 }

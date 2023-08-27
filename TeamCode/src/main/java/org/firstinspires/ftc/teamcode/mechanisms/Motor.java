@@ -111,4 +111,8 @@ public class Motor implements Mechanism {
         motor.setDirection(direction);
     }
 
+    @Override
+    public String toString() {
+        return string();
+    }
 }
