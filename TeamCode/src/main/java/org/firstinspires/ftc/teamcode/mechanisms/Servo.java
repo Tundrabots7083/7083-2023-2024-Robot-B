@@ -7,17 +7,30 @@ import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
 
-public class Servo extends Mechanism {
+public class Servo implements Mechanism {
 
     private com.qualcomm.robotcore.hardware.Servo servo;
+    private final String deviceName;
+    private final String description;
 
     public Servo(String deviceName, String description) {
-        super(deviceName, description);
+        this.deviceName = deviceName;
+        this.description = description;
     }
 
     @Override
     public void init(HardwareMap hwMap) {
         servo = hwMap.get(com.qualcomm.robotcore.hardware.Servo.class, deviceName);
+    }
+
+    @Override
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     @Override

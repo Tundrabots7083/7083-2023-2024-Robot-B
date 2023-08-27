@@ -11,14 +11,15 @@ import java.util.Collection;
 /**
  * Drive implements the drive chassis for the Robot.
  */
-public class Drive extends Mechanism {
+public class Drive implements Mechanism {
     private final String deviceName;
+    private final String description;
     private Motor rightFront, rightRear, leftFront, leftRear;
     private Collection<Motor> motors;
 
     public Drive(String deviceName, String description) {
-        super(deviceName, description);
         this.deviceName = deviceName;
+        this.description = description;
     }
 
     @Override
@@ -31,6 +32,16 @@ public class Drive extends Mechanism {
 
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    @Override
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     /**

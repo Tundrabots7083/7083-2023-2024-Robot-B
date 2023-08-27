@@ -14,10 +14,11 @@ import java.util.Collection;
  * Motor is a motor used on the Robot. It provides a place to set all the various configurations
  * needed for the motor being used.
  */
-public class Motor extends Mechanism {
+public class Motor implements Mechanism {
     private static final boolean RUN_USING_ENCODER = false;
 
     private final String deviceName;
+    private final String description;
     private DcMotorEx motor;
     private DcMotorSimple.Direction direction;
     private double ticksPerRotation;
@@ -30,8 +31,8 @@ public class Motor extends Mechanism {
      * @param description a description of the motor.
      */
     public Motor(String deviceName, String description) {
-        super(deviceName, description);
         this.deviceName = deviceName;
+        this.description = description;
     }
 
     @Override
@@ -48,6 +49,16 @@ public class Motor extends Mechanism {
         }
 
         ticksPerRotation = motor.getMotorType().getTicksPerRev();
+    }
+
+    @Override
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     @Override

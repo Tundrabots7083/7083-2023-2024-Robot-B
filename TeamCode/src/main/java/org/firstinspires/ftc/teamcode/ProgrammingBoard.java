@@ -41,7 +41,7 @@ public class ProgrammingBoard {
 
             ArrayList<Test> tests = new ArrayList<>();
             tests.add(new TestClaw(claw));
-            tests.add(new TestMotor(motor, motor.description,MOTOR_SPEED));
+            tests.add(new TestMotor(motor, motor.getDescription(), MOTOR_SPEED));
             tests.add(new TestDiscoverHardware(hardware));
 
             return tests;

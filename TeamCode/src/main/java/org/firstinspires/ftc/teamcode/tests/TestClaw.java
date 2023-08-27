@@ -9,7 +9,7 @@ public class TestClaw extends Test{
     private final Claw claw;
 
     public TestClaw(Claw claw) {
-        super(claw.description);
+        super(claw.getDescription());
         this.claw = claw;
     }
 
@@ -17,10 +17,10 @@ public class TestClaw extends Test{
     public void run(Gamepad gamepad1, Telemetry telemetry) {
         if (gamepad1.a) {
             claw.grab();
-            telemetry.addData(claw.description, "Grabbed");
+            telemetry.addData(claw.getDescription(), "Grabbed");
         } else {
             claw.release();
-            telemetry.addData(claw.description, "Released");
+            telemetry.addData(claw.getDescription(), "Released");
         }
     }
 }

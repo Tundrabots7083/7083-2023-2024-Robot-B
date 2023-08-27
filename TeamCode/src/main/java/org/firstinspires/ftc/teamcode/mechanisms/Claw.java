@@ -6,21 +6,34 @@ import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
 
-public class Claw extends Mechanism {
+public class Claw implements Mechanism {
 
     private static final double GRAB_POS = 0.54;
     private static final double RELEASE_POS = 0.35;
     private static final double OPEN_POS = 0.75;
     private Servo claw;
+    private final String deviceName;
+    private final String description;
 
     public Claw(String deviceName, String description) {
-        super(deviceName, description);
+        this.deviceName = deviceName;
+        this.description = description;
 
         claw = new Servo(deviceName, description);
     }
 
     public void init(HardwareMap hwMap) {
         claw.init(hwMap);
+    }
+
+    @Override
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
     }
 
     @Override

@@ -9,20 +9,7 @@ import java.util.Collection;
 /**
  * Mechanism is the base class for all mechanisms on the robot.
  */
-abstract public class Mechanism {
-
-    public final String deviceName;
-    public final String description;
-
-    /**
-     * Creates a new mechanism.
-     * @param deviceName the name of the mechanism.
-     * @param description a description of the mechanism.
-     */
-    public Mechanism(String deviceName, String description) {
-        this.deviceName = deviceName;
-        this.description = description;
-    }
+public interface Mechanism {
 
     /**
      * init initializes the Mechanism.
@@ -32,6 +19,18 @@ abstract public class Mechanism {
     public abstract void init(HardwareMap hwMap);
 
     /**
+     * getDeviceName returns the name of the device (e.g., "leftFront" for a motor).
+     * @return the name of the device.
+     */
+    public abstract String getDeviceName();
+
+    /**
+     * getDescription returns a description of the device (e.g., "Left Front Motor").
+     * @return a description of the device.
+     */
+    public abstract String getDescription();
+
+    /**
      * getTests returns the list of tests for the Mechanism.
      *
      * @return the list of tests for the Mechanism.
@@ -39,19 +38,20 @@ abstract public class Mechanism {
     public abstract Collection<Test> getTests();
 
     /**
-     * toString returns a string representation for the Mechanism. By default,
-     * this is the simple name for the Mechanism class.
+     * string returns a string representation for the Mechanism. By default,
+     * this is the simple name for the Mechanism class, along with the device
+     * name and description.
      *
-     * @return the string representation for the mechanism.
+     * @return a string representation for the mechanism.
      */
-    public String toString() {
+    default String string() {
         StringBuilder str = new StringBuilder();
         str.append("DeviceType: ");
         str.append(this.getClass().getSimpleName());
         str.append(", DeviceName: ");
-        str.append(deviceName);
+        str.append(getDescription());
         str.append(", Description: ");
-        str.append(description);
+        str.append(getDescription());
         return str.toString();
     }
 }
