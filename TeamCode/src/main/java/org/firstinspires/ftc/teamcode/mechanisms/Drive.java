@@ -103,9 +103,8 @@ public class Drive implements Mechanism {
      * @param rightRearPower the power for the right rear motor.
      */
     public void setMotorPowers(double leftFrontPower, double leftRearPower, double rightFrontPower, double rightRearPower) {
-        double maxPower = 1.0;
-
         // Get the maximum power for any motor, or 1.0, whichever is greater
+        double maxPower = 1.0;
         maxPower = Math.max(maxPower, Math.abs(leftFrontPower));
         maxPower = Math.max(maxPower, Math.abs(leftRearPower));
         maxPower = Math.max(maxPower, Math.abs(rightFrontPower));
