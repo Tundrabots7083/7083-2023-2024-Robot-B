@@ -10,7 +10,7 @@ To create a GitHub account, go to [GitHub](https://github.com/) and click on `Si
 
 ## Getting access to the Tundrabots GitHub repo
 
-Once you have a GitHub account, you can be added to the Tundrabots git repo. This repo will vary from year-to-year. For 2022-2023 it is [PowerPlayRobotCode](https://github.com/Tundrabots7083/PowerPlayRobotCode). This repository is `private`, which means you can only see it if you have been given access to it. You need to have one of the Software Mentors add you. Once they do so, you must accept the invitation in GitHub.
+Once you have your GitHub account, you should request one of the Software Mentors to add you as a `member` of the Tundrabots team in GitHub. This will allow you to be able to use the Git repository in the future. When youare are added to the Tundrabots GitHub team, an invitation will be sent to your GitHub account, which you should accept. Once done, you will be able to access the software repositories for the Tundrabots. For 2023-2024 it is [7083-2023-2024](https://github.com/Tundrabots7083/7083-2023-2024).
 
 ## Install Android Studio
 
