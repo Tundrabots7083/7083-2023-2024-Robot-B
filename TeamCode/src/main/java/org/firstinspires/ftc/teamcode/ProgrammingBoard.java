@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Claw;
-import org.firstinspires.ftc.teamcode.mechanisms.Motor;
 import org.firstinspires.ftc.teamcode.tests.Test;
 import org.firstinspires.ftc.teamcode.tests.TestClaw;
 import org.firstinspires.ftc.teamcode.tests.TestDiscoverHardware;
@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.tests.TestMotor;
 import org.firstinspires.ftc.teamcode.utils.DiscoverHardware;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public class ProgrammingBoard {
     private Claw claw;
-    private Motor motor;
+    private DcMotorEx motor;
     private DiscoverHardware hardware;
 
     public ProgrammingBoard() {
@@ -31,8 +30,7 @@ public class ProgrammingBoard {
     public void init(HardwareMap hwMap) {
         claw = new Claw("claw", "Claw");
         claw.init(hwMap);
-        motor = new Motor("test_motor", "Motor");
-        motor.init(hwMap);
+        motor = hwMap.get(DcMotorEx.class, "test_motor");
         hardware = new DiscoverHardware(hwMap);
     }
 
@@ -41,7 +39,7 @@ public class ProgrammingBoard {
 
             ArrayList<Test> tests = new ArrayList<>();
             tests.add(new TestClaw(claw));
-            tests.add(new TestMotor(motor, motor.getDescription(), MOTOR_SPEED));
+            tests.add(new TestMotor(motor, "motor", MOTOR_SPEED));
             tests.add(new TestDiscoverHardware(hardware));
 
             return tests;

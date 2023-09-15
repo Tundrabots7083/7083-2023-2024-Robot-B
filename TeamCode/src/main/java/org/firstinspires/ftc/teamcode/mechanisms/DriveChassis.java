@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.teamcode.tests.Test;
 
@@ -13,7 +15,8 @@ import java.util.List;
 /**
  * Drive implements the drive chassis for the Robot.
  */
-public class Drive implements Mechanism {
+public class DriveChassis implements Mechanism {
+    private static final boolean RUN_USING_ENCODER = false;
 
     private static final double MM_PER_IN = 25.4;
 
@@ -21,24 +24,39 @@ public class Drive implements Mechanism {
 
     private final String deviceName;
     private final String description;
-    private Motor rightFront, rightRear, leftFront, leftRear;
-    private Collection<Motor> motors;
+    private DcMotorEx rightFront, rightRear, leftFront, leftRear;
+    private Collection<DcMotorEx> motors;
 
-    public Drive(String deviceName, String description) {
+    public DriveChassis(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }
 
     @Override
     public void init(HardwareMap hwMap) {
-        leftFront = new Motor("leftFront", "Left Front");
-        leftRear = new Motor("leftRear", "Left Rear");
-        rightFront = new  Motor("rightFront", "Right Front");
-        rightRear = new Motor("rightRear", "Right Rear");
+        leftFront = hwMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hwMap.get(DcMotorEx.class, "leftRear");
+        rightFront = hwMap.get(DcMotorEx.class, "rightFront");
+        rightRear = hwMap.get(DcMotorEx.class, "rightRear");
         motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        
+        for (DcMotorEx motor : motors) {
+            initMotor(motor);
+        }
+    }
+
+    private void initMotor(DcMotorEx motor) {
+        MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
+        motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
+        motor.setMotorType(motorConfigurationType);
+        motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        if (RUN_USING_ENCODER) {
+            motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        }
     }
 
     @Override
@@ -56,7 +74,7 @@ public class Drive implements Mechanism {
      *
      * @return a collection of motors used by this drive.
      */
-    public Collection<Motor> getMotors() {
+    public Collection<DcMotorEx> getMotors() {
         return motors;
     }
 
@@ -134,6 +152,10 @@ public class Drive implements Mechanism {
         return WHEEL_DIAM_IN * Math.PI * ticks / ticksPerRotation;
     }
 
+    private double getTicksPerRotation() {
+        return 0.0;
+    }
+
     /**
      * getWheelPosition returns a list of positions for each of the four wheels. The order of the
      * list is `left front`, `left rear`, `right front`, right rear`.
@@ -142,10 +164,10 @@ public class Drive implements Mechanism {
     public List<Double> getWheelPositions() {
         List<Double> wheelPositions = new ArrayList<>();
 
-        wheelPositions.add(ticksToInches(leftFront.getCurrentPosition(), leftFront.getTicksPerRotation()));
-        wheelPositions.add(ticksToInches(leftRear.getCurrentPosition(), leftRear.getTicksPerRotation()));
-        wheelPositions.add(ticksToInches(rightFront.getCurrentPosition(), rightFront.getTicksPerRotation()));
-        wheelPositions.add(ticksToInches(rightRear.getCurrentPosition(), rightRear.getTicksPerRotation()));
+        wheelPositions.add(ticksToInches(leftFront.getCurrentPosition(), leftFront.getMotorType().getTicksPerRev()));
+        wheelPositions.add(ticksToInches(leftRear.getCurrentPosition(), leftRear.getMotorType().getTicksPerRev()));
+        wheelPositions.add(ticksToInches(rightFront.getCurrentPosition(), rightFront.getMotorType().getTicksPerRev()));
+        wheelPositions.add(ticksToInches(rightRear.getCurrentPosition(), rightRear.getMotorType().getTicksPerRev()));
 
         return wheelPositions;
     }
