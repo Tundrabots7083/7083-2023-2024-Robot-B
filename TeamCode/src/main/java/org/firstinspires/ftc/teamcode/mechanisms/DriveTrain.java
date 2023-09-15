@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Drive implements the drive chassis for the Robot.
  */
-public class DriveChassis implements Mechanism {
+public class DriveTrain implements Mechanism {
     private static final boolean RUN_USING_ENCODER = false;
 
     private static final double MM_PER_IN = 25.4;
@@ -27,7 +27,7 @@ public class DriveChassis implements Mechanism {
     private DcMotorEx rightFront, rightRear, leftFront, leftRear;
     private Collection<DcMotorEx> motors;
 
-    public DriveChassis(String deviceName, String description) {
+    public DriveTrain(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }
@@ -42,7 +42,7 @@ public class DriveChassis implements Mechanism {
 
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        
+
         for (DcMotorEx motor : motors) {
             initMotor(motor);
         }

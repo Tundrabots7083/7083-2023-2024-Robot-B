@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.mechanisms.DriveChassis;
+import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
 import org.firstinspires.ftc.teamcode.mechanisms.Mechanism;
 
 import java.util.Arrays;
@@ -12,11 +12,11 @@ import java.util.List;
  * Robot represents all mechanisms and hardware that resides on the robot.
  */
 public class Robot {
-    public final DriveChassis drive;
+    public final DriveTrain drive;
     private final List<Mechanism> mechanisms;
 
     public Robot() {
-        this.drive = new DriveChassis("driveChassis", "Drive Chassis");
+        this.drive = new DriveTrain("driveTrain", "Drive Train");
         this.mechanisms = Arrays.asList(drive);
     }
 
