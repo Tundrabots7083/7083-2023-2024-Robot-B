@@ -28,7 +28,7 @@ public class ProgrammingBoard {
     }
 
     public void init(HardwareMap hwMap) {
-        claw = new Claw("claw", "Claw");
+        claw = new Claw(null,"claw", "Claw");
         claw.init(hwMap);
         motor = hwMap.get(DcMotorEx.class, "test_motor");
         hardware = new DiscoverHardware(hwMap);

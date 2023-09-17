@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.ArrayList;
@@ -24,12 +26,14 @@ public class DriveTrain implements Mechanism {
 
     private final String deviceName;
     private final String description;
+    private final Robot robot;
     private DcMotorEx rightFront, rightRear, leftFront, leftRear;
     private Collection<DcMotorEx> motors;
 
-    public DriveTrain(String deviceName, String description) {
+    public DriveTrain(Robot robot, String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
+        this.robot = robot;
     }
 
     @Override
@@ -84,13 +88,13 @@ public class DriveTrain implements Mechanism {
     }
 
     /**
-     * move sets the powers to the wheel motors to result in the robot moving
+     * drive sets the powers to the wheel motors to result in the robot moving
      * in the direction provided on input.
      * @param forward how much to move forward or, if a negative value, backward.
      * @param right how much to move right or, if a negative value, left.
      * @param rotate how much to rotate the robot.
      */
-    public void move(double forward, double right, double rotate) {
+    public void drive(double forward, double right, double rotate) {
         double leftFrontPower = forward + right + rotate;
         double leftRearPower = forward - right + rotate;
         double rightFrontPower = forward - right - rotate;
@@ -99,18 +103,29 @@ public class DriveTrain implements Mechanism {
         setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
     }
 
-    public void setMotorsFromCoordinates(double x1, double y1, double turn)
-    {
-        //Convert cartesian coordinates to polar coordinates
-        double headingPower = Math.hypot(-x1, -y1);
-        double headingAngle = Math.atan2(-x1, -y1) + (Math.PI / 4);
+    /**
+     * setMotorsFromCoordinates takes the values from the gamepad and converts
+     * them to the proper power to apply to the motors to accomplish the behavior
+     * @param forward the x value of the left joystick.
+     * @param right the y value of the left joystick.
+     * @param rotate the x value of the right joystick
+     */
+    public void setMotorsFromCoordinates(double forward, double right, double rotate) {
+        double robotAngle = robot.gyro.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+  
+        // Convert cartesian coordinates to polar coordinates
+        double distance = Math.hypot(forward, right);
+        double angle = Math.atan2(forward, right) + (Math.PI / 4);
 
-        double leftFrontPower = (headingPower * Math.cos(headingAngle) + turn);
-        double rightFrontPower = (headingPower * Math.sin(headingAngle) - turn);
-        double leftRearPower = (headingPower * Math.sin(headingAngle) + turn);
-        double rightRearPower = (headingPower * Math.cos(headingAngle) - turn);
+        // Rotate the angle
+        angle = AngleUnit.normalizeRadians(angle - robotAngle);
 
-        setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+        // Convert back to cartesian coordinates
+        double newForward = distance * Math.sin(angle);
+        double newRight = distance * Math.cos(angle);
+
+        // Calculate the power to apply to each motor
+        drive(newForward, newRight, rotate);
     }
 
     /**
@@ -150,10 +165,6 @@ public class DriveTrain implements Mechanism {
      */
     private double ticksToInches(double ticks, double ticksPerRotation) {
         return WHEEL_DIAM_IN * Math.PI * ticks / ticksPerRotation;
-    }
-
-    private double getTicksPerRotation() {
-        return 0.0;
     }
 
     /**
