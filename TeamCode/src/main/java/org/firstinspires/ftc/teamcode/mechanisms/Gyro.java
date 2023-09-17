@@ -10,13 +10,13 @@ import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
 
-public class IMU implements Mechanism {
+public class Gyro implements Mechanism {
 
     private com.qualcomm.robotcore.hardware.IMU gyro;
     private final String deviceName;
     private final String description;
 
-    public IMU(Robot robot, String deviceName, String description) {
+    public Gyro(Robot robot, String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }
