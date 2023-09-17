@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Drive implements the drive chassis for the Robot.
  */
-public class DriveTrain implements Mechanism {
+public class MecanumDrive implements Mechanism {
     private static final boolean RUN_USING_ENCODER = false;
 
     private static final double MM_PER_IN = 25.4;
@@ -30,7 +30,7 @@ public class DriveTrain implements Mechanism {
     private DcMotorEx rightFront, rightRear, leftFront, leftRear;
     private Collection<DcMotorEx> motors;
 
-    public DriveTrain(Robot robot, String deviceName, String description) {
+    public MecanumDrive(Robot robot, String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
         this.robot = robot;
