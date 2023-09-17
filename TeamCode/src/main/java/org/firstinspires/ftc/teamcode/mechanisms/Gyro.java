@@ -57,12 +57,39 @@ public class Gyro implements Mechanism {
         return angles.getYaw(angleUnit);
     }
 
+    /**
+     * getYaw returns the side-to-side lateral rotation of the robot (rotation around the Z axis),
+     * normalized to the range of [-180,+180) degrees in Radians.
+     *
+     * @return the side-to-side lateral rotation of the robot (rotation around the Z axis),
+     *         normalized to the range of [-180,+180) degrees.
+     */
     public double getYaw() {
         return getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
 
+    /**
+     * getRobotYawPitchRollAngles returns a YawPitchRollAngles object representing the current
+     * orientation of the robot relative to the robot's position the last time that resetYaw()
+     * was called, as if the robot was perfectly level at that time.
+     *
+     * @return a YawPitchRollAngles object representing the current orientation of the robot
+     *         relative to the robot's position the last time that resetYaw() was called, as if
+     *         the robot was perfectly level at that time.
+     */
     public YawPitchRollAngles getRobotYawPitchRollAngles() {
         return gyro.getRobotYawPitchRollAngles();
+    }
+
+    /**
+     * Resets the robot's yaw angle to 0. After calling this method, the reported orientation will
+     * be relative to the robot's position when this method was called, as if the robot was
+     * perfectly level right then. That is to say, the pitch and yaw will be ignored when this
+     * method is called. Unlike yaw, pitch and roll are always relative to gravity, and never
+     * need to be reset.
+     */
+    public void resetYaw() {
+        gyro.resetYaw();
     }
 
     @Override
