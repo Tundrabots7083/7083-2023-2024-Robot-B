@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
@@ -12,26 +10,26 @@ import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
 
-public class Gyro implements Mechanism {
+public class IMU implements Mechanism {
 
-    private IMU gyro;
+    private com.qualcomm.robotcore.hardware.IMU gyro;
     private final String deviceName;
     private final String description;
 
-    public Gyro(Robot robot, String deviceName, String description) {
+    public IMU(Robot robot, String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }
     @Override
     public void init(HardwareMap hwMap) {
-        gyro = hwMap.get(IMU.class, "imu");
+        gyro = hwMap.get(com.qualcomm.robotcore.hardware.IMU.class, "imu");
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
         // Initialize the IMU with this mounting orientation
-        gyro.initialize(new IMU.Parameters(orientationOnRobot));
+        gyro.initialize(new com.qualcomm.robotcore.hardware.IMU.Parameters(orientationOnRobot));
     }
 
     @Override

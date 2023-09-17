@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.mechanisms.DriveTrain;
-import org.firstinspires.ftc.teamcode.mechanisms.Gyro;
+import org.firstinspires.ftc.teamcode.mechanisms.IMU;
 import org.firstinspires.ftc.teamcode.mechanisms.Mechanism;
 
 import java.util.Arrays;
@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class Robot {
     public final DriveTrain drive = new DriveTrain(this, "driveTrain", "Drive Train");
-    public final Gyro gyro = new Gyro(this,"imu", "IMU");
-    private final List<Mechanism> mechanisms = Arrays.asList(drive, gyro);
+    public final IMU imu = new IMU(this,"imu", "IMU");
+    private final List<Mechanism> mechanisms = Arrays.asList(drive, imu);
 
     public Robot() {
     }
