@@ -13,9 +13,9 @@ import java.util.List;
  * Robot represents all mechanisms and hardware that resides on the robot.
  */
 public class Robot {
-    public final DriveTrain drive = new DriveTrain(this, "driveTrain", "Drive Train");
+    public final DriveTrain driveTrain = new DriveTrain(this, "driveTrain", "Drive Train");
     public final Gyro gyro = new Gyro(this,"imu", "IMU");
-    private final List<Mechanism> mechanisms = Arrays.asList(drive, gyro);
+    private final List<Mechanism> mechanisms = Arrays.asList(driveTrain, gyro);
 
     public Robot() {
     }
