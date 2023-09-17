@@ -48,16 +48,6 @@ public class Gyro implements Mechanism {
     }
 
     /**
-     * getHeading gets the direction the robot is facing.
-     * @param angleUnit the unit of measure for the angle.
-     * @return the direction the robot is facing.
-     */
-    public double getHeading(AngleUnit angleUnit) {
-        YawPitchRollAngles angles = getRobotYawPitchRollAngles();
-        return angles.getYaw(angleUnit);
-    }
-
-    /**
      * getYaw returns the side-to-side lateral rotation of the robot (rotation around the Z axis),
      * normalized to the range of [-180,+180) degrees in Radians.
      *
