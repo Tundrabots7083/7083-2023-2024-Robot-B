@@ -57,6 +57,10 @@ public class Gyro implements Mechanism {
         return angles.getYaw(angleUnit);
     }
 
+    public double getYaw() {
+        return getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+    }
+
     public YawPitchRollAngles getRobotYawPitchRollAngles() {
         return gyro.getRobotYawPitchRollAngles();
     }
