@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class Robot {
     public final DriveTrain drive = new DriveTrain(this, "driveTrain", "Drive Train");
-    public final Gyro imu = new Gyro(this,"imu", "IMU");
-    private final List<Mechanism> mechanisms = Arrays.asList(drive, imu);
+    public final Gyro gyro = new Gyro(this,"imu", "IMU");
+    private final List<Mechanism> mechanisms = Arrays.asList(drive, gyro);
 
     public Robot() {
     }

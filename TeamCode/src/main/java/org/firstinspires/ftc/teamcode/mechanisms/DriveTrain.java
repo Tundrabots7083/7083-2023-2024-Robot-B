@@ -111,7 +111,7 @@ public class DriveTrain implements Mechanism {
      * @param rotate the x value of the right joystick
      */
     public void setMotorsFromCoordinates(double forward, double right, double rotate) {
-        double robotAngle = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double robotAngle = robot.gyro.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
   
         // Convert cartesian coordinates to polar coordinates
         double distance = Math.hypot(forward, right);
