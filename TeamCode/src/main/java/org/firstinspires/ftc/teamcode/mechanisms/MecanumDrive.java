@@ -93,7 +93,6 @@ public class MecanumDrive implements Mechanism {
             rightRearPower /= power + turn;
         }
             setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
-
     }
 
     /**
