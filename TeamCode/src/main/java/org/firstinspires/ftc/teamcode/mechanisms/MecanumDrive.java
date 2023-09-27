@@ -74,17 +74,17 @@ public class MecanumDrive implements Mechanism {
      * @param turn how much to rotate the robot.
      */
     public void drive(double x, double y, double turn) {
-     double theta = Math.atan2(y, x);
-     double power = Math.hypot(x, y);
+        double theta = Math.atan2(y, x);
+        double power = Math.hypot(x, y);
 
-     double sin = Math.sin(theta - Math.PI/4);
-     double cos = Math.cos(theta - Math.PI/4);
-     double max = Math.max(Math.abs(sin), Math.abs(cos));
+        double sin = Math.sin(theta - Math.PI/4);
+        double cos = Math.cos(theta - Math.PI/4);
+        double max = Math.max(Math.abs(sin), Math.abs(cos));
 
-     double leftFrontPower = power * cos/max + turn;
-     double rightFrontPower = power * sin/max - turn;
-     double leftRearPower = power * sin/max + turn;
-     double rightRearPower = power * cos/max - turn;
+        double leftFrontPower = power * cos/max + turn;
+        double rightFrontPower = power * sin/max - turn;
+        double leftRearPower = power * sin/max + turn;
+        double rightRearPower = power * cos/max - turn;
 
         if ((power + Math.abs(turn)) > 1) {
             leftFrontPower /= power + turn;
@@ -92,7 +92,7 @@ public class MecanumDrive implements Mechanism {
             leftRearPower /= power + turn;
             rightRearPower /= power + turn;
         }
-            setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+        setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
     }
 
     /**
