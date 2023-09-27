@@ -5,25 +5,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Drive implements the drive chassis for the Robot.
  */
 public class MecanumDrive implements Mechanism {
-    private static final boolean RUN_USING_ENCODER = false;
-
-    private static final double MM_PER_IN = 25.4;
-
-    private static final double WHEEL_DIAM_IN = 96 / MM_PER_IN; // for a Mecanum wheel
-
     private final String deviceName;
     private final String description;
     private final Robot robot;
@@ -57,10 +48,6 @@ public class MecanumDrive implements Mechanism {
         motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
         motor.setMotorType(motorConfigurationType);
         motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        if (RUN_USING_ENCODER) {
-            motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        }
     }
 
     @Override
@@ -73,15 +60,6 @@ public class MecanumDrive implements Mechanism {
         return description;
     }
 
-    /**
-     * getMotors returns a collection of motors used by this drive.
-     *
-     * @return a collection of motors used by this drive.
-     */
-    public Collection<DcMotorEx> getMotors() {
-        return motors;
-    }
-
     @Override
     public Collection<Test> getTests() {
         return null;
@@ -90,42 +68,31 @@ public class MecanumDrive implements Mechanism {
     /**
      * drive sets the powers to the wheel motors to result in the robot moving
      * in the direction provided on input.
-     * @param forward how much to move forward or, if a negative value, backward.
-     * @param right how much to move right or, if a negative value, left.
-     * @param rotate how much to rotate the robot.
+     *
+     * @param x how much to move right or, if a negative value, left.
+     * @param y how much to move forward or, if a negative value, backward.
+     * @param turn how much to rotate the robot.
      */
-    public void drive(double forward, double right, double rotate) {
-        double leftFrontPower = forward + right + rotate;
-        double leftRearPower = forward - right + rotate;
-        double rightFrontPower = forward - right - rotate;
-        double rightRearPower = forward + right - rotate;
+    public void drive(double x, double y, double turn) {
+        double theta = Math.atan2(y, x);
+        double power = Math.hypot(x, y);
 
+        double sin = Math.sin(theta - Math.PI/4);
+        double cos = Math.cos(theta - Math.PI/4);
+        double max = Math.max(Math.abs(sin), Math.abs(cos));
+
+        double leftFrontPower = power * cos/max + turn;
+        double rightFrontPower = power * sin/max - turn;
+        double leftRearPower = power * sin/max + turn;
+        double rightRearPower = power * cos/max - turn;
+
+        if ((power + Math.abs(turn)) > 1) {
+            leftFrontPower /= power + turn;
+            rightFrontPower /= power + turn;
+            leftRearPower /= power + turn;
+            rightRearPower /= power + turn;
+        }
         setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
-    }
-
-    /**
-     * setMotorsFromCoordinates takes the values from the gamepad and converts
-     * them to the proper power to apply to the motors to accomplish the behavior
-     * @param forward the x value of the left joystick.
-     * @param right the y value of the left joystick.
-     * @param rotate the x value of the right joystick
-     */
-    public void setMotorsFromCoordinates(double forward, double right, double rotate) {
-        double robotAngle = robot.gyro.getYaw();
-  
-        // Convert cartesian coordinates to polar coordinates
-        double distance = Math.hypot(forward, right);
-        double angle = Math.atan2(forward, right) + (Math.PI / 4);
-
-        // Rotate the angle
-        angle = AngleUnit.normalizeRadians(angle - robotAngle);
-
-        // Convert back to cartesian coordinates
-        double newForward = distance * Math.sin(angle);
-        double newRight = distance * Math.cos(angle);
-
-        // Calculate the power to apply to each motor
-        drive(newForward, newRight, rotate);
     }
 
     /**
@@ -156,31 +123,6 @@ public class MecanumDrive implements Mechanism {
         leftRear.setPower(leftRearPower);
         rightFront.setPower(rightFrontPower);
         rightRear.setPower(rightRearPower);
-    }
-
-    /**
-     * ticksToInches converts the position as reported by the motor to a number of inches.
-     * @param ticks the position as reported by the motor.
-     * @return the number of inches the wheel has moved based on the number of ticks.
-     */
-    private double ticksToInches(double ticks, double ticksPerRotation) {
-        return WHEEL_DIAM_IN * Math.PI * ticks / ticksPerRotation;
-    }
-
-    /**
-     * getWheelPosition returns a list of positions for each of the four wheels. The order of the
-     * list is `left front`, `left rear`, `right front`, right rear`.
-     * @return a list of positions for each of the wheels.
-     */
-    public List<Double> getWheelPositions() {
-        List<Double> wheelPositions = new ArrayList<>();
-
-        wheelPositions.add(ticksToInches(leftFront.getCurrentPosition(), leftFront.getMotorType().getTicksPerRev()));
-        wheelPositions.add(ticksToInches(leftRear.getCurrentPosition(), leftRear.getMotorType().getTicksPerRev()));
-        wheelPositions.add(ticksToInches(rightFront.getCurrentPosition(), rightFront.getMotorType().getTicksPerRev()));
-        wheelPositions.add(ticksToInches(rightRear.getCurrentPosition(), rightRear.getMotorType().getTicksPerRev()));
-
-        return wheelPositions;
     }
 
     @Override
