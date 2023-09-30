@@ -79,7 +79,7 @@ public class PixelMover implements Mechanism {
         if (PixelMoverState.STOPPED.equals(state)) {
             // Pixel mover is stopped, get it moving forward
             brushRoller.setPower(FORWARD_POWER);
-            containerRoller.setPower(REVERSE_POWER);
+            containerRoller.setPower(1.5 * REVERSE_POWER);
             containerBackPull.setPosition(PULL_POSITION);
             state = PixelMoverState.FORWARD;
         }
@@ -100,7 +100,7 @@ public class PixelMover implements Mechanism {
         if (PixelMoverState.STOPPED.equals(state)) {
             // Pixel mover is stopped, get it moving forward
             brushRoller.setPower(REVERSE_POWER);
-            containerRoller.setPower(FORWARD_POWER);
+            containerRoller.setPower(1.5 * FORWARD_POWER);
             containerBackPull.setPosition(STOPPED_POSITION);
             state = PixelMoverState.REVERSE;
         }
