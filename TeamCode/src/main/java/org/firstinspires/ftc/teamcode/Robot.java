@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.Gyro;
+import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 import org.firstinspires.ftc.teamcode.mechanisms.Mechanism;
 
 import java.util.Arrays;
@@ -15,7 +16,8 @@ import java.util.List;
 public class Robot {
     public final MecanumDrive mecanumDrive = new MecanumDrive(this, "driveTrain", "Drive Train");
     public final Gyro gyro = new Gyro(this,"imu", "IMU");
-    private final List<Mechanism> mechanisms = Arrays.asList(mecanumDrive, gyro);
+    public final PixelMover pixelMover = new PixelMover(this, "pixelMover", "Collects pixels and moves them.");
+    private final List<Mechanism> mechanisms = Arrays.asList(mecanumDrive, gyro, pixelMover);
 
     public Robot() {
     }
