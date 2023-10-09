@@ -1,16 +1,18 @@
 package org.firstinspires.ftc.teamcode.controls;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 
+@Config
 public class MecanumDriveController {
 
-    private static final double MAX_TURNING_MULT = 0.7; //Max turning speed multiplier
-    private static final double MAX_DRIVE_MULT = 1; //Max drive speed multiplier
-    private static final double SLOW_TURNING_MULT = 0.25; //Slow turning speed multiplier
-    private static final double SLOW_DRIVE_MULT = 0.3; //Slow drive speed multiplier
+    public static double MAX_TURNING_MULT = 0.7; //Max turning speed multiplier
+    public static double MAX_DRIVE_MULT = 1; //Max drive speed multiplier
+    public static double SLOW_TURNING_MULT = 0.25; //Slow turning speed multiplier
+    public static double SLOW_DRIVE_MULT = 0.3; //Slow drive speed multiplier
     private final Robot robot;
     private double driveGain;
     private double turnGain;
