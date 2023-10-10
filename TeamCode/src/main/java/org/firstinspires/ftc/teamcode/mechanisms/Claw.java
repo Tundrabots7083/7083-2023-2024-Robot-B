@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -17,7 +16,7 @@ public class Claw implements Mechanism {
     private final String deviceName;
     private final String description;
 
-    public Claw(Robot robot, String deviceName, String description) {
+    public Claw(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }

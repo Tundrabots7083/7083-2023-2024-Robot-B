@@ -1,15 +1,23 @@
 package org.firstinspires.ftc.teamcode.controls;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 
-public class PixelMoverController {
+public class PixelMoverController implements Controller {
     private boolean aButtonPressed = false;
     private boolean bButtonPressed = false;
-    private final Robot robot;
-    public PixelMoverController(Robot robot) {this.robot = robot;}
+
+    private PixelMover pixelMover;
+
+    public PixelMoverController() {}
+
+    @Override
+    public void init(HardwareMap hardwareMap) {
+        pixelMover = new PixelMover("pixelMover", "Collects pixels and moves them");
+    }
 
     /**
      * Toggles the pixel mover between being stopped and moving based on whether the
@@ -28,7 +36,7 @@ public class PixelMoverController {
             // User pressed the a button
             aButtonPressed = true;
             // Tell pixel mover to toggle itself between being stopped and moving forward
-            robot.pixelMover.toggleForward();
+            pixelMover.toggleForward();
         }
         if (aButtonPressed && !gamepad.a) {
             // User released the a button
@@ -38,7 +46,7 @@ public class PixelMoverController {
             // User pressed the b button
             bButtonPressed = true;
             // Tell pixel mover to toggle itself between being stopped and moving in reverse
-            robot.pixelMover.toggleReversed();
+            pixelMover.toggleReversed();
         }
         if (bButtonPressed && !gamepad.b) {
             // User released the b button

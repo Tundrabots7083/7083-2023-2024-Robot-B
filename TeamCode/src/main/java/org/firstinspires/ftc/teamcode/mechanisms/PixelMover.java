@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -31,7 +30,7 @@ public class PixelMover implements Mechanism {
     }
     private PixelMoverState state = PixelMoverState.STOPPED;
 
-    public PixelMover(Robot robot, String deviceName, String description) {
+    public PixelMover(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }
@@ -46,11 +45,19 @@ public class PixelMover implements Mechanism {
         initServo(containerBackPull);
     }
 
+    /**
+     * initServo initializes a continuous rotation servo.
+     * @param servo the continuous rotation servo to initializle.
+     */
     private void initServo(CRServo servo) {
         servo.setDirection(DcMotorSimple.Direction.FORWARD);
         servo.setPower(STOPPED_POWER);
     }
 
+    /**
+     * initServo initializes a position servo.
+     * @param servo the position servo to initialize.
+     */
     private void initServo(Servo servo) {
         servo.setDirection(Servo.Direction.FORWARD);
         servo.setPosition(STOPPED_POSITION);
@@ -73,7 +80,6 @@ public class PixelMover implements Mechanism {
 
     /**
      * Toggles mechanism between being stopped and moving forward.
-     *
      */
     public void toggleForward() {
         if (PixelMoverState.STOPPED.equals(state)) {
@@ -94,7 +100,6 @@ public class PixelMover implements Mechanism {
 
     /**
      * Toggles mechanism between being stopped and moving in reverse.
-     *
      */
     public void toggleReversed() {
         if (PixelMoverState.STOPPED.equals(state)) {

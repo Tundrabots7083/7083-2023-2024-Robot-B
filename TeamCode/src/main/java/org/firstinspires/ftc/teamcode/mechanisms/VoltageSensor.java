@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -12,7 +11,7 @@ public class VoltageSensor implements Mechanism {
     private final String deviceName;
     private final String description;
 
-    public VoltageSensor(Robot robot, String deviceName, String description) {
+    public VoltageSensor(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }

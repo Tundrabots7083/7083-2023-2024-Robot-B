@@ -5,18 +5,18 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.TestRobot;
 import org.firstinspires.ftc.teamcode.controls.PixelMoverController;
+import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
+
 @TeleOp (name="Pixel Mover TeleOp", group="test")
 public class PixelMoverTeleOp extends OpMode {
-    private final Robot robot = new TestRobot();
-    private final PixelMoverController pixelMoverController = new PixelMoverController(robot);
+    private PixelMover pixelMover;
+    private final PixelMoverController pixelMoverController = new PixelMoverController();
 
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robot.pixelMover.init(hardwareMap);
+        pixelMover.init(hardwareMap);
         telemetry.addLine("Initialization Complete");
     }
 
