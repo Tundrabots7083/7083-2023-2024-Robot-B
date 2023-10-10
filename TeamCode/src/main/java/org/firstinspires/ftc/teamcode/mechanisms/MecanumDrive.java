@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Arrays;
@@ -17,14 +16,17 @@ import java.util.Collection;
 public class MecanumDrive implements Mechanism {
     private final String deviceName;
     private final String description;
-    private final Robot robot;
     private DcMotorEx rightFront, rightRear, leftFront, leftRear;
     private Collection<DcMotorEx> motors;
 
-    public MecanumDrive(Robot robot, String deviceName, String description) {
+    /**
+     * MecanumDrive initializes a new mecanum drive trail.
+     * @param deviceName  the name of the mecanum drive.
+     * @param description a description of the mecanum drive.
+     */
+    public MecanumDrive(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
-        this.robot = robot;
     }
 
     @Override
@@ -43,6 +45,10 @@ public class MecanumDrive implements Mechanism {
         }
     }
 
+    /**
+     * initMotor initializes a motor attached to the mecanum wheel.
+     * @param motor the motor to be initialized.
+     */
     private void initMotor(DcMotorEx motor) {
         MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
         motorConfigurationType.setAchieveableMaxRPMFraction(1.0);

@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -16,7 +15,7 @@ public class Gyro implements Mechanism {
     private final String deviceName;
     private final String description;
 
-    public Gyro(Robot robot, String deviceName, String description) {
+    public Gyro(String deviceName, String description) {
         this.deviceName = deviceName;
         this.description = description;
     }

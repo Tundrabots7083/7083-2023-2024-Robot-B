@@ -1,18 +1,21 @@
 package org.firstinspires.ftc.teamcode.controls;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * Navigator is responsible for determining the position and orientation of the robot.
  */
-public class Navigator {
+public class Navigator implements Controller {
 
     /**
      * Navigator creates a new navigator for the robot.
-     * 
-     * @param robot the robot that requires navigation. 
      */
-    public Navigator(Robot robot) {
+    public Navigator() {
+
+    }
+
+    @Override
+    public void init(HardwareMap hardwareMap) {
 
     }
     
