@@ -31,7 +31,7 @@ public class PixelMoverController implements Controller {
      * @param gamepad
      * @param telemetry
      */
-    public void toggleState(Gamepad gamepad, Telemetry telemetry) {
+    public void execute(Gamepad gamepad, Telemetry telemetry) {
         if (!aButtonPressed && gamepad.a) {
             // User pressed the a button
             aButtonPressed = true;

@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.controls.Controller;
 import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
 import org.firstinspires.ftc.teamcode.controls.PixelMoverController;
@@ -14,25 +15,21 @@ import java.util.List;
 
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {
-private final MecanumDriveController mecanumDriveController = new MecanumDriveController();
-private final PixelMoverController pixelMoverController = new PixelMoverController();
-private final List<Controller> controllers = Arrays.asList(mecanumDriveController, pixelMoverController);
+
+    private final Robot robot = new Robot();
 
     @Override
     public void init() {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        for (Controller controller : controllers) {
-            controller.init(hardwareMap);
-        }
-
-        telemetry.addLine("Initialization Complete");
+        robot.init(hardwareMap);;
     }
 
     @Override
     public void loop() {
-        pixelMoverController.toggleState(gamepad1, telemetry);
-        mecanumDriveController.execute(gamepad1, telemetry);
+        for (Controller controller : robot.controllers) {
+            controller.execute(gamepad1, telemetry);
+        }
     }
 }
