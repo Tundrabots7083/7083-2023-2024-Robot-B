@@ -14,7 +14,7 @@ public class MecanumDriveController implements Controller {
     public static double MAX_DRIVE_MULT = 1; //Max drive speed multiplier
     public static double SLOW_TURNING_MULT = 0.25; //Slow turning speed multiplier
     public static double SLOW_DRIVE_MULT = 0.3; //Slow drive speed multiplier
-    private MecanumDrive mecanumDrive;
+    private final MecanumDrive mecanumDrive;
     private double driveGain;
     private double turnGain;
 
@@ -22,11 +22,12 @@ public class MecanumDriveController implements Controller {
     public MecanumDriveController(){
         this.driveGain = MAX_DRIVE_MULT;
         this.turnGain = MAX_TURNING_MULT;
+        mecanumDrive = new MecanumDrive("driveTrain", "Drive Train");
     }
 
     @Override
     public void init(HardwareMap hwMap) {
-        mecanumDrive = new MecanumDrive("driveTrain", "Drive Train");
+        mecanumDrive.init(hwMap);
     }
 
     private void setGain(Gamepad gamepad) {
