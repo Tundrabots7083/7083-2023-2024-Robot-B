@@ -23,7 +23,7 @@ public class PrimaryTeleOp extends OpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        robot.init(hardwareMap);;
+        robot.init(hardwareMap);
     }
 
     @Override
