@@ -17,16 +17,13 @@ public class PixelMoverController implements Controller {
     @Override
     public void init(HardwareMap hardwareMap) {
         pixelMover = new PixelMover("pixelMover", "Collects pixels and moves them");
+        pixelMover.init(hardwareMap);
     }
 
+
     /**
-     * Toggles the pixel mover between being stopped and moving based on whether the
-     * A button has been pressed or the B button has been pressed.
-     *
-     * Pressing the A button toggles the pixel mover between being stopped and moving forward.
-     *   Forward movement results in pixels being swept into the robot's pixel container.
-     * Pressing the B button toggles the pixel mover between being stopped and moving in reverse.
-     *   Reverse movement results in pixels being pushed out of the robot's pixel container.
+     * Determine which button has been pressed or released.  When a button is pressed, invoke
+     * the mechanism to perform the function assigned to the button.
      *
      * @param gamepad
      * @param telemetry
@@ -35,8 +32,7 @@ public class PixelMoverController implements Controller {
         if (!aButtonPressed && gamepad.a) {
             // User pressed the a button
             aButtonPressed = true;
-            // Tell pixel mover to toggle itself between being stopped and moving forward
-            pixelMover.toggleForward();
+            pixelMover.pickUpPixels();
         }
         if (aButtonPressed && !gamepad.a) {
             // User released the a button
@@ -45,8 +41,7 @@ public class PixelMoverController implements Controller {
         if (!bButtonPressed && gamepad.b) {
             // User pressed the b button
             bButtonPressed = true;
-            // Tell pixel mover to toggle itself between being stopped and moving in reverse
-            pixelMover.toggleReversed();
+            pixelMover.dropOffPixels();
         }
         if (bButtonPressed && !gamepad.b) {
             // User released the b button
