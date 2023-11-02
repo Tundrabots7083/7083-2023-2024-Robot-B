@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.tests.Test;
@@ -21,15 +22,15 @@ public class PixelMover implements Mechanism {
     private final String description;
     private CRServoImplEx brushRoller;
     private CRServoImplEx containerRoller;
-    private Servo containerBackPusher;
+    private Servo containerBackPush;
     private Servo containerMiddleLock;
-    public static double STOPPED_POSITION = 0.5;
-    public static double BACK_PUSHED_POSITION = 0.25;
-    public static double MIDDLE_LOCKED_POSITION = 0.25;
-    public static double STOPPED_POWER = 0.0;
-    public static double FORWARD_POWER = 0.5;
-    public static double REVERSE_POWER = -0.5;
-    private enum PixelMoverState {
+    public static double STOPPED_POSITION = 0.5d;
+    public static double BACK_PUSHED_POSITION = 0.25d;
+    public static double MIDDLE_LOCKED_POSITION = 0.0d;
+    public static double STOPPED_POWER = 0.0d;
+    public static double FORWARD_POWER = 0.5d;
+    public static double REVERSE_POWER = -0.5d;
+    private static enum PixelMoverState {
         PICKING_UP,
         DROPPING_OFF_LOCKED,
         DROPPING_OFF_UNLOCKED,
@@ -48,15 +49,14 @@ public class PixelMover implements Mechanism {
         initServo(brushRoller);
         containerRoller = hwMap.get(CRServoImplEx.class, "containerRoller");
         initServo(containerRoller);
-        containerBackPusher = hwMap.get(Servo.class, "containerBackPusher");
-        initServo(containerBackPusher);
+        containerBackPush = hwMap.get(Servo.class, "containerBackPush");
+        initServo(containerBackPush);
         containerMiddleLock = hwMap.get(Servo.class, "containerMiddleLock");
         initServo(containerMiddleLock);
     }
 
     /**
      * initServo initializes a continuous rotation servo.
-     *
      * @param servo the continuous rotation servo to initialize.
      */
     private void initServo(@NonNull CRServoImplEx servo) {
@@ -67,7 +67,6 @@ public class PixelMover implements Mechanism {
 
     /**
      * initServo initializes a position servo.
-     *
      * @param servo the position servo to initialize.
      */
     private void initServo(@NonNull Servo servo) {
@@ -141,7 +140,7 @@ public class PixelMover implements Mechanism {
             // Unlock the bottom pixel.
             containerMiddleLock.setPosition(STOPPED_POSITION);
             // Push bottom pixel toward container roller to drop it off
-            containerBackPusher.setPosition(BACK_PUSHED_POSITION);
+            containerBackPush.setPosition(BACK_PUSHED_POSITION);
             state = PixelMoverState.DROPPING_OFF_UNLOCKED;
         }
         else if (PixelMoverState.DROPPING_OFF_UNLOCKED.equals(state)) {
@@ -149,12 +148,13 @@ public class PixelMover implements Mechanism {
             // position they need to be at to begin picking up pixels again; and
             // all of the continuous rotation servos to have no power.
             // TODO:  Will brushRoller need to be stopped?
-            containerBackPusher.setPosition(STOPPED_POSITION);
+            containerBackPush.setPosition(STOPPED_POSITION);
             containerRoller.setPower(STOPPED_POWER);
             containerRoller.setPwmDisable();
             state = PixelMoverState.STOPPED;
         }
     }
+
     @Override
     public String toString() {
         return string();
