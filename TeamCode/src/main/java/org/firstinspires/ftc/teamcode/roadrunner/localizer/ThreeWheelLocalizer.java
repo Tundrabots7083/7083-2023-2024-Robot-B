@@ -39,7 +39,9 @@ public class ThreeWheelLocalizer extends ThreeTrackingWheelLocalizer {
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    public ThreeWheelLocalizer(HardwareMap hardwareMap) {
+    private List<Integer> lastEncPositions, lastEncVels;
+
+    public ThreeWheelLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
@@ -51,6 +53,10 @@ public class ThreeWheelLocalizer extends ThreeTrackingWheelLocalizer {
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontEncoder"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
+
+        this.lastEncPositions = lastTrackingEncPositions;
+        this.lastEncVels = lastTrackingEncVels;
+
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -63,6 +69,11 @@ public class ThreeWheelLocalizer extends ThreeTrackingWheelLocalizer {
         int leftPos = leftEncoder.getCurrentPosition();
         int rightPos = rightEncoder.getCurrentPosition();
         int frontPos = frontEncoder.getCurrentPosition();
+
+        lastEncPositions.clear();
+        lastEncPositions.add(leftPos);
+        lastEncPositions.add(rightPos);
+        lastEncPositions.add(frontPos);
 
         return Arrays.asList(
                 encoderTicksToInches(leftPos) * X_MULTIPLIER,
@@ -77,6 +88,11 @@ public class ThreeWheelLocalizer extends ThreeTrackingWheelLocalizer {
         int leftVel = (int) leftEncoder.getCorrectedVelocity();
         int rightVel = (int) rightEncoder.getCorrectedVelocity();
         int frontVel = (int) frontEncoder.getCorrectedVelocity();
+
+        lastEncVels.clear();
+        lastEncVels.add(leftVel);
+        lastEncVels.add(rightVel);
+        lastEncVels.add(frontVel);
 
         return Arrays.asList(
                 encoderTicksToInches(leftVel),

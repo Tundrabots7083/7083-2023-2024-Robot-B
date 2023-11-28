@@ -26,9 +26,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationCon
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -73,31 +71,25 @@ public class AutoMecanumDrive extends Drive {
     /**
      * Creates a new autonomous mecanum drive.
      */
-    public AutoMecanumDrive() {
+    public AutoMecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
         this.kV = DriveConstants.kV;
         this.kA = DriveConstants.kA;
         this.kStatic = DriveConstants.kStatic;
         this.trackWidth = DriveConstants.TRACK_WIDTH;
         this.wheelBase = DriveConstants.WHEEL_BASE;
         this.lateralMultiplier = DriveConstants.LATERAL_MULTIPLIER;
-    }
 
-    /**
-     * Initializes the autonomous mecanum drive.
-     * @param hardwareMap the hardware map for the robot.
-     * @param telemetry the telemetry to use when sending data to the drive station.
-     */
-    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         drive.init(hardwareMap);
-        localizer = new ThreeWheelLocalizer(hardwareMap);
+
+        List<Integer> lastTrackingEncPositions = new ArrayList<>();
+        List<Integer> lastTrackingEncVels = new ArrayList<>();
+        localizer = new ThreeWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
-        List<Integer> lastTrackingEncPositions = new ArrayList<>();
-        List<Integer> lastTrackingEncVels = new ArrayList<>();
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
@@ -107,12 +99,20 @@ public class AutoMecanumDrive extends Drive {
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
     }
 
+    /**
+     * Returns the current localizer being used by the mecanum drive.
+     * @return the current localizer being used by the mecanum drive.
+     */
     @NonNull
     @Override
     public Localizer getLocalizer() {
         return localizer;
     }
 
+    /**
+     * Sets the localizer to be used by the mecanum drive.
+     * @param localizer the localizer to be used by the mecanum drive.
+     */
     @Override
     public void setLocalizer(@NonNull Localizer localizer) {
         this.localizer = localizer;
@@ -128,26 +128,9 @@ public class AutoMecanumDrive extends Drive {
     }
 
     /**
-     * Gets the current position of the wheels. This is the number of inches the wheels have
-     * traveled.
-     *
-     * @return a list of wheel positions.
+     * Sets the motor powers by calculating the robot's drive power.
+     * @param drivePower the robot's drive power.
      */
-    @NonNull
-    public List<Double> getWheelPositions() {
-        return Arrays.asList(0.0, 0.0, 0.0, 0.0);
-    }
-
-    /**
-     * Returns the wheel velocities, or <code>null</code> if the localizer doesn't calculate
-     * wheel velocities.
-     * @return the wheel velocities, or <code>null</code> if the wheel velocities aren't calcualted
-     *         by the localizer.
-     */
-    public List<Double> getWheelVelocities() {
-        return null;
-    }
-
     @Override
     public void setDrivePower(@NonNull Pose2d drivePower) {
         List<Double> powers = MecanumKinematics.robotToWheelVelocities(
@@ -159,6 +142,11 @@ public class AutoMecanumDrive extends Drive {
         setMotorPowers(powers.get(0), powers.get(1), powers.get(2), powers.get(3));
     }
 
+    /**
+     * Sets the motor powers based on the feed forward calculations using the robot's wheel
+     * velocities and wheel accelerations.
+     * @param driveSignal the robot's drive signal.
+     */
     @Override
     public void setDriveSignal(DriveSignal driveSignal) {
         List<Double> velocities = MecanumKinematics.robotToWheelVelocities(
@@ -188,24 +176,51 @@ public class AutoMecanumDrive extends Drive {
         drive.setMotorPowers(leftFront, leftRear,rightRear, rightFront);
     }
 
+    /**
+     * Updates the robot's trajectory and sets the robot's wheel velocities based on the pose
+     * estimate and pose velocity.
+     */
     public void update() {
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
         if (signal != null) setDriveSignal(signal);
     }
 
+    /**
+     * Returns a new trajectory builder based on the staring pose.
+     * @param startPose the starting pose.
+     * @return a trajectory builder based on the starting pose.
+     */
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
 
+    /**
+     * Returns a new reversed trajectory builder based on the starting pose.
+     * @param startPose the starting pose.
+     * @param reversed <code>true</code> if the trajectory should be reversed;
+     *                 <code>false</code> if it shouldn't be reversed.
+     * @return a trajectory builder based on the starting pose.
+     */
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, boolean reversed) {
         return new TrajectoryBuilder(startPose, reversed, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
 
+    /**
+     * Returns a new trajectory builder given the starting pose and start tangent.
+     * @param startPose the staring pose.
+     * @param startHeading the start tangent.
+     * @return a new trajectory builder given the staring pose and start tangent.
+     */
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose, double startHeading) {
         return new TrajectoryBuilder(startPose, startHeading, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
 
+    /**
+     * Returns a trajectory sequence builder based on the starting pose.
+     * @param startPose the starting pose.
+     * @return a trajectory sequence builder based on the starting pose.
+     */
     public TrajectorySequenceBuilder trajectorySequenceBuilder(Pose2d startPose) {
         return new TrajectorySequenceBuilder(
                 startPose,
@@ -214,6 +229,10 @@ public class AutoMecanumDrive extends Drive {
         );
     }
 
+    /**
+     * Creates and asynchronously follows a trajectory to turn the robot by the specified angle.
+     * @param angle the angle to turn the robot.
+     */
     public void turnAsync(double angle) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
                 trajectorySequenceBuilder(getPoseEstimate())
@@ -222,11 +241,19 @@ public class AutoMecanumDrive extends Drive {
         );
     }
 
+    /**
+     * Creates and follows a trajectory to turn the robot by the specified angle.
+     * @param angle the specified angle to turn the robot.
+     */
     public void turn(double angle) {
         turnAsync(angle);
         waitForIdle();
     }
 
+    /**
+     * Asynchronously follows the specified trajectory.
+     * @param trajectory the trajectory to follow.
+     */
     public void followTrajectoryAsync(Trajectory trajectory) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
                 trajectorySequenceBuilder(trajectory.start())
@@ -235,40 +262,62 @@ public class AutoMecanumDrive extends Drive {
         );
     }
 
+    /**
+     * Follows the specified trajectory.
+     * @param trajectory the specified trajectory.
+     */
     public void followTrajectory(Trajectory trajectory) {
         followTrajectoryAsync(trajectory);
         waitForIdle();
     }
 
+    /**
+     * Asynchronously follows the trajectory sequence.
+     * @param trajectorySequence the trajectory sequence to follow.
+     */
     public void followTrajectorySequenceAsync(TrajectorySequence trajectorySequence) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(trajectorySequence);
     }
 
+    /**
+     * Follows the trajectory sequence.
+     * @param trajectorySequence the trajectory sequence to follow.
+     */
     public void followTrajectorySequence(TrajectorySequence trajectorySequence) {
         followTrajectorySequenceAsync(trajectorySequence);
         waitForIdle();
     }
 
+    /**
+     * Gets the last pose error from the following the trajectory sequence.
+     * @return the last pose error from following the trajectory sequence.
+     */
     public Pose2d getLastError() {
         return trajectorySequenceRunner.getLastPoseError();
     }
 
+    /**
+     * Continues to follow the robot's trajectory until the thread is interrupted or the
+     * robot reaches it's destination.
+     */
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())
             update();
     }
 
+    /**
+     * Returns indication as to whether the trajectory sequence is still being followed.
+     * @return <code>true</code> if the trajectory sequence is no longer being followed;
+     *         <code>false</code> if the trajectory sequence is still being followed.
+     */
     public boolean isBusy() {
         return trajectorySequenceRunner.isBusy();
     }
 
-    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
-        PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
-                coefficients.p, coefficients.i, coefficients.d,
-                coefficients.f * 12 / batteryVoltageSensor.getVoltage()
-        );
-    }
-
+    /**
+     * Sets the drive power to the weighted input drive power.
+     * @param drivePower the drive power.
+     */
     public void setWeightedDrivePower(Pose2d drivePower) {
         Pose2d vel = drivePower;
 
@@ -289,6 +338,13 @@ public class AutoMecanumDrive extends Drive {
         setDrivePower(vel);
     }
 
+    /**
+     * Returns a trajectory velocity constraint.
+     * @param maxVel the maximum velocity.
+     * @param maxAngularVel the maximum angular velocity.
+     * @param trackWidth the distance between two wheels on opposite sides of the robot.
+     * @return the trajectory velocity constraint.
+     */
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
         return new MinVelocityConstraint(Arrays.asList(
                 new AngularVelocityConstraint(maxAngularVel),
@@ -296,6 +352,11 @@ public class AutoMecanumDrive extends Drive {
         ));
     }
 
+    /**
+     * Returns an acceleration constraint.
+     * @param maxAccel the maximum acceleration.
+     * @return the acceleration constraint.
+     */
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
