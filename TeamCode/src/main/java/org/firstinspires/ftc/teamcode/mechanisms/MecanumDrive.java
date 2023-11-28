@@ -98,17 +98,17 @@ public class MecanumDrive implements Mechanism {
             leftRearPower /= power + turn;
             rightRearPower /= power + turn;
         }
-        setMotorPowers(leftFrontPower, leftRearPower, rightFrontPower, rightRearPower);
+        setMotorPowers(leftFrontPower, leftRearPower, rightRearPower, rightFrontPower);
     }
 
     /**
      * setMotorPowers sets the power for the wheels, normalizing for a maximum power of 1.0.
      * @param leftFrontPower the power for the left front motor.
      * @param leftRearPower the power for the left rear motor
-     * @param rightFrontPower the power for the right front motor.
      * @param rightRearPower the power for the right rear motor.
+     * @param rightFrontPower the power for the right front motor.
      */
-    public void setMotorPowers(double leftFrontPower, double leftRearPower, double rightFrontPower, double rightRearPower) {
+    public void setMotorPowers(double leftFrontPower, double leftRearPower, double rightRearPower, double rightFrontPower) {
         // Get the maximum power for any motor, or 1.0, whichever is greater
         double maxPower = 1.0;
         maxPower = Math.max(maxPower, Math.abs(leftFrontPower));
