@@ -87,8 +87,8 @@ public class AprilTagLocalizer implements Localizer {
             double theta = (bearing + (Math.PI / 2)) + yaw;
 
             // Compute the x and y coordinates of the robot in global coordinates
-            double x = reference.x + (range * Math.cos(theta));
-            double y = reference.y + (range * Math.sin(theta));
+            double x = reference.x - (range * Math.sin(theta));
+            double y = reference.y + (range * Math.cos(theta));
 
             // Compute the robot's heading in global coordinates
             double heading = Math.toRadians(reference.heading) + yaw;
