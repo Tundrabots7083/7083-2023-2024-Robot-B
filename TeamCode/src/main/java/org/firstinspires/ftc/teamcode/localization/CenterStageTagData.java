@@ -5,12 +5,12 @@ import java.util.Map;
 
 public enum CenterStageTagData {
 
-    BLUE_BACKDROP_LEFT(1, CenterStageFieldConstants.BACKDROP_X_OFFSET, -42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
-    BLUE_BACKDROP_CENTER(2, CenterStageFieldConstants.BACKDROP_X_OFFSET, -42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
-    BLUE_BACKDROP_RIGHT(3, CenterStageFieldConstants.BACKDROP_X_OFFSET, -42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
+    BLUE_BACKDROP_LEFT(1, CenterStageFieldConstants.BACKDROP_X_OFFSET, 42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
+    BLUE_BACKDROP_CENTER(2, CenterStageFieldConstants.BACKDROP_X_OFFSET, 48, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
+    BLUE_BACKDROP_RIGHT(3, CenterStageFieldConstants.BACKDROP_X_OFFSET, 54, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
     RED_BACKDROP_LEFT(4, CenterStageFieldConstants.BACKDROP_X_OFFSET, -42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
-    RED_BACKDROP_CENTER(5, CenterStageFieldConstants.BACKDROP_X_OFFSET, -42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
-    RED_BACKDROP_RIGHT(6, CenterStageFieldConstants.BACKDROP_X_OFFSET, -42, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
+    RED_BACKDROP_CENTER(5, CenterStageFieldConstants.BACKDROP_X_OFFSET, -48, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
+    RED_BACKDROP_RIGHT(6, CenterStageFieldConstants.BACKDROP_X_OFFSET, -54, CenterStageFieldConstants.BACKDROP_TAG_HEIGHT, 90, 2),
     RED_AUDIENCE_WALL_BIG(7, CenterStageFieldConstants.AUDIENCE_WALL_X_OFFSET, -39.5, CenterStageFieldConstants.AUDIENCE_WALL_TAG_HEIGHT, 270, 5),
     RED_AUDIENCE_WALL_SMALL(8, CenterStageFieldConstants.AUDIENCE_WALL_X_OFFSET, -39.5, CenterStageFieldConstants.AUDIENCE_WALL_TAG_HEIGHT, 270, 2),
     BLUE_AUDIENCE_WALL_BIG(9, CenterStageFieldConstants.AUDIENCE_WALL_X_OFFSET, 39.5, CenterStageFieldConstants.AUDIENCE_WALL_TAG_HEIGHT, 270, 5),
