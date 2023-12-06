@@ -28,11 +28,11 @@ public class FirstVisionOpMode extends OpMode {
 
     @Override
     public void start() {
-        visionPortal.stopStreaming ();
+        // visionPortal.stopStreaming ();
     }
 
     @Override
     public void loop() {
-        telemetry.addData ("Identified", visionProcessor.getSelection()); // TODO: in a real game, do something with the vision data
+        telemetry.addData("Identified", visionProcessor.getSelection()); // TODO: in a real game, do something with the vision data
     }
 }
