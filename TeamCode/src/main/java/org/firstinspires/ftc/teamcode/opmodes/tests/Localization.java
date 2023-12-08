@@ -38,12 +38,16 @@ public class Localization extends LinearOpMode {
                     )
             );
 
-            drive.update();
+            try {
+                drive.update();
 
-            Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
+                Pose2d poseEstimate = drive.getPoseEstimate();
+                telemetry.addData("x", poseEstimate.getX());
+                telemetry.addData("y", poseEstimate.getY());
+                telemetry.addData("heading", Math.toDegrees(poseEstimate.getHeading()));
+            } catch (NullPointerException e) {
+                telemetry.addLine("pose not found");
+            }
             telemetry.update();
         }
     }
