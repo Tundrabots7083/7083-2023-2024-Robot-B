@@ -12,8 +12,8 @@ import java.util.List;
 
 public class Robot {
     public final MecanumDriveController mecanumDriveController = new MecanumDriveController();
-    public final ArmController armController = new ArmController();
-    public final List<Controller> controllers = Arrays.asList(mecanumDriveController, armController);
+    // public final ArmController armController = new ArmController();
+    public final List<Controller> controllers = Arrays.asList(mecanumDriveController/*, armController*/);
 
     public Robot() {}
 
