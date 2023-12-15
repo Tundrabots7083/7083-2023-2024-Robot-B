@@ -43,6 +43,10 @@ public class MecanumDriveController implements Controller {
         double x = gamepad.left_stick_x * driveGain;
         double y = -gamepad.left_stick_y * driveGain;
         double turn = -gamepad.right_stick_x * turnGain;
+        telemetry.addData("[DRIVE] X", x);
+        telemetry.addData("[DRIVE] Y", y);
+        telemetry.addData("[DRIVE] Turn", turn);
+        telemetry.update();
 
         mecanumDrive.drive(x, y, turn);
     }
