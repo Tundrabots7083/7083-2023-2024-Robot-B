@@ -22,6 +22,11 @@ public class PrimaryTeleOp extends OpMode {
     private Servo containerServo;
 
     @Override
+    public void start() {
+        // TODO: drop the container and brush roller
+    }
+
+    @Override
     public void init() {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
