@@ -19,6 +19,11 @@ public class PrimaryTeleOp extends OpMode {
     private final Robot robot = new Robot();
 
     @Override
+    public void start() {
+        // TODO: drop the container and brush roller
+    }
+
+    @Override
     public void init() {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
