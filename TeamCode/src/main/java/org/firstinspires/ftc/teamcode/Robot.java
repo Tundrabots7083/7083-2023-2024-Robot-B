@@ -12,8 +12,9 @@ import java.util.List;
 
 public class Robot {
     public final MecanumDriveController mecanumDriveController = new MecanumDriveController();
+    public final PixelMoverController pixelMoverController = new PixelMoverController();
     // public final ArmController armController = new ArmController();
-    public final List<Controller> controllers = Arrays.asList(mecanumDriveController/*, armController*/);
+    public final List<Controller> controllers = Arrays.asList(mecanumDriveController, pixelMoverController/*, armController*/);
 
     public Robot() {}
 

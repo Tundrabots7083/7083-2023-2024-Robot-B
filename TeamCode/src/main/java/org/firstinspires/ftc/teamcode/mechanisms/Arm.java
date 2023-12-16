@@ -26,10 +26,10 @@ public class Arm implements Mechanism {
     public enum Position {
         Hang(1000, 0, 0),
         Intake(0, 0, 0),
-        ScoreLow(1500, 0, 200),
-        ScoreMedium(2000, 100, 200),
-        ScoreHigh(2400, 200, 200),
-        Start(800, 0,200);
+        ScoreLow(1500, 0, 0),
+        ScoreMedium(2000, 100, 0),
+        ScoreHigh(2400, 200, 0),
+        Start(800, 0,0.6);
 
         private final int armPosition;
         private final int liftPosition;

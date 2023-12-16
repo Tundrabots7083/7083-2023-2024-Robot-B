@@ -35,6 +35,7 @@ public class MecanumDrive implements Mechanism {
         leftRear = hwMap.get(DcMotorEx.class, "leftRear");
         rightFront = hwMap.get(DcMotorEx.class, "rightFront");
         rightRear = hwMap.get(DcMotorEx.class, "rightRear");
+
         motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
