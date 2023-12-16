@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.controls.ArmController;
 @Config
 @TeleOp (name="Flip Servo Test", group="test")
 public class TestFlipServo extends OpMode {
-    public static double FLIP_SERVO_POS = 0.0;
+    public static double FLIP_SERVO_POS = 0.625;
     private Servo flipServo;
     private final ArmController armController = new ArmController();
     @Override

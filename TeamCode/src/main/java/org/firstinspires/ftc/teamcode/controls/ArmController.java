@@ -21,6 +21,10 @@ public class ArmController implements Controller {
         arm.init(hardwareMap);
     }
 
+    public void start() {
+        arm.setTarget(Arm.Position.Start);
+    }
+
     /**
      * Sets the position of the arm, and calls the arm to update the position.
      * @param gamepad the gamepad controller for the arm.
@@ -28,6 +32,21 @@ public class ArmController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad, Telemetry telemetry) {
+        if (gamepad.left_trigger > 0.0) {
+            // arm.disableRunToPosition();
+            arm.setArmPower(gamepad.left_trigger);
+            telemetry.addData("[ARM] Power", gamepad.left_trigger);
+        }
+        else if (gamepad.right_trigger > 0.0) {
+            // arm.disableRunToPosition();
+            arm.setArmPower(-gamepad.right_trigger);
+            telemetry.addData("[ARM] Power", -gamepad.right_trigger);
+        } else {
+            telemetry.addData("[ARM] Power", 0.0);
+        }
+        telemetry.update();
+
+        /*
         if (gamepad.dpad_down) {
             arm.setTarget(Arm.Position.Intake);
         } else if (gamepad.dpad_left) {
@@ -35,7 +54,6 @@ public class ArmController implements Controller {
         } else if (gamepad.dpad_right) {
             arm.setTarget(Arm.Position.ScoreMedium);
         } else if (gamepad.dpad_up) {
-            arm.setTarget(Arm.Position.ScoreHigh);
         } else if (gamepad.right_bumper) {
             arm.setTarget(Arm.Position.Hang);
         }
@@ -46,9 +64,10 @@ public class ArmController implements Controller {
         telemetry.addData("[ARM] Arm Target Pos", arm.getTargetArmPosition());
         telemetry.addData("[ARM] Arm Current Pos", arm.getCurrentArmPosition());
         telemetry.addData("[ARM] Lift Target Pos", arm.getTargetLiftPosition());
-        telemetry.addData("[ARM] Lift Current Pos", arm.getCurrentLiftPosition());
+        // telemetry.addData("[ARM] Lift Current Pos", arm.getCurrentLiftPosition());
         telemetry.addData("[ARM] Servo Target Pos", arm.getTargetContainerServoPosition());
         telemetry.addData("[ARM] Servo Current Pos", arm.getCurrentContainerServoPosition());
         telemetry.update();
+        */
     }
 }
