@@ -8,18 +8,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.controls.Controller;
-import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
-import org.firstinspires.ftc.teamcode.controls.PixelMoverController;
-
-import java.util.Arrays;
-import java.util.List;
 
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {
-    private final static double CONTAINER_SERVO_POS = 0.62;
+    private final static double CONTAINER_FLIP_SERVO_POS = 0.65;
 
     private final Robot robot = new Robot();
-    private Servo containerServo;
+    private Servo containerFlipServo;
 
     @Override
     public void init() {
@@ -27,7 +22,7 @@ public class PrimaryTeleOp extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         robot.init(hardwareMap);
-        containerServo = hardwareMap.get(Servo.class, "containerFlip");
+        containerFlipServo = hardwareMap.get(Servo.class, "containerFlip");
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();
@@ -35,10 +30,10 @@ public class PrimaryTeleOp extends OpMode {
 
     @Override
     public void start() {
-        containerServo.setPosition(CONTAINER_SERVO_POS);
+        containerFlipServo.setPosition(CONTAINER_FLIP_SERVO_POS);
+        telemetry.addData("[Container Servo] Pos", CONTAINER_FLIP_SERVO_POS);
         robot.pixelMoverController.start(telemetry);
         telemetry.addLine("Brush roller dropped.");
-        telemetry.addData("[Container Servo] Pos", CONTAINER_SERVO_POS);
         telemetry.update();
     }
 
