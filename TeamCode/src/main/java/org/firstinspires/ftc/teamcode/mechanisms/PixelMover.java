@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -23,12 +24,15 @@ public class PixelMover implements Mechanism {
     private CRServoImplEx containerRoller;
     private Servo containerBackPusher;
     private Servo containerMiddleLock;
-    public static double STOPPED_POSITION = 0.5;
-    public static double BACK_PUSHED_POSITION = 0.25;
-    public static double MIDDLE_LOCKED_POSITION = 0.25;
+    public static double BACK_PUSHER_STOPPED_POSITION = 0.6;
+    public static double BACK_PUSHER_PUSHED_POSITION = 0.25;
+    public static double MIDDLE_LOCK_STOPPED_POSITION = 0.5;
+    public static double MIDDLE_LOCK_LOCKED_POSITION = 0.25;
     public static double STOPPED_POWER = 0.0;
-    public static double FORWARD_POWER = 0.5;
-    public static double REVERSE_POWER = -0.5;
+    public static double CONTAINER_ROLLER_FORWARD_POWER = 1.0;
+    public static double CONTAINER_ROLLER_REVERSE_POWER = -1.0;
+    public static double BRUSH_ROLLER_FORWARD_POWER = 0.5;
+    public static double BRUSH_ROLLER_REVERSE_POWER = -0.5;
     private enum PixelMoverState {
         PICKING_UP,
         DROPPING_OFF_LOCKED,
@@ -49,9 +53,9 @@ public class PixelMover implements Mechanism {
         containerRoller = hwMap.get(CRServoImplEx.class, "containerRoller");
         initServo(containerRoller);
         containerBackPusher = hwMap.get(Servo.class, "containerBackPusher");
-        initServo(containerBackPusher);
+        initServo(containerBackPusher, BACK_PUSHER_STOPPED_POSITION);
         containerMiddleLock = hwMap.get(Servo.class, "containerMiddleLock");
-        initServo(containerMiddleLock);
+        initServo(containerMiddleLock, MIDDLE_LOCK_STOPPED_POSITION);
     }
 
     /**
@@ -69,10 +73,11 @@ public class PixelMover implements Mechanism {
      * initServo initializes a position servo.
      *
      * @param servo the position servo to initialize.
+     * @param stoppedPosition the stopped position for the servo
      */
-    private void initServo(@NonNull Servo servo) {
+    private void initServo(@NonNull Servo servo, double stoppedPosition) {
         servo.setDirection(Servo.Direction.FORWARD);
-        servo.setPosition(STOPPED_POSITION);
+        servo.setPosition(stoppedPosition);
     }
 
     @Override
@@ -91,6 +96,23 @@ public class PixelMover implements Mechanism {
     }
 
     /**
+     * Do whatever is needed to be able to start picking up pixels.
+     *
+     * Things that need to be done so that the robot can pickup pixels.
+     *
+     *   - Drop the brush roller.
+     */
+    public void start(Telemetry telemetry) {
+        brushRoller.setPower(BRUSH_ROLLER_FORWARD_POWER);
+        try {
+            Thread.sleep(250);
+        } catch (Exception e) {
+            telemetry.addLine("PixelMover:  Exception thrown trying to do sleep in start method.");
+        }
+        brushRoller.setPower(STOPPED_POWER);
+    }
+
+    /**
      * Picks up pixels.
      *
      * The first time the A button is pressed, the pixel mover starts to pickup the pixels.  The
@@ -101,8 +123,8 @@ public class PixelMover implements Mechanism {
         if (PixelMoverState.STOPPED.equals(state)) {
             // Pixel mover is stopped.
             // Start picking up pixels.
-            brushRoller.setPower(FORWARD_POWER);
-            containerRoller.setPower(REVERSE_POWER);
+            brushRoller.setPower(BRUSH_ROLLER_REVERSE_POWER);
+            containerRoller.setPower(CONTAINER_ROLLER_REVERSE_POWER);
             state = PixelMoverState.PICKING_UP;
         }
         else if (PixelMoverState.PICKING_UP.equals(state)) {
@@ -112,7 +134,7 @@ public class PixelMover implements Mechanism {
             containerRoller.setPower(STOPPED_POWER);
             containerRoller.setPwmDisable();
             // Lock bottom pixel.
-            containerMiddleLock.setPosition(MIDDLE_LOCKED_POSITION);
+            containerMiddleLock.setPosition(MIDDLE_LOCK_LOCKED_POSITION);
             state = PixelMoverState.STOPPED;
         }
     }
@@ -128,28 +150,24 @@ public class PixelMover implements Mechanism {
      */
     public void dropOffPixels() {
         if (PixelMoverState.STOPPED.equals(state)) {
-            // Pixel mover is stopped, start dropping off pixels.
-            // TODO:  Will brushRoller need to move for pixel drop off?
-            // brushRoller.setPower(REVERSE_POWER);
-            containerRoller.setPower(FORWARD_POWER); //this should get the top pixel out
+            // Pixel mover is stopped, start dropping off pixels
+            brushRoller.setPower(BRUSH_ROLLER_FORWARD_POWER);
+            containerRoller.setPower(CONTAINER_ROLLER_FORWARD_POWER); //this should get the top pixel out
             state = PixelMoverState.DROPPING_OFF_LOCKED;
         }
         else if (PixelMoverState.DROPPING_OFF_LOCKED.equals(state)) {
-            // Pixel mover is dropping off pixels.
-            // TODO:  Will brushRoller need to move for pixel drop off?
-            // brushRoller.setPower(STOPPED_POWER);
             // Unlock the bottom pixel.
-            containerMiddleLock.setPosition(STOPPED_POSITION);
+            containerMiddleLock.setPosition(MIDDLE_LOCK_STOPPED_POSITION);
             // Push bottom pixel toward container roller to drop it off
-            containerBackPusher.setPosition(BACK_PUSHED_POSITION);
+            containerBackPusher.setPosition(BACK_PUSHER_PUSHED_POSITION);
             state = PixelMoverState.DROPPING_OFF_UNLOCKED;
         }
         else if (PixelMoverState.DROPPING_OFF_UNLOCKED.equals(state)) {
             // Reset the pixel mover.  This sets all the positional servos to the
             // position they need to be at to begin picking up pixels again; and
             // all of the continuous rotation servos to have no power.
-            // TODO:  Will brushRoller need to be stopped?
-            containerBackPusher.setPosition(STOPPED_POSITION);
+            containerBackPusher.setPosition(BACK_PUSHER_STOPPED_POSITION);
+            brushRoller.setPower(STOPPED_POWER);
             containerRoller.setPower(STOPPED_POWER);
             containerRoller.setPwmDisable();
             state = PixelMoverState.STOPPED;

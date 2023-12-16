@@ -16,7 +16,7 @@ import java.util.List;
 
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {
-    private final static double CONTAINER_SERVO_POS = 0.6;
+    private final static double CONTAINER_SERVO_POS = 0.62;
 
     private final Robot robot = new Robot();
     private Servo containerServo;
@@ -36,9 +36,10 @@ public class PrimaryTeleOp extends OpMode {
     @Override
     public void start() {
         containerServo.setPosition(CONTAINER_SERVO_POS);
+        robot.pixelMoverController.start(telemetry);
+        telemetry.addLine("Brush roller dropped.");
         telemetry.addData("[Container Servo] Pos", CONTAINER_SERVO_POS);
         telemetry.update();
-        // TODO: drop the container and brush roller
     }
 
     @Override

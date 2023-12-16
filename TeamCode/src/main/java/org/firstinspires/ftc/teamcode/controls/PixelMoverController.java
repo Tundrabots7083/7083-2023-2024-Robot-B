@@ -20,6 +20,16 @@ public class PixelMoverController implements Controller {
         pixelMover.init(hardwareMap);
     }
 
+    /**
+     * Do whatever is needed to be able to start picking up pixels.
+     *
+     * Things that need to be done so that the robot can pickup pixels.
+     *
+     *   - Drop the brush roller.
+     */
+    public void start(Telemetry telemetry) {
+        pixelMover.start(telemetry);
+    }
 
     /**
      * Determine which button has been pressed or released.  When a button is pressed, invoke
