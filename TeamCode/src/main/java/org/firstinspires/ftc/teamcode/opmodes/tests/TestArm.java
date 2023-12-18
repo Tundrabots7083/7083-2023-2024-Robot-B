@@ -15,6 +15,7 @@ public class TestArm extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         armController.init(hardwareMap);
         telemetry.addLine("Initialization Complete");
+        telemetry.update();
     }
 
     @Override

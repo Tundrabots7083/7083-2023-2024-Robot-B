@@ -24,12 +24,12 @@ public class Arm implements Mechanism {
      * Position defines the position of the arm and pixel container.
      */
     public enum Position {
-        Hang(1000, 0, 0),
-        Intake(0, 0, 0),
-        ScoreLow(1500, 0, 0),
-        ScoreMedium(2000, 100, 0),
-        ScoreHigh(2400, 200, 0),
-        Start(800, 0,0.6);
+        Hang(1000, 0, 0.65),
+        Intake(0, 0, 0.65),
+        ScoreLow(1500, 0, 0.65),
+        ScoreMedium(2000, 100, 0.65),
+        ScoreHigh(2400, 200, 0.65),
+        Start(0, 0,0.3);
 
         private final int armPosition;
         private final int liftPosition;
@@ -67,11 +67,11 @@ public class Arm implements Mechanism {
     private final String description;
 
     private DcMotorEx armMotor;
-    private DcMotorEx liftMotor;
+    // private DcMotorEx liftMotor;
     private Servo containerServo;
 
     private PIDFController armController;
-    private PIDFController liftController;
+    // private PIDFController liftController;
 
     private Position target = Position.Start;
 
@@ -94,16 +94,16 @@ public class Arm implements Mechanism {
     @Override
     public void init(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
-        liftMotor = hardwareMap.get(DcMotorEx.class, "lift");
+        // liftMotor = hardwareMap.get(DcMotorEx.class, "lift");
         containerServo = hardwareMap.get(Servo.class, "containerFlip");
 
         initMotor(armMotor);
-        initMotor(liftMotor);
+        // initMotor(liftMotor);
 
         armController = new PIDFController(ARM_KP, ARM_KI, ARM_KD, ARM_KF);
         armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
-        liftController = new PIDFController(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
-        liftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
+        // liftController = new PIDFController(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
+        // liftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
     }
 
     /**
@@ -126,10 +126,10 @@ public class Arm implements Mechanism {
     public boolean isAtTarget() {
         int armPos = armMotor.getCurrentPosition();
         boolean atTarget = Math.abs(target.armPosition - armPos) <= TOLERABLE_ERROR;
-        if (atTarget) {
-            int liftPos = liftMotor.getCurrentPosition();
-            atTarget = Math.abs(target.liftPosition - liftPos) <= TOLERABLE_ERROR;
-        }
+        // if (atTarget) {
+            // int liftPos = liftMotor.getCurrentPosition();
+            // atTarget = Math.abs(target.liftPosition - liftPos) <= TOLERABLE_ERROR;
+        // }
         if (atTarget) {
             double servoPos = containerServo.getPosition();
             atTarget = servoPos == target.servoPosition;
@@ -146,6 +146,15 @@ public class Arm implements Mechanism {
             resetPIDController();
             this.target = target;
         }
+    }
+
+    public void disableRunToPosition() {
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void setArmPower(double power) {
+        power = Range.clip(power, -1, 1);
+        armMotor.setPower(power);
     }
 
     /**
@@ -182,9 +191,9 @@ public class Arm implements Mechanism {
         // No "smack of doom", so update the power for the arm and lift, and make sure the container
         // flip servo is set to the correct position.
         double power = calculate(armController);
-        power = calculate(liftController);
         armMotor.setPower(power);
-        liftMotor.setPower(power);
+        // power = calculate(liftController);
+        // liftMotor.setPower(power);
         containerServo.setPosition(target.servoPosition);
     }
 
@@ -208,17 +217,18 @@ public class Arm implements Mechanism {
     private void resetPIDController() {
         armController.reset();
         armController.setPIDF(ARM_KP, ARM_KI, ARM_KD, ARM_KF);
-        liftController.reset();
-        liftController.setPIDF(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
+        armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
+        // liftController.reset();
+        // liftController.setPIDF(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
     }
 
     public int getCurrentArmPosition() {
         return armMotor.getCurrentPosition();
     }
 
-    public int getCurrentLiftPosition() {
-        return liftMotor.getCurrentPosition();
-    }
+    // public int getCurrentLiftPosition() {
+    //    return liftMotor.getCurrentPosition();
+    // }
 
     public double getCurrentContainerServoPosition() {
         return containerServo.getPosition();
