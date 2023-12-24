@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.arcrobotics.ftclib.controller.PIDFController;
+
+import org.firstinspires.ftc.teamcode.feedback.PIDCoefficients;
+import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,6 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
 import org.firstinspires.ftc.teamcode.utils.SizedStack;
 
@@ -24,12 +28,12 @@ public class Arm implements Mechanism {
      * Position defines the position of the arm and pixel container.
      */
     public enum Position {
-        Hang(1000, 0, 0.65),
+        Hang(2000, 0, 0.65),
         Intake(0, 0, 0.65),
-        ScoreLow(1500, 0, 0.65),
-        ScoreMedium(2000, 100, 0.65),
-        ScoreHigh(2400, 200, 0.65),
-        Start(0, 0,0.3);
+        ScoreLow(3000, 0, 0.65),
+        ScoreMedium(2750, 100, 0.65),
+        ScoreHigh(2500, 200, 0.65),
+        Start(0, 0,0.1);
 
         private final int armPosition;
         private final int liftPosition;
@@ -48,20 +52,18 @@ public class Arm implements Mechanism {
         }
     }
 
-    // PIDF control constants. TODO: change to private final once tuned
-    public static double ARM_KP = 0.0;
+    // PID control constants. TODO: change to private final once tuned
+    public static double ARM_KP = 0.005;
     public static double ARM_KI = 0.0;
     public static double ARM_KD = 0.0;
-    public static double ARM_KF = 0.0;
     public static double LIFT_KP = 0.0;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
-    public static double LIFT_KF = 0.0;
     public static double INTEGRAL_LIMIT = 1;
 
-    // TODO: change to private final once tuned
-    public static int TOLERABLE_ERROR = 10;
+    public static int TOLERABLE_ERROR = 20;
     public static double POWER_CAP = 0.9;
+    public static double MIN_POWER = 0.1;
 
     private final String deviceName;
     private final String description;
@@ -70,12 +72,12 @@ public class Arm implements Mechanism {
     // private DcMotorEx liftMotor;
     private Servo containerServo;
 
-    private PIDFController armController;
+    private PIDController armController;
     // private PIDFController liftController;
 
     private Position target = Position.Start;
 
-    private final SizedStack<Integer> armPosition = new SizedStack<>(5);
+    private final SizedStack<Integer> armPosition = new SizedStack<>(100);
 
     /**
      * Creates a new scoring arm with the given device name and description.
@@ -100,7 +102,7 @@ public class Arm implements Mechanism {
         initMotor(armMotor);
         // initMotor(liftMotor);
 
-        armController = new PIDFController(ARM_KP, ARM_KI, ARM_KD, ARM_KF);
+        armController = new PIDController(new PIDCoefficients(ARM_KP, ARM_KI, ARM_KD));
         armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
         // liftController = new PIDFController(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
         // liftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
@@ -111,11 +113,11 @@ public class Arm implements Mechanism {
      * @param motor the arm motor to be initialized.
      */
     private void initMotor(DcMotorEx motor) {
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setDirection(DcMotorSimple.Direction.REVERSE);
-
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     /**
@@ -131,7 +133,7 @@ public class Arm implements Mechanism {
             // atTarget = Math.abs(target.liftPosition - liftPos) <= TOLERABLE_ERROR;
         // }
         if (atTarget) {
-            double servoPos = containerServo.getPosition();
+            double servoPos = getCurrentContainerServoPosition();
             atTarget = servoPos == target.servoPosition;
         }
         return atTarget;
@@ -161,36 +163,35 @@ public class Arm implements Mechanism {
      * Update sets the power for the arm motor based on the target position.
      */
     public void update() {
-        // Check to see if power is being applied to the arm motor but the arm is not moving;
-        // if so, then don't update the arm position. This is to avoid the "smack of doom" which
-        // can occur if the arm motor's encoder isn't working properly.
-        if (Math.abs(target.armPosition - armMotor.getCurrentPosition()) <= TOLERABLE_ERROR) {
-            // Reached the target position, so the arm encoder is working
+        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+
+        // Short-circuit the processing if the arm is at it's target
+        if (isAtTarget()) {
             armPosition.clear();
-        } else {
-            // After a full set of iterations to fill the arm position stack has occurred, check
-            // to see if there is any change in the position between any two data points. If not,
-            // then we have a possible "smack of doom" situation, so don't continue to supply
-            // power to the arm's motor.
-            armPosition.push(armMotor.getCurrentPosition());
-            if (armPosition.size() == armPosition.capacity()) {
-                boolean posChanged = false;
-                int lastPos = armPosition.get(0);
-                for (int i = 1; i < armPosition.size(); i++) {
-                    if (lastPos != armPosition.get(i)) {
-                        posChanged = true;
-                        break;
-                    }
+            return;
+        }
+
+        // Check for the "smack of doom" scenario
+        armPosition.push(armMotor.getCurrentPosition());
+        if (armPosition.size() == armPosition.capacity()) {
+            boolean posChanged = false;
+            int lastPos = armPosition.get(0);
+            for (int i = 1; i < armPosition.size(); i++) {
+                if (lastPos != armPosition.get(i)) {
+                    posChanged = true;
+                    break;
                 }
-                if (!posChanged) {
-                    return;
-                }
+            }
+            if (!posChanged) {
+                telemetry.addLine("[ARM] Smack of Doom!!!");
+                return;
             }
         }
 
         // No "smack of doom", so update the power for the arm and lift, and make sure the container
         // flip servo is set to the correct position.
-        double power = calculate(armController);
+        double power = calculate(armController, target.armPosition, armMotor.getCurrentPosition());
+        telemetry.addData("[ARM] Power", power);
         armMotor.setPower(power);
         // power = calculate(liftController);
         // liftMotor.setPower(power);
@@ -201,12 +202,14 @@ public class Arm implements Mechanism {
      * Calculates the power to apply to the arm motor.
      * @return the power to apply to the motor.
      */
-    private double calculate(PIDFController controller) {
-        if (isAtTarget()) {
-            return 0.0;
-        }
-        double power = controller.calculate();
+    private double calculate(PIDController controller, double target, double current) {
+        double power = -controller.calculate(target, current);
         power = Range.clip(power, -POWER_CAP, POWER_CAP);
+        if (power > 0.0 && power < MIN_POWER) {
+            power = MIN_POWER;
+        } else if (power < 0.0 && power > -MIN_POWER) {
+            power = -MIN_POWER;
+        }
 
         return power;
     }
@@ -215,8 +218,7 @@ public class Arm implements Mechanism {
      * resetPIDController resets the PID control values.
      */
     private void resetPIDController() {
-        armController.reset();
-        armController.setPIDF(ARM_KP, ARM_KI, ARM_KD, ARM_KF);
+        armController = new PIDController(new PIDCoefficients(ARM_KP, ARM_KI, ARM_KD));
         armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
         // liftController.reset();
         // liftController.setPIDF(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
@@ -231,7 +233,10 @@ public class Arm implements Mechanism {
     // }
 
     public double getCurrentContainerServoPosition() {
-        return containerServo.getPosition();
+        double servoPos = containerServo.getPosition();
+        long round = Math.round(servoPos * 100);
+        servoPos = ((float) round) / 100.0;
+        return servoPos;
     }
 
     public int getTargetArmPosition() {
