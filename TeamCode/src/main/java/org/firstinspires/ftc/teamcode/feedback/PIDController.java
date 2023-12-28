@@ -17,7 +17,7 @@ public class PIDController {
 
     protected double derivative = 0;
 
-    protected double minIntegralBound = 1;
+    protected double minIntegralBound = -1;
     protected double maxIntegralBound = 1;
 
     public PIDController(PIDCoefficients coefficients) {
