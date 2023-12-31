@@ -31,12 +31,13 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.localization.AprilTagLocalizer;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
+import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceRunner;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,10 +71,14 @@ public class AutoMecanumDrive extends Drive {
     private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
 
+    private final Telemetry telemetry;
+
     /**
      * Creates a new autonomous mecanum drive.
      */
     public AutoMecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+
         this.kV = DriveConstants.kV;
         this.kA = DriveConstants.kA;
         this.kStatic = DriveConstants.kStatic;
@@ -85,22 +90,21 @@ public class AutoMecanumDrive extends Drive {
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
-        // localizer = new ThreeWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
         WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
-        localizer = new AprilTagLocalizer(webcam);
+        localizer = new DeadWheelLocalizer(hardwareMap, lastEncPositions, lastTrackingEncVels);
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
+        follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
+                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
-
-        follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
     }
 
     /**
@@ -177,7 +181,7 @@ public class AutoMecanumDrive extends Drive {
      * @param rightFront the power for the right front motor.
      */
     public void setMotorPowers(double leftFront, double leftRear, double rightRear, double rightFront) {
-        drive.setMotorPowers(leftFront, leftRear,rightRear, rightFront);
+        drive.setMotorPowers(leftFront, leftRear, rightRear, rightFront);
     }
 
     /**
