@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -57,6 +58,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
             case NONE:
                 telemetry.addLine("Team Prop Not Detected");
                 telemetry.update();
+                middleSpikeMark();
         }
     }
 
@@ -65,7 +67,6 @@ public class RedAllianceRightParkRight extends LinearOpMode {
      * the yellow pixel in the middle, and then parks the robot to the right side of the backdrop.
      */
     private void middleSpikeMark() {
-        /*
         // Set starting pose
         Pose2d startingPose = new Pose2d(12, -63.5, Math.toRadians(90));
         drive.setPoseEstimate(startingPose);
@@ -77,43 +78,21 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Move to center position on backdrop
         Trajectory traj2a = drive.trajectoryBuilder(traj1.end())
-                .back(5)
+                .back(3)
                 .build();
         Trajectory traj2b = drive.trajectoryBuilder(traj2a.end())
-                .splineTo(new Vector2d(60, -130), Math.toRadians(225))
+                .back(22)
+                .build();
+        Trajectory traj2c = drive.trajectoryBuilder(traj2b.end())
+                .strafeRight(11)
                 .build();
 
         // Park to the right of the backdrop
-        Trajectory traj3a = drive.trajectoryBuilder(traj2b.end())
-                .strafeRight(20)
+        Trajectory traj3a = drive.trajectoryBuilder(traj2c.end())
+                .strafeLeft(28)
                 .build();
         Trajectory traj3b = drive.trajectoryBuilder(traj3a.end())
-                .forward(10)
-                .build();
-         */
-
-        Pose2d startingPose = new Pose2d(0, 0, Math.toRadians(90));
-        drive.setPoseEstimate(startingPose);
-
-        // Move to center spike mark
-        Trajectory traj1 = drive.trajectoryBuilder(startingPose)
-                .forward(12)
-                .build();
-
-        // Move to center position on backdrop
-        Trajectory traj2a = drive.trajectoryBuilder(traj1.end())
-                .back(5)
-                .build();
-        Trajectory traj2b = drive.trajectoryBuilder(traj2a.end())
-                .splineTo(new Vector2d(25, -23), Math.toRadians(245))
-                .build();
-
-        // Park to the right of the backdrop
-        Trajectory traj3a = drive.trajectoryBuilder(traj2b.end())
-                .strafeRight(25)
-                .build();
-        Trajectory traj3b = drive.trajectoryBuilder(traj3a.end())
-                .forward(8)
+                .back(11)
                 .build();
 
         // Unpack the robot
@@ -129,7 +108,9 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Drive to the backdrop, raise the arm and rotate the pixel container, and score the pixel
         drive.followTrajectory(traj2a);
+        drive.turn(Math.toRadians(45));
         drive.followTrajectory(traj2b);
+        drive.followTrajectory(traj2c);
         telemetry.addLine("Raise Arm and Rotate Pixel Container");
         telemetry.update();
         sleep(1000);
