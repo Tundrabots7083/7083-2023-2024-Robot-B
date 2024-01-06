@@ -35,6 +35,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         sleep(3 * 1000);
         FirstVisionProcessor.Selected selection = visionProcessor.getSelection();
         telemetry.addData("Spike Mark", selection);
+        // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
         telemetry.addLine("Initialization complete");
         telemetry.update();
@@ -58,7 +59,6 @@ public class RedAllianceRightParkRight extends LinearOpMode {
             case NONE:
                 telemetry.addLine("Team Prop Not Detected");
                 telemetry.update();
-                middleSpikeMark();
         }
     }
 
@@ -84,7 +84,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
                 .back(22)
                 .build();
         Trajectory traj2c = drive.trajectoryBuilder(traj2b.end())
-                .strafeRight(11)
+                .strafeRight(5)
                 .build();
 
         // Park to the right of the backdrop
@@ -92,7 +92,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
                 .strafeLeft(28)
                 .build();
         Trajectory traj3b = drive.trajectoryBuilder(traj3a.end())
-                .back(11)
+                .back(6)
                 .build();
 
         // Unpack the robot
