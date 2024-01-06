@@ -39,7 +39,7 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity redAllianceFrontstage = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 14)
+                .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 14)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(13, -61, Math.toRadians(90)))
                                 .forward(28)

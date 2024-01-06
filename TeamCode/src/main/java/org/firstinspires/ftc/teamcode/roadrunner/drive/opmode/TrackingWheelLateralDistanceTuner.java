@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.DeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.StandardTrackingWheelLocalizer;
 
@@ -68,12 +70,12 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry);
 
-        if (!(drive.getLocalizer() instanceof StandardTrackingWheelLocalizer)) {
-            RobotLog.setGlobalErrorMsg("StandardTrackingWheelLocalizer is not being set in the "
-                    + "drive class. Ensure that \"setLocalizer(new StandardTrackingWheelLocalizer"
-                    + "(hardwareMap));\" is called in SampleMecanumDrive.java");
+        if (!(drive.getLocalizer() instanceof DeadWheelLocalizer)) {
+            RobotLog.setGlobalErrorMsg("DeadWheelLocalizer is not being set in the "
+                    + "drive class. Ensure that \"setLocalizer(new DeadWheelLocalizer"
+                    + "(hardwareMap));\" is called in AutoMecanumDrive.java");
         }
 
         telemetry.addLine("Prior to beginning the routine, please read the directions "
@@ -96,7 +98,7 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
         boolean tuningFinished = false;
 
         while (!isStopRequested() && !tuningFinished) {
-            Pose2d vel = new Pose2d(0, 0, -gamepad1.right_stick_x);
+            Pose2d vel = new Pose2d(0, 0, 0.5 * -gamepad1.right_stick_x);
             drive.setDrivePower(vel);
 
             drive.update();

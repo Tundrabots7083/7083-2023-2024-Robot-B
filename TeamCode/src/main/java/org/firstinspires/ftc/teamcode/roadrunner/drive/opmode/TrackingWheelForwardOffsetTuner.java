@@ -50,9 +50,9 @@ public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
         AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry);
 
         if (!(drive.getLocalizer() instanceof DeadWheelLocalizer)) {
-            RobotLog.setGlobalErrorMsg("StandardTrackingWheelLocalizer is not being set in the "
-                    + "drive class. Ensure that \"setLocalizer(new StandardTrackingWheelLocalizer"
-                    + "(hardwareMap));\" is called in SampleMecanumDrive.java");
+            RobotLog.setGlobalErrorMsg("DeadWheelLocalizer is not being set in the "
+                    + "drive class. Ensure that \"setLocalizer(new DeadWheelLocalizer"
+                    + "(hardwareMap));\" is called in DeadWheelLocalizer.java");
         }
 
         telemetry.addLine("Press play to begin the forward offset tuner");

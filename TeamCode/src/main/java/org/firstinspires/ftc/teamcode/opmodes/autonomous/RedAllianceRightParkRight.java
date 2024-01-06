@@ -33,14 +33,18 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         visionProcessor = new FirstVisionProcessor();
         visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
         sleep(3 * 1000);
-        FirstVisionProcessor.Selected selection = visionProcessor.getSelection();
-        telemetry.addData("Spike Mark", selection);
-        // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
         telemetry.addLine("Initialization complete");
         telemetry.update();
 
         waitForStart();
+
+        // Find the randomized team prop. This must be after waitForStart() to allow for
+        // randomization
+        FirstVisionProcessor.Selected selection = visionProcessor.getSelection();
+        telemetry.addData("Spike Mark", selection);
+        telemetry.update();
+        // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
         switch (selection) {
             case LEFT:
@@ -81,14 +85,12 @@ public class RedAllianceRightParkRight extends LinearOpMode {
                 .back(3)
                 .build();
         Trajectory traj2b = drive.trajectoryBuilder(traj2a.end())
-                .back(22)
-                .build();
-        Trajectory traj2c = drive.trajectoryBuilder(traj2b.end())
-                .strafeRight(5)
+                .strafeRight(12)
+                .splineTo(new Vector2d(48, -35), Math.toRadians(90))
                 .build();
 
         // Park to the right of the backdrop
-        Trajectory traj3a = drive.trajectoryBuilder(traj2c.end())
+        Trajectory traj3a = drive.trajectoryBuilder(traj2b.end())
                 .strafeLeft(28)
                 .build();
         Trajectory traj3b = drive.trajectoryBuilder(traj3a.end())
@@ -108,9 +110,8 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Drive to the backdrop, raise the arm and rotate the pixel container, and score the pixel
         drive.followTrajectory(traj2a);
-        drive.turn(Math.toRadians(45));
+        drive.turn(Math.toRadians(90));
         drive.followTrajectory(traj2b);
-        drive.followTrajectory(traj2c);
         telemetry.addLine("Raise Arm and Rotate Pixel Container");
         telemetry.update();
         sleep(1000);
