@@ -33,8 +33,8 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     // TODO: measure these
-    public static double LATERAL_DISTANCE = 7.75; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = -6.625; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 8.5; // in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = -7.25; // in; offset of the lateral wheel
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
@@ -50,8 +50,8 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
         lastEncPositions = lastTrackingEncPositions;
         lastEncVels = lastTrackingEncVels;
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rig3htFront"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));
 
         // TODO: may need to set to FORWARD

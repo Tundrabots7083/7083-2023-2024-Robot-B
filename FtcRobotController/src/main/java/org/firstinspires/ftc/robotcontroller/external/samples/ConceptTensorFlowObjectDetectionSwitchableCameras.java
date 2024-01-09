@@ -117,7 +117,7 @@ public class ConceptTensorFlowObjectDetectionSwitchableCameras extends LinearOpM
         // Create the TensorFlow processor by using a builder.
         tfod = new TfodProcessor.Builder().build();
 
-        webcam1 = hardwareMap.get(WebcamName.class, "Webcam 1");
+        webcam1 = hardwareMap.get(WebcamName.class, "Webcam Front");
         webcam2 = hardwareMap.get(WebcamName.class, "Webcam 2");
         CameraName switchableCamera = ClassFactory.getInstance()
             .getCameraManager().nameForSwitchableCamera(webcam1, webcam2);
@@ -135,11 +135,11 @@ public class ConceptTensorFlowObjectDetectionSwitchableCameras extends LinearOpM
      */
     private void telemetryCameraSwitching() {
         if (visionPortal.getActiveCamera().equals(webcam1)) {
-            telemetry.addData("activeCamera", "Webcam 1");
+            telemetry.addData("activeCamera", "Webcam Front");
             telemetry.addData("Press RightBumper", "to switch to Webcam 2");
         } else {
             telemetry.addData("activeCamera", "Webcam 2");
-            telemetry.addData("Press LeftBumper", "to switch to Webcam 1");
+            telemetry.addData("Press LeftBumper", "to switch to Webcam Front");
         }
     }   // end method telemetryCameraSwitching()
 
@@ -169,7 +169,7 @@ public class ConceptTensorFlowObjectDetectionSwitchableCameras extends LinearOpM
      */
     private void doCameraSwitching() {
         if (visionPortal.getCameraState() == CameraState.STREAMING) {
-            // If the left bumper is pressed, use Webcam 1.
+            // If the left bumper is pressed, use Webcam Front.
             // If the right bumper is pressed, use Webcam 2.
             boolean newLeftBumper = gamepad1.left_bumper;
             boolean newRightBumper = gamepad1.right_bumper;

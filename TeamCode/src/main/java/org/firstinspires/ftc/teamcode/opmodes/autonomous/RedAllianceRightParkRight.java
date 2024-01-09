@@ -31,7 +31,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Get the spike mark with the team prop
         visionProcessor = new FirstVisionProcessor();
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
+        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
         sleep(3 * 1000);
 
         telemetry.addLine("Initialization complete");

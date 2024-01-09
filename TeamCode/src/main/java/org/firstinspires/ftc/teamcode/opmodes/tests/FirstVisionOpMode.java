@@ -18,7 +18,7 @@ public class FirstVisionOpMode extends OpMode {
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         visionProcessor = new FirstVisionProcessor();
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
+        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
         telemetry.addLine("Initialization Complete");
     }
 
