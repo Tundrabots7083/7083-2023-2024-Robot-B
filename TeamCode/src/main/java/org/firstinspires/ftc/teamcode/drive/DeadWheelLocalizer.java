@@ -27,7 +27,7 @@ import java.util.List;
  *
  */
 @Config
-public class ThreeWheelOdometryPodLocalizer extends ThreeTrackingWheelLocalizer {
+public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
     // goBILDA® Odometry Pod
     public static double TICKS_PER_REV = 2000;
     public static double WHEEL_RADIUS = 0.944882; // in
@@ -41,7 +41,7 @@ public class ThreeWheelOdometryPodLocalizer extends ThreeTrackingWheelLocalizer 
 
     private List<Integer> lastEncPositions, lastEncVels;
 
-    public ThreeWheelOdometryPodLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
+    public DeadWheelLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
