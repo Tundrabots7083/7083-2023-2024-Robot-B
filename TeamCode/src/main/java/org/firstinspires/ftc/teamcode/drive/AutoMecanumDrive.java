@@ -90,7 +90,7 @@ public class AutoMecanumDrive extends Drive {
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
         WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam Front");
-        localizer = new ThreeWheelOdometryPodLocalizer(hardwareMap, lastEncPositions, lastTrackingEncVels);
+        localizer = new DeadWheelLocalizer(hardwareMap, lastEncPositions, lastTrackingEncVels);
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
