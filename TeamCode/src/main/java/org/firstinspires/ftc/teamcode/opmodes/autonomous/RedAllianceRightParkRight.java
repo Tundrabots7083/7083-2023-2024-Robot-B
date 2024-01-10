@@ -77,12 +77,12 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Move to center spike mark
         Trajectory traj1 = drive.trajectoryBuilder(startingPose)
-                .forward(12)
+                .forward(20)
                 .build();
 
         // Move to center position on backdrop
         Trajectory traj2a = drive.trajectoryBuilder(traj1.end())
-                .back(3)
+                .back(5)
                 .build();
         Trajectory traj2b = drive.trajectoryBuilder(traj2a.end())
                 .strafeRight(12)
@@ -94,7 +94,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
                 .strafeLeft(28)
                 .build();
         Trajectory traj3b = drive.trajectoryBuilder(traj3a.end())
-                .back(6)
+                .back(10)
                 .build();
 
         // Unpack the robot

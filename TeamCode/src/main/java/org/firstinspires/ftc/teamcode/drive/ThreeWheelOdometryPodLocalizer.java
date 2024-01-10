@@ -27,9 +27,10 @@ import java.util.List;
  *
  */
 @Config
-public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
-    public static double TICKS_PER_REV = 8192;
-    public static double WHEEL_RADIUS = 1.2; // in
+public class ThreeWheelOdometryPodLocalizer extends ThreeTrackingWheelLocalizer {
+    // goBILDA® Odometry Pod
+    public static double TICKS_PER_REV = 2000;
+    public static double WHEEL_RADIUS = 0.944882; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     // TODO: measure these
@@ -40,7 +41,7 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
 
     private List<Integer> lastEncPositions, lastEncVels;
 
-    public DeadWheelLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
+    public ThreeWheelOdometryPodLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
@@ -51,7 +52,7 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
         lastEncVels = lastTrackingEncVels;
 
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rig3htFront"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));
 
         // TODO: may need to set to FORWARD

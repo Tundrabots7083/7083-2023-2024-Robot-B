@@ -8,8 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.drive.DeadWheelLocalizer;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.ThreeWheelOdometryPodLocalizer;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.StandardTrackingWheelLocalizer;
 
 /**
@@ -72,7 +71,7 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry);
 
-        if (!(drive.getLocalizer() instanceof DeadWheelLocalizer)) {
+        if (!(drive.getLocalizer() instanceof ThreeWheelOdometryPodLocalizer)) {
             RobotLog.setGlobalErrorMsg("DeadWheelLocalizer is not being set in the "
                     + "drive class. Ensure that \"setLocalizer(new DeadWheelLocalizer"
                     + "(hardwareMap));\" is called in AutoMecanumDrive.java");
