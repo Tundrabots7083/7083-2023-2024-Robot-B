@@ -27,6 +27,13 @@ public class ArmController implements Controller {
         arm.setTarget(Arm.Position.Start);
     }
 
+    public void setToLauncheDrone() {
+        arm.setTarget(Arm.Position.LaunchDrone);
+        while (!arm.isAtTarget()) {
+            arm.update();
+        }
+    }
+
     /**
      * Sets the position of the arm, and calls the arm to update the position.
      * @param gamepad the gamepad controller for the arm.
@@ -96,5 +103,9 @@ public class ArmController implements Controller {
         }
         telemetry.update();
          */
+    }
+
+    Arm getArm() {
+        return arm;
     }
 }

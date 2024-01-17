@@ -11,8 +11,6 @@ import org.firstinspires.ftc.teamcode.controls.Controller;
 
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {
-    private final static double CONTAINER_FLIP_SERVO_POS = 0.625;
-
     private final Robot robot = new Robot();
     private Servo containerFlipServo;
 
@@ -30,8 +28,6 @@ public class PrimaryTeleOp extends OpMode {
 
     @Override
     public void start() {
-        containerFlipServo.setPosition(CONTAINER_FLIP_SERVO_POS);
-        telemetry.addData("[Container Servo] Pos", CONTAINER_FLIP_SERVO_POS);
         robot.pixelMoverController.start(telemetry);
         telemetry.addLine("Brush roller dropped.");
         telemetry.update();
