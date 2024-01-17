@@ -41,20 +41,17 @@ public class PixelMover implements Mechanism {
     }
     private PixelMoverState state = PixelMoverState.STOPPED;
 
-    public PixelMover(String deviceName, String description) {
+    public PixelMover(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
-    }
 
-    @Override
-    public void init(@NonNull HardwareMap hwMap) {
-        brushRoller = hwMap.get(CRServoImplEx.class, "brushRoller");
+        brushRoller = hardwareMap.get(CRServoImplEx.class, "brushRoller");
         initServo(brushRoller);
-        containerRoller = hwMap.get(CRServoImplEx.class, "containerRoller");
+        containerRoller = hardwareMap.get(CRServoImplEx.class, "containerRoller");
         initServo(containerRoller);
-        containerBackPusher = hwMap.get(Servo.class, "containerBackPusher");
+        containerBackPusher = hardwareMap.get(Servo.class, "containerBackPusher");
         initServo(containerBackPusher, BACK_PUSHER_STOPPED_POSITION);
-        containerMiddleLock = hwMap.get(Servo.class, "containerMiddleLock");
+        containerMiddleLock = hardwareMap.get(Servo.class, "containerMiddleLock");
         initServo(containerMiddleLock, MIDDLE_LOCK_STOPPED_POSITION);
     }
 

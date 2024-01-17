@@ -10,17 +10,18 @@ import org.firstinspires.ftc.teamcode.mechanisms.Arm;
  * Uses the gamepad controller to set the position of the arm and container servo.
  */
 public class ArmController implements Controller {
-    private final Arm arm = new Arm("arm", "scoring arm");
+    private final Arm arm;
 
     private boolean manualControl = false;
+    private Telemetry telemetry;
 
     /**
      * Initializes the arm hardware.
      * @param hardwareMap the hardware map for the robot.
      */
-    @Override
-    public void init(HardwareMap hardwareMap) {
-        arm.init(hardwareMap);
+    public ArmController(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+        arm = new Arm("arm", "scoring arm", hardwareMap);
     }
 
     public void start() {
@@ -36,42 +37,42 @@ public class ArmController implements Controller {
 
     /**
      * Sets the position of the arm, and calls the arm to update the position.
-     * @param gamepad the gamepad controller for the arm.
+     * @param gamepad1 the gamepad1 controller for the arm.
+     * @param gamepad1 the gamepad2 controller for the arm.
      * @param telemetry the telemetry used to output data for the arm.
      */
     @Override
-    public void execute(Gamepad gamepad, Telemetry telemetry) {
+    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
         // Manual override of controls
-        if (manualControl || gamepad.right_trigger != 0.0 || gamepad.left_trigger != 0.0) {
+        if (manualControl || gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0) {
             manualControl = true;
 
-            if (gamepad.left_trigger > 0.0) {
+            if (gamepad1.left_trigger > 0.0) {
                 // arm.disableRunToPosition();
-                arm.setArmPower(gamepad.left_trigger);
-                telemetry.addData("[ARM] Power", gamepad.left_trigger);
+                arm.setArmPower(gamepad1.left_trigger);
+                telemetry.addData("[ARM] Power", gamepad1.left_trigger);
             }
-            else if (gamepad.right_trigger > 0.0) {
+            else if (gamepad1.right_trigger > 0.0) {
                 // arm.disableRunToPosition();
-                arm.setArmPower(-gamepad.right_trigger);
-                telemetry.addData("[ARM] Power", -gamepad.right_trigger);
+                arm.setArmPower(-gamepad1.right_trigger);
+                telemetry.addData("[ARM] Power", -gamepad1.right_trigger);
             } else {
                 arm.setArmPower(0.0);
                 telemetry.addData("[ARM] Power", 0.0);
             }
-            telemetry.update();
             return ;
         }
 
         // Automatic update of controls
-        if (gamepad.dpad_down) {
+        if (gamepad1.dpad_down) {
             arm.setTarget(Arm.Position.Intake);
-        } else if (gamepad.dpad_left) {
+        } else if (gamepad1.dpad_left) {
             arm.setTarget(Arm.Position.ScoreLow);
-        } else if (gamepad.dpad_right) {
+        } else if (gamepad1.dpad_right) {
             arm.setTarget(Arm.Position.ScoreMedium);
-        } else if (gamepad.dpad_up) {
+        } else if (gamepad1.dpad_up) {
             arm.setTarget(Arm.Position.ScoreHigh);
-        } else if (gamepad.right_bumper) {
+        } else if (gamepad1.right_bumper) {
             arm.setTarget(Arm.Position.Hang);
         }
 
@@ -84,24 +85,22 @@ public class ArmController implements Controller {
         // telemetry.addData("[ARM] Lift Current Pos", arm.getCurrentLiftPosition());
         telemetry.addData("[ARM] Servo Target Pos", arm.getTargetContainerServoPosition());
         telemetry.addData("[ARM] Servo Current Pos", arm.getCurrentContainerServoPosition());
-        telemetry.update();
 
         /*
 
-        if (gamepad.left_trigger > 0.0) {
+        if (gamepad1.left_trigger > 0.0) {
             // arm.disableRunToPosition();
-            arm.setArmPower(gamepad.left_trigger);
-            telemetry.addData("[ARM] Power", gamepad.left_trigger);
+            arm.setArmPower(gamepad1.left_trigger);
+            telemetry.addData("[ARM] Power", gamepad1.left_trigger);
         }
-        else if (gamepad.right_trigger > 0.0) {
+        else if (gamepad1.right_trigger > 0.0) {
             // arm.disableRunToPosition();
-            arm.setArmPower(-gamepad.right_trigger);
-            telemetry.addData("[ARM] Power", -gamepad.right_trigger);
+            arm.setArmPower(-gamepad1.right_trigger);
+            telemetry.addData("[ARM] Power", -gamepad1.right_trigger);
         } else {
             arm.setArmPower(0.0);
             telemetry.addData("[ARM] Power", 0.0);
         }
-        telemetry.update();
          */
     }
 

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controls.ArmController;
 import org.firstinspires.ftc.teamcode.controls.Controller;
 import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
@@ -12,22 +13,25 @@ import java.util.List;
 
 public class Robot {
     public static Robot robot;
-    public final MecanumDriveController mecanumDriveController = new MecanumDriveController();
-    public final PixelMoverController pixelMoverController = new PixelMoverController();
-    public final ArmController armController = new ArmController();
-    public final List<Controller> controllers = Arrays.asList(mecanumDriveController, pixelMoverController, armController);
+    public MecanumDriveController mecanumDriveController;
+    public PixelMoverController pixelMoverController;
+    public ArmController armController;
+    private final Telemetry telemetry;
+    public final List<Controller> controllers;
 
-    public Robot() {
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         robot = this;
+        this.telemetry = telemetry;
+
+        mecanumDriveController = new MecanumDriveController(hardwareMap, telemetry);
+        pixelMoverController = new PixelMoverController(hardwareMap, telemetry);
+        armController = new ArmController(hardwareMap, telemetry);
+        controllers = Arrays.asList(mecanumDriveController, pixelMoverController, armController);
+
+        telemetry.addLine("[Robot] controllers initialized");
     }
 
     public static Robot getRobot() {
         return robot;
-    }
-
-    public void init(HardwareMap hardwareMap) {
-        for (Controller controller : controllers) {
-            controller.init(hardwareMap);
-        }
     }
 }

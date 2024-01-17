@@ -10,17 +10,17 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 
 @TeleOp (name="Pixel Mover TeleOp", group="test")
 public class PixelMoverTeleOp extends OpMode {
-    private final PixelMoverController pixelMoverController = new PixelMoverController();
+    private PixelMoverController pixelMoverController;
 
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        pixelMoverController.init(hardwareMap);
+        pixelMoverController = new PixelMoverController(hardwareMap, telemetry);
         telemetry.addLine("Initialization Complete");
     }
 
     @Override
     public void loop() {
-        pixelMoverController.execute(gamepad1, telemetry);
+        pixelMoverController.execute(gamepad1, gamepad2, telemetry);
     }
 }

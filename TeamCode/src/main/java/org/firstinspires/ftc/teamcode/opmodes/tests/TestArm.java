@@ -9,17 +9,17 @@ import org.firstinspires.ftc.teamcode.controls.ArmController;
 
 @TeleOp (name="Arm Test", group="test")
 public class TestArm extends OpMode {
-    private final ArmController armController = new ArmController();
+    private ArmController armController;
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        armController.init(hardwareMap);
+        armController = new ArmController(hardwareMap, telemetry);
         telemetry.addLine("Initialization Complete");
         telemetry.update();
     }
 
     @Override
     public void loop() {
-        armController.execute(gamepad1, telemetry);
+        armController.execute(gamepad1, gamepad2, telemetry);
     }
 }

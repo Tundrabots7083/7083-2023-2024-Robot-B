@@ -19,17 +19,10 @@ public class DroneLauncher implements Mechanism {
     private final String description;
     private Servo servo;
 
-    public DroneLauncher(String deviceName, String description) {
+    public DroneLauncher(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
-    }
 
-    /**
-     * Initializes the drone launcher.
-     * @param hardwareMap the map of all hardware on the robot.
-     */
-    @Override
-    public void init(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, deviceName);
     }
 

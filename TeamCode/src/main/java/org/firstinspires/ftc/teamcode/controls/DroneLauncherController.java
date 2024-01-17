@@ -12,27 +12,29 @@ import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
  * angle and launch the drone.
  */
 public class DroneLauncherController implements Controller {
-    private final DroneLauncher droneLauncher = new DroneLauncher("droneLauncher", "Drone Launcher");
+    private final DroneLauncher droneLauncher;
+    private final Telemetry telemetry;
     private boolean droneLaunched = false;
 
     /**
      * Initializes the drone launcher controller.
      * @param hardwareMap the hardware map for the robot.
      */
-    @Override
-    public void init(HardwareMap hardwareMap) {
-        droneLauncher.init(hardwareMap);
+    public DroneLauncherController(HardwareMap hardwareMap, Telemetry telemetry) {
+        droneLauncher = new DroneLauncher("droneLauncher", "Drone Launcher", hardwareMap);
+        this.telemetry = telemetry;
     }
 
     /**
      * Checks to see if the right bumper is pressed and, if so, positions the arm to the correct
      * angle and then launches the drone.
-     * @param gamepad
+     * @param gamepad1
+     * @param gamepad2
      * @param telemetry
      */
     @Override
-    public void execute(Gamepad gamepad, Telemetry telemetry) {
-        boolean bumper = gamepad.right_bumper;
+    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+        boolean bumper = gamepad1.right_bumper;
         if (bumper && !droneLaunched) {
             ArmController armController = Robot.getRobot().armController;
             armController.setToLauncheDrone();

@@ -50,7 +50,7 @@ public class AutoMecanumDrive extends Drive {
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
     private Localizer localizer;
-    private final MecanumDrive drive = new MecanumDrive("drive", "Mecanum Drive");
+    private final MecanumDrive drive;
 
     private double kV;
     private double kA;
@@ -85,7 +85,7 @@ public class AutoMecanumDrive extends Drive {
         this.wheelBase = DriveConstants.WHEEL_BASE;
         this.lateralMultiplier = DriveConstants.LATERAL_MULTIPLIER;
 
-        drive.init(hardwareMap);
+        drive = new MecanumDrive("drive", "Mecanum Drive", hardwareMap);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

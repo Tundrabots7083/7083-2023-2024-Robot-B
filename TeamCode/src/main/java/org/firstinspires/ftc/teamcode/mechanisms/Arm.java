@@ -112,17 +112,10 @@ public class Arm implements Mechanism {
      * @param deviceName the name of the scoring arm.
      * @param description the description of the scoring arm.
      */
-    public Arm(String deviceName, String description) {
+    public Arm(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
-    }
 
-    /**
-     * Initializes the scoring arm.
-     * @param hardwareMap the map of all hardware on the robot.
-     */
-    @Override
-    public void init(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
         // liftMotor = hardwareMap.get(DcMotorEx.class, "lift");
         containerServo = hardwareMap.get(Servo.class, "containerFlip");
