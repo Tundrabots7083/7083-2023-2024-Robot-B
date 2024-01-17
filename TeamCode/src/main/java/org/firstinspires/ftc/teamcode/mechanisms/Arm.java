@@ -27,13 +27,41 @@ public class Arm implements Mechanism {
     /**
      * Position defines the position of the arm and pixel container.
      */
+    public static int ARM_INTAKE_POS = 0;
+    public static int LIFT_INTAKE_POS = 0;
+    public static double CONTAINER_INTAKE_POS = 0.65;
+    public static int ARM_SCORE_LOW_POS = 3000;
+    public static int LIFT_SCORE_LOW_POS = 0;
+    public static double CONTAINER_SCORE_LOW_POS = 0.65;
+    public static int ARM_SCORE_MIDDLE_POS = 2750;
+    public static int LIFT_SCORE_MIDDLE_POS = 0;
+    public static double CONTAINER_SCORE_MIDDLE_POS = 0.65;
+    public static int ARM_SCORE_HIGH_POS = 2750;
+    public static int LIFT_SCORE_HIGH_POS = 0;
+    public static double CONTAINER_SCORE_HIGH_POS = 0.65;
+    public static int ARM_START_POS = 0;
+    public static int LIFT_START_POS = 0;
+    public static double CONTAINER_START_POS = 0.65;
+    public static int ARM_RELEASE_ROLLER_POS = 1200;
+    public static int LIFT_RELEASE_ROLLER_POS = 0;
+    public static double CONTAINER_RELEASE_ROLLER_POS = 0.65;
+    public static int ARM_HANG_POS = 2000;
+    public static int LIFT_HANG_POS = 0;
+    public static double CONTAINER_HANG_POS = 0.65;
+
+    public static int ARM_DRONE_LAUNCH_POS = 1250;
+    public static int LIFT_DRONE_LAUNCH_POS = 0;
+    public static double CONTAINER_DRONE_LAUNCH_POS = 0.65;
+
     public enum Position {
-        Hang(2000, 0, 0.65),
-        Intake(0, 0, 0.65),
-        ScoreLow(3000, 0, 0.65),
-        ScoreMedium(2750, 100, 0.65),
-        ScoreHigh(2500, 200, 0.65),
-        Start(0, 0,0.1);
+        Intake(ARM_INTAKE_POS, LIFT_INTAKE_POS, CONTAINER_INTAKE_POS),
+        ScoreLow(ARM_SCORE_LOW_POS, LIFT_SCORE_LOW_POS, CONTAINER_SCORE_LOW_POS),
+        ScoreMedium(ARM_SCORE_MIDDLE_POS, LIFT_SCORE_MIDDLE_POS, CONTAINER_SCORE_MIDDLE_POS),
+        ScoreHigh(ARM_SCORE_HIGH_POS, LIFT_SCORE_HIGH_POS, CONTAINER_SCORE_HIGH_POS),
+        Start(ARM_START_POS, LIFT_START_POS, CONTAINER_START_POS),
+        ReleaseRoller(ARM_RELEASE_ROLLER_POS, LIFT_RELEASE_ROLLER_POS, CONTAINER_RELEASE_ROLLER_POS),
+        Hang(ARM_HANG_POS, LIFT_HANG_POS, CONTAINER_HANG_POS),
+        LaunchDrone(ARM_DRONE_LAUNCH_POS, LIFT_DRONE_LAUNCH_POS, CONTAINER_DRONE_LAUNCH_POS);
 
         private final int armPosition;
         private final int liftPosition;
@@ -84,17 +112,10 @@ public class Arm implements Mechanism {
      * @param deviceName the name of the scoring arm.
      * @param description the description of the scoring arm.
      */
-    public Arm(String deviceName, String description) {
+    public Arm(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
-    }
 
-    /**
-     * Initializes the scoring arm.
-     * @param hardwareMap the map of all hardware on the robot.
-     */
-    @Override
-    public void init(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
         // liftMotor = hardwareMap.get(DcMotorEx.class, "lift");
         containerServo = hardwareMap.get(Servo.class, "containerFlip");

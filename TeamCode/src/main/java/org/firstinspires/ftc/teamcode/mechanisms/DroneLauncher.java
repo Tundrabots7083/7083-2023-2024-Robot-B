@@ -1,28 +1,36 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
 
-public class Claw implements Mechanism {
-
-    private static final double GRAB_POS = 0.54;
-    private static final double RELEASE_POS = 0.35;
-    private static final double OPEN_POS = 0.75;
-    private Servo claw;
+/**
+ * DroneLauncher manages the launching of the drone (paper airplane)
+ */
+@Config
+public class DroneLauncher implements Mechanism {
+    public static double SERVO_RELEASE_POS = 0;
     private final String deviceName;
     private final String description;
+    private Servo servo;
 
-    public Claw(String deviceName, String description) {
+    public DroneLauncher(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
+
+        servo = hardwareMap.get(Servo.class, deviceName);
     }
 
-    public void init(HardwareMap hwMap) {
-        claw = hwMap.get(Servo.class, "deviceName");
+    /**
+     * Launches the drone, hopefully scoring a lot of points in the process.
+     */
+    public void launch() {
+        servo.setPosition(SERVO_RELEASE_POS);
     }
 
     @Override
@@ -40,24 +48,9 @@ public class Claw implements Mechanism {
         return null;
     }
 
-    public void grab()
-    {
-        claw.setPosition(GRAB_POS);
-    }
-
-    public void release()
-    {
-        claw.setPosition(RELEASE_POS);
-    }
-
-    public void open()
-    {
-        claw.setPosition(OPEN_POS);
-    }
-
     @Override
+    @NonNull
     public String toString() {
         return string();
     }
-
 }

@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
@@ -15,19 +16,16 @@ public class MecanumDriveController implements Controller {
     public static double SLOW_TURNING_MULT = 0.25; //Slow turning speed multiplier
     public static double SLOW_DRIVE_MULT = 0.3; //Slow drive speed multiplier
     private final MecanumDrive mecanumDrive;
+    private final Telemetry telemetry;
     private double driveGain;
     private double turnGain;
 
     private boolean bumperPressed = false;
-    public MecanumDriveController(){
+    public MecanumDriveController(HardwareMap hardwareMap, Telemetry telemetry){
+        this.telemetry = telemetry;
         this.driveGain = MAX_DRIVE_MULT;
         this.turnGain = MAX_TURNING_MULT;
-        mecanumDrive = new MecanumDrive("driveTrain", "Drive Train");
-    }
-
-    @Override
-    public void init(HardwareMap hwMap) {
-        mecanumDrive.init(hwMap);
+        mecanumDrive = new MecanumDrive("driveTrain", "Drive Train", hardwareMap);
     }
 
     private void setGain(Gamepad gamepad) {
@@ -37,16 +35,15 @@ public class MecanumDriveController implements Controller {
         }
         bumperPressed = gamepad.right_bumper || gamepad.left_bumper;
     }
-    public void execute(Gamepad gamepad, Telemetry telemetry) {
-        setGain(gamepad);
+    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+        setGain(gamepad1);
 
-        double x = gamepad.left_stick_x * driveGain;
-        double y = -gamepad.left_stick_y * driveGain;
-        double turn = -gamepad.right_stick_x * turnGain;
+        double x = gamepad1.left_stick_x * driveGain;
+        double y = -gamepad1.left_stick_y * driveGain;
+        double turn = -gamepad1.right_stick_x * turnGain;
         telemetry.addData("[DRIVE] X", x);
         telemetry.addData("[DRIVE] Y", y);
         telemetry.addData("[DRIVE] Turn", turn);
-        telemetry.update();
 
         mecanumDrive.drive(x, y, turn);
     }

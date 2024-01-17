@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.drive;
 
-import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.drive.Drive;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
@@ -31,9 +32,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.localization.AprilTagLocalizer;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceRunner;
@@ -45,12 +44,13 @@ import java.util.List;
 /**
  * Autonomous mecanum drive.
  */
+@Config
 public class AutoMecanumDrive extends Drive {
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
     private Localizer localizer;
-    private final MecanumDrive drive = new MecanumDrive("drive", "Mecanum Drive");
+    private final MecanumDrive drive;
 
     private double kV;
     private double kA;
@@ -66,14 +66,18 @@ public class AutoMecanumDrive extends Drive {
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(11, 0, 0);
     private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
+
+    private final Telemetry telemetry;
 
     /**
      * Creates a new autonomous mecanum drive.
      */
     public AutoMecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+
         this.kV = DriveConstants.kV;
         this.kA = DriveConstants.kA;
         this.kStatic = DriveConstants.kStatic;
@@ -81,26 +85,25 @@ public class AutoMecanumDrive extends Drive {
         this.wheelBase = DriveConstants.WHEEL_BASE;
         this.lateralMultiplier = DriveConstants.LATERAL_MULTIPLIER;
 
-        drive.init(hardwareMap);
+        drive = new MecanumDrive("drive", "Mecanum Drive", hardwareMap);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
-        // localizer = new ThreeWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels);
-        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
-        localizer = new AprilTagLocalizer(webcam);
+        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam Front");
+        localizer = new DeadWheelLocalizer(hardwareMap, lastEncPositions, lastTrackingEncVels);
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
+        follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
+                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
-
-        follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
     }
 
     /**
@@ -177,7 +180,7 @@ public class AutoMecanumDrive extends Drive {
      * @param rightFront the power for the right front motor.
      */
     public void setMotorPowers(double leftFront, double leftRear, double rightRear, double rightFront) {
-        drive.setMotorPowers(leftFront, leftRear,rightRear, rightFront);
+        drive.setMotorPowers(leftFront, leftRear, rightRear, rightFront);
     }
 
     /**

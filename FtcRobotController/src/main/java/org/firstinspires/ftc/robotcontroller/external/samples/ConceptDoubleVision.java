@@ -146,7 +146,7 @@ public class ConceptDoubleVision extends LinearOpMode {
 
         if (USE_WEBCAM) {
             myVisionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam Front"))
                 .addProcessors(tfod, aprilTag)
                 .build();
         } else {

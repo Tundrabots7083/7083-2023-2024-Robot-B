@@ -10,14 +10,12 @@ public class PixelMoverController implements Controller {
     private boolean aButtonPressed = false;
     private boolean bButtonPressed = false;
 
-    private PixelMover pixelMover;
+    private final PixelMover pixelMover;
+    private final Telemetry telemetry;
 
-    public PixelMoverController() {}
-
-    @Override
-    public void init(HardwareMap hardwareMap) {
-        pixelMover = new PixelMover("pixelMover", "Collects pixels and moves them");
-        pixelMover.init(hardwareMap);
+    public PixelMoverController(HardwareMap hardwareMap, Telemetry telemetry) {
+        pixelMover = new PixelMover("pixelMover", "Collects pixels and moves them", hardwareMap);
+        this.telemetry = telemetry;
     }
 
     /**
@@ -35,25 +33,26 @@ public class PixelMoverController implements Controller {
      * Determine which button has been pressed or released.  When a button is pressed, invoke
      * the mechanism to perform the function assigned to the button.
      *
-     * @param gamepad
+     * @param gamepad1
+     * @param gamepad2
      * @param telemetry
      */
-    public void execute(Gamepad gamepad, Telemetry telemetry) {
-        if (!aButtonPressed && gamepad.a) {
+    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+        if (!aButtonPressed && gamepad1.a) {
             // User pressed the a button
             aButtonPressed = true;
             pixelMover.pickUpPixels();
         }
-        if (aButtonPressed && !gamepad.a) {
+        if (aButtonPressed && !gamepad1.a) {
             // User released the a button
             aButtonPressed = false;
         }
-        if (!bButtonPressed && gamepad.b) {
+        if (!bButtonPressed && gamepad1.b) {
             // User pressed the b button
             bButtonPressed = true;
             pixelMover.dropOffPixels();
         }
-        if (bButtonPressed && !gamepad.b) {
+        if (bButtonPressed && !gamepad1.b) {
             // User released the b button
             bButtonPressed = false;
         }

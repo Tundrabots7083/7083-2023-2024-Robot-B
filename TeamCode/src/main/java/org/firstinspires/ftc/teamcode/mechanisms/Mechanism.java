@@ -10,14 +10,6 @@ import java.util.Collection;
  * Mechanism is the base class for all mechanisms on the robot.
  */
 public interface Mechanism {
-
-    /**
-     * init initializes the Mechanism.
-     * 
-     * @param hwMap the map of all hardware on the robot.
-     */
-    public abstract void init(HardwareMap hwMap);
-
     /**
      * getDeviceName returns the name of the device (e.g., "leftFront" for a motor).
      * @return the name of the device.

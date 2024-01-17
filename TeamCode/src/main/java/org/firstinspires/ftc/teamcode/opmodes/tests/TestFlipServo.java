@@ -14,10 +14,11 @@ import org.firstinspires.ftc.teamcode.controls.ArmController;
 public class TestFlipServo extends OpMode {
     public static double FLIP_SERVO_POS = 0.625;
     private Servo flipServo;
-    private final ArmController armController = new ArmController();
+    private ArmController armController;
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        armController = new ArmController(hardwareMap, telemetry);
         flipServo = hardwareMap.get(Servo.class, "containerFlip");
         telemetry.addLine("Initialization Complete");
         telemetry.update();

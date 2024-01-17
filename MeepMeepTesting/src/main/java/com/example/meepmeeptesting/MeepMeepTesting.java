@@ -39,17 +39,17 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity redAllianceFrontstage = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 14)
+                .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 14)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(13, -61, Math.toRadians(90)))
-                                .forward(28)
+                        drive.trajectorySequenceBuilder(new Pose2d(12, -63.5, Math.toRadians(90)))
+                                .forward(20)
                                 .addDisplacementMarker(() -> System.out.println("Drop purple pixel"))
-                                .back(10)
+                                .back(5)
                                 .strafeRight(12)
                                 .splineTo(new Vector2d(48, -35), Math.toRadians(90))
                                 .addDisplacementMarker(() -> System.out.println("Score yellow pixel"))
-                                .strafeLeft(25)
-                                .back(5)
+                                .strafeLeft(28)
+                                .back(10)
                                 .addDisplacementMarker(() -> System.out.println("Park robot\n"))
                                 .back(1) // Unnecessary, but makes the display look better
                                 .build()

@@ -24,22 +24,19 @@ public class MecanumDrive implements Mechanism {
      * @param deviceName  the name of the mecanum drive.
      * @param description a description of the mecanum drive.
      */
-    public MecanumDrive(String deviceName, String description) {
+    public MecanumDrive(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
-    }
 
-    @Override
-    public void init(HardwareMap hwMap) {
-        leftFront = hwMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hwMap.get(DcMotorEx.class, "leftRear");
-        rightFront = hwMap.get(DcMotorEx.class, "rightFront");
-        rightRear = hwMap.get(DcMotorEx.class, "rightRear");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
 
         motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         for (DcMotorEx motor : motors) {
             initMotor(motor);
