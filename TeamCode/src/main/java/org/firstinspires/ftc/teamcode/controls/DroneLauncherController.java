@@ -34,12 +34,17 @@ public class DroneLauncherController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
-        boolean bumper = gamepad1.right_bumper;
-        if (bumper && !droneLaunched) {
-            ArmController armController = Robot.getRobot().armController;
-            armController.setToLauncheDrone();
+        if (!droneLaunched && gamepad1.right_bumper && gamepad2.right_bumper) {
             droneLauncher.launch();
             droneLaunched = true;
+            telemetry.addLine("Drone Launched");
+            return;
+        }
+        
+        if (gamepad1.right_bumper && !droneLaunched) {
+            ArmController armController = Robot.getRobot().armController;
+            armController.setToLauncheDrone();
+            telemetry.addLine("Ready to Launch Drone");
         }
     }
 }
