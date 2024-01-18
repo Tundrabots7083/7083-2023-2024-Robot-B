@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Arrays;
@@ -96,7 +98,23 @@ public class MecanumDrive implements Mechanism {
             leftRearPower /= power + turn;
             rightRearPower /= power + turn;
         }
+
+        // Reduce the power until we hit a maximum amount
+        leftFrontPower = getAdjustedPower(leftFrontPower);
+        leftRearPower = getAdjustedPower(leftRearPower);
+        rightRearPower = getAdjustedPower(rightRearPower);
+        rightFrontPower = getAdjustedPower(rightFrontPower);
+
         setMotorPowers(leftFrontPower, leftRearPower, rightRearPower, rightFrontPower);
+    }
+
+    private double getAdjustedPower(double power) {
+        double sign = 1;
+        if (power < 0) {
+            sign = -1;
+        }
+        double adjustedPower = Math.sqrt(Math.abs(power)) * sign;
+        return adjustedPower;
     }
 
     /**
@@ -127,6 +145,12 @@ public class MecanumDrive implements Mechanism {
         leftRear.setPower(leftRearPower);
         rightFront.setPower(rightFrontPower);
         rightRear.setPower(rightRearPower);
+
+        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        telemetry.addData("[DRIVE] Left Front Power", leftFrontPower);
+        telemetry.addData("[DRIVE] Left Rear Power", leftRearPower);
+        telemetry.addData("[DRIVE] Right Front Power", rightFrontPower);
+        telemetry.addData("[DRIVE] Right Rear Power", rightRearPower);
     }
 
     @Override
