@@ -4,6 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Core;
@@ -12,6 +16,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+@Config
 public class FirstVisionProcessor implements VisionProcessor {
     public enum Selected {
         NONE,
@@ -20,9 +25,10 @@ public class FirstVisionProcessor implements VisionProcessor {
         RIGHT
     }
 
-    public Rect rectLeft = new Rect(0, 329, 155, 150);
-    public Rect rectMiddle = new Rect(195, 339, 250, 110);
-    public Rect rectRight = new Rect(485, 329, 155, 150);
+    public static double MIN_PERCENT_DIFFERENCE = 32;
+    public Rect rectLeft = new Rect(0, 365, 155, 105);
+    public Rect rectMiddle = new Rect(250, 345, 240, 95);
+
     Selected selection = Selected.NONE;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
@@ -37,14 +43,26 @@ public class FirstVisionProcessor implements VisionProcessor {
 
         double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
         double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
-        double satRectRight = getAvgSaturation(hsvMat, rectRight);
 
-        if ((satRectLeft > satRectMiddle) && (satRectLeft > satRectRight)) {
+        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        telemetry.addData("Left Spike", satRectLeft);
+        telemetry.addData("Middle Spike", satRectMiddle);
+
+        double percentDifference = getPercentDifference(satRectLeft, satRectMiddle);
+        telemetry.addData("Percent Difference", percentDifference);
+
+        if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
+            return Selected.RIGHT;
+        } else if (satRectLeft > satRectMiddle) {
             return Selected.LEFT;
-        } else if ((satRectMiddle > satRectLeft) && (satRectMiddle > satRectRight)) {
+        } else if (satRectMiddle > satRectLeft) {
             return Selected.MIDDLE;
         }
         return Selected.RIGHT;
+    }
+
+    private double getPercentDifference(double val1, double val2) {
+        return Math.abs(val1-val2) / ((val1 + val2) / 2) * 100;
     }
 
     protected double getAvgSaturation(Mat input, Rect rect) {
@@ -74,29 +92,26 @@ public class FirstVisionProcessor implements VisionProcessor {
 
         android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft, scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleMiddle = makeGraphicsRect(rectMiddle, scaleBmpPxToCanvasPx);
-        android.graphics.Rect drawRectangleRight = makeGraphicsRect(rectRight, scaleBmpPxToCanvasPx);
 
         selection = (Selected) userContext;
+        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        telemetry.addData("Selection", selection);
         switch (selection) {
             case LEFT:
                 canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
-                canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case MIDDLE:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
-                canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case RIGHT:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
-                canvas.drawRect(drawRectangleRight, selectedPaint);
                 break;
             case NONE:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
-                canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
         }
     }
