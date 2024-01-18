@@ -32,13 +32,13 @@ public class Arm implements Mechanism {
     public static double CONTAINER_INTAKE_POS = 0.65;
     public static int ARM_SCORE_LOW_POS = 3000;
     public static int LIFT_SCORE_LOW_POS = 0;
-    public static double CONTAINER_SCORE_LOW_POS = 0.65;
+    public static double CONTAINER_SCORE_LOW_POS = 0.25;
     public static int ARM_SCORE_MIDDLE_POS = 2750;
     public static int LIFT_SCORE_MIDDLE_POS = 0;
-    public static double CONTAINER_SCORE_MIDDLE_POS = 0.65;
+    public static double CONTAINER_SCORE_MIDDLE_POS = 0.25;
     public static int ARM_SCORE_HIGH_POS = 2750;
     public static int LIFT_SCORE_HIGH_POS = 0;
-    public static double CONTAINER_SCORE_HIGH_POS = 0.65;
+    public static double CONTAINER_SCORE_HIGH_POS = 0.25;
     public static int ARM_START_POS = 0;
     public static int LIFT_START_POS = 0;
     public static double CONTAINER_START_POS = 0.65;
