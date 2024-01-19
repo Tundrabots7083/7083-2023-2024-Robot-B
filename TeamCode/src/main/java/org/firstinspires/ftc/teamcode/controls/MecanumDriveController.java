@@ -4,17 +4,16 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 
 @Config
 public class MecanumDriveController implements Controller {
 
-    public static double MAX_TURNING_MULT = 0.7; //Max turning speed multiplier
+    public static double MAX_TURNING_MULT = 0.75; //Max turning speed multiplier
     public static double MAX_DRIVE_MULT = 1; //Max drive speed multiplier
-    public static double SLOW_TURNING_MULT = 0.25; //Slow turning speed multiplier
-    public static double SLOW_DRIVE_MULT = 0.3; //Slow drive speed multiplier
+    public static double SLOW_TURNING_MULT = 0.6; //Slow turning speed multiplier
+    public static double SLOW_DRIVE_MULT = 0.75; //Slow drive speed multiplier
     private final MecanumDrive mecanumDrive;
     private final Telemetry telemetry;
     private double driveGain;

@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.controls.Controller;
@@ -21,13 +20,6 @@ public class PrimaryTeleOp extends OpMode {
         robot = new Robot(hardwareMap, telemetry);
 
         telemetry.addLine("Initialization Complete");
-        telemetry.update();
-    }
-
-    @Override
-    public void start() {
-        robot.pixelMoverController.start(telemetry);
-        telemetry.addLine("Brush roller dropped.");
         telemetry.update();
     }
 

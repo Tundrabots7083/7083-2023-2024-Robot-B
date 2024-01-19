@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
 public class DroneLauncherController implements Controller {
     private final DroneLauncher droneLauncher;
     private final Telemetry telemetry;
-    private boolean droneLaunched = false;
 
     /**
      * Initializes the drone launcher controller.
@@ -34,12 +33,10 @@ public class DroneLauncherController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
-        boolean bumper = gamepad1.right_bumper;
-        if (bumper && !droneLaunched) {
-            ArmController armController = Robot.getRobot().armController;
-            armController.setToLauncheDrone();
+        if (gamepad1.right_bumper && gamepad2.right_bumper) {
             droneLauncher.launch();
-            droneLaunched = true;
+            telemetry.addData("[DRONE] Position", droneLauncher.getPosition());
+            telemetry.addLine("[Drone] Launched");
         }
     }
 }

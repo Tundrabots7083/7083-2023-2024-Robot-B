@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(name = "Red Alliance Right", group ="Active")
 public class RedAllianceRightParkRight extends LinearOpMode {
     private AutoMecanumDrive drive;
+    private PixelMover pixelMover;
     private FirstVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
@@ -28,6 +30,9 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Create the auto mecanum drive
         drive = new AutoMecanumDrive(hardwareMap, telemetry);
+
+        // Create the pixel mover
+        pixelMover = new PixelMover("pixelmover", "Pixel Mover", hardwareMap);
 
         // Get the spike mark with the team prop
         visionProcessor = new FirstVisionProcessor();
@@ -43,7 +48,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         // randomization
         TeamElementLocation selection = visionProcessor.getSelection();
         telemetry.addData("Spike Mark", selection);
-        // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
+        visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
         switch (selection) {
             case INNER:
@@ -57,12 +62,13 @@ public class RedAllianceRightParkRight extends LinearOpMode {
             case MIDDLE:
                 telemetry.addLine("Right Spike Mark");
                 telemetry.update();
-                middleSpikeMark();
+                // middleSpikeMark();
                 break;
             case NONE:
                 telemetry.addLine("Team Prop Not Detected");
                 telemetry.update();
         }
+        middleSpikeMark();
     }
 
     /**
@@ -71,12 +77,12 @@ public class RedAllianceRightParkRight extends LinearOpMode {
      */
     private void middleSpikeMark() {
         // Set starting pose
-        Pose2d startingPose = new Pose2d(12, -63.5, Math.toRadians(90));
+        Pose2d startingPose = new Pose2d(12, -63.5, Math.toRadians(270));
         drive.setPoseEstimate(startingPose);
 
         // Move to center spike mark
         Trajectory traj1 = drive.trajectoryBuilder(startingPose)
-                .forward(20)
+                .forward(21.5)
                 .build();
 
         // Move to center position on backdrop
@@ -84,13 +90,13 @@ public class RedAllianceRightParkRight extends LinearOpMode {
                 .back(5)
                 .build();
         Trajectory traj2b = drive.trajectoryBuilder(traj2a.end())
-                .strafeRight(12)
+                .strafeRight(20)
                 .splineTo(new Vector2d(48, -35), Math.toRadians(90))
                 .build();
 
         // Park to the right of the backdrop
         Trajectory traj3a = drive.trajectoryBuilder(traj2b.end())
-                .strafeLeft(28)
+                .strafeLeft(24)
                 .build();
         Trajectory traj3b = drive.trajectoryBuilder(traj3a.end())
                 .back(10)
@@ -105,11 +111,12 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         drive.followTrajectory(traj1);
         telemetry.addLine("Drop Off Purple Pixel");
         telemetry.update();
+        pixelMover.dropOffPixels();
         sleep(1000);
 
+        /*
         // Drive to the backdrop, raise the arm and rotate the pixel container, and score the pixel
         drive.followTrajectory(traj2a);
-        drive.turn(Math.toRadians(90));
         drive.followTrajectory(traj2b);
         telemetry.addLine("Raise Arm and Rotate Pixel Container");
         telemetry.update();
@@ -126,5 +133,6 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         drive.followTrajectory(traj3b);
         telemetry.addLine("Park Right");
         telemetry.update();
+        */
     }
 }

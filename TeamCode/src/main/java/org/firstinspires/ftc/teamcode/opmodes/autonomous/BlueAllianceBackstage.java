@@ -4,10 +4,13 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.autonomous.BlueBackstageTrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
+import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 public class BlueAllianceBackstage extends LinearOpMode {
 
@@ -16,14 +19,17 @@ public class BlueAllianceBackstage extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // Initialize the robot
-        Robot robot = new Robot(hardwareMap, telemetry);
-
         TrajectoryGenerator trajectoryGenerator = new BlueBackstageTrajectoryGenerator(TeamElementLocation.OUTER);
 
-        robot.visionSensor.initializeVisionPortal();
+        VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"));
 
-        while(!robot.visionSensor.webcamInitialized()) {
+        AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry);
+
+        PixelMover pixelMover = new PixelMover("pixelMover", "Collects pixels and moves them", hardwareMap);
+
+        visionSensor.initializeVisionPortal();
+
+        while(visionSensor.webcamInitialized()) {
             // Wait for webcam to initialize
             telemetry.addData("Webcam", "Initializing...");
             telemetry.update();
@@ -34,33 +40,34 @@ public class BlueAllianceBackstage extends LinearOpMode {
 
         waitForStart();
 
-        TeamElementLocation element = robot.visionSensor.getTeamElementLocation();
+        TeamElementLocation element = visionSensor.getTeamElementLocation();
 
         telemetry.addData("Element", element);
         telemetry.update();
 
-        Trajectory toSpikeMark = trajectoryGenerator.toSpikeMark(robot.drive.trajectoryBuilder(STARTING_POSE));
+        Trajectory toSpikeMark = trajectoryGenerator.toSpikeMark(drive.trajectoryBuilder(STARTING_POSE));
 
         // Drive to the correct spike mark
         telemetry.addLine("Driving to spike mark");
         telemetry.update();
-        robot.drive.followTrajectory(toSpikeMark);
+        drive.followTrajectory(toSpikeMark);
 
         telemetry.addLine("Dropping off pixels");
         telemetry.update();
         // Deposit the purple pixel
-        robot.pixelMoverController.dropOffPixels(); // TODO: Update when Ovies pushes changes to PixelMover
+        pixelMover.dropOffTopPixel(telemetry);
 
         sleep(3000);
 
         telemetry.addLine("Driving to parking spot");
         telemetry.update();
         // Drive to the parking spot
-        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpot(robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate()));
-        robot.drive.followTrajectory(toParkingSpot);
+        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpot(drive.trajectoryBuilder(drive.getPoseEstimate()));
+        drive.followTrajectory(toParkingSpot);
 
         while (opModeIsActive()) {
             // Do nothing
+            idle();
         }
     }
 }
