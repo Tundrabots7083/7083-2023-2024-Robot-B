@@ -1,23 +1,25 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Drive implements the drive chassis for the Robot.
+ * MecanumDrive implements the drive chassis for the robot.
  */
 public class MecanumDrive implements Mechanism {
     private final String deviceName;
     private final String description;
-    private DcMotorEx rightFront, rightRear, leftFront, leftRear;
-    private Collection<DcMotorEx> motors;
+    private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
 
     /**
      * MecanumDrive initializes a new mecanum drive trail.
@@ -33,10 +35,10 @@ public class MecanumDrive implements Mechanism {
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
         rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
 
-        motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
-
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Collection<DcMotorEx> motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 
         for (DcMotorEx motor : motors) {
             initMotor(motor);
@@ -52,21 +54,6 @@ public class MecanumDrive implements Mechanism {
         motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
         motor.setMotorType(motorConfigurationType);
         motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-    }
-
-    @Override
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
     }
 
     /**
@@ -90,13 +77,34 @@ public class MecanumDrive implements Mechanism {
         double leftRearPower = power * sin/max - turn;
         double rightRearPower = power * cos/max + turn;
 
+        // Reduce the power until we hit a maximum amount
         if ((power + Math.abs(turn)) > 1) {
             leftFrontPower /= power + turn;
             rightFrontPower /= power + turn;
             leftRearPower /= power + turn;
             rightRearPower /= power + turn;
         }
+
+        // Adjust the power to give a curve for ramping up power input
+        leftFrontPower = getAdjustedPower(leftFrontPower);
+        leftRearPower = getAdjustedPower(leftRearPower);
+        rightRearPower = getAdjustedPower(rightRearPower);
+        rightFrontPower = getAdjustedPower(rightFrontPower);
+
         setMotorPowers(leftFrontPower, leftRearPower, rightRearPower, rightFrontPower);
+    }
+
+    /**
+     * Adjust the power to provide more granular acceleration
+     * @param power the power based on the control
+     * @return the adjusted power
+     */
+    private double getAdjustedPower(double power) {
+        double sign = 1;
+        if (power < 0) {
+            sign = -1;
+        }
+        return Math.pow(power, 2) * sign;
     }
 
     /**
@@ -127,9 +135,31 @@ public class MecanumDrive implements Mechanism {
         leftRear.setPower(leftRearPower);
         rightFront.setPower(rightFrontPower);
         rightRear.setPower(rightRearPower);
+
+        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        telemetry.addData("[DRIVE] Left Front Power", leftFrontPower);
+        telemetry.addData("[DRIVE] Left Rear Power", leftRearPower);
+        telemetry.addData("[DRIVE] Right Front Power", rightFrontPower);
+        telemetry.addData("[DRIVE] Right Rear Power", rightRearPower);
     }
 
     @Override
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public Collection<Test> getTests() {
+        return null;
+    }
+
+    @Override
+    @NonNull
     public String toString() {
         return string();
     }

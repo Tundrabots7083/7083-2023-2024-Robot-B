@@ -27,41 +27,15 @@ public class Arm implements Mechanism {
     /**
      * Position defines the position of the arm and pixel container.
      */
-    public static int ARM_INTAKE_POS = 0;
-    public static int LIFT_INTAKE_POS = 0;
-    public static double CONTAINER_INTAKE_POS = 0.65;
-    public static int ARM_SCORE_LOW_POS = 3000;
-    public static int LIFT_SCORE_LOW_POS = 0;
-    public static double CONTAINER_SCORE_LOW_POS = 0.25;
-    public static int ARM_SCORE_MIDDLE_POS = 2750;
-    public static int LIFT_SCORE_MIDDLE_POS = 0;
-    public static double CONTAINER_SCORE_MIDDLE_POS = 0.25;
-    public static int ARM_SCORE_HIGH_POS = 2750;
-    public static int LIFT_SCORE_HIGH_POS = 0;
-    public static double CONTAINER_SCORE_HIGH_POS = 0.25;
-    public static int ARM_START_POS = 0;
-    public static int LIFT_START_POS = 0;
-    public static double CONTAINER_START_POS = 0.65;
-    public static int ARM_RELEASE_ROLLER_POS = 1200;
-    public static int LIFT_RELEASE_ROLLER_POS = 0;
-    public static double CONTAINER_RELEASE_ROLLER_POS = 0.65;
-    public static int ARM_HANG_POS = 2000;
-    public static int LIFT_HANG_POS = 0;
-    public static double CONTAINER_HANG_POS = 0.65;
-
-    public static int ARM_DRONE_LAUNCH_POS = 1250;
-    public static int LIFT_DRONE_LAUNCH_POS = 0;
-    public static double CONTAINER_DRONE_LAUNCH_POS = 0.65;
-
     public enum Position {
-        Intake(ARM_INTAKE_POS, LIFT_INTAKE_POS, CONTAINER_INTAKE_POS),
-        ScoreLow(ARM_SCORE_LOW_POS, LIFT_SCORE_LOW_POS, CONTAINER_SCORE_LOW_POS),
-        ScoreMedium(ARM_SCORE_MIDDLE_POS, LIFT_SCORE_MIDDLE_POS, CONTAINER_SCORE_MIDDLE_POS),
-        ScoreHigh(ARM_SCORE_HIGH_POS, LIFT_SCORE_HIGH_POS, CONTAINER_SCORE_HIGH_POS),
-        Start(ARM_START_POS, LIFT_START_POS, CONTAINER_START_POS),
-        ReleaseRoller(ARM_RELEASE_ROLLER_POS, LIFT_RELEASE_ROLLER_POS, CONTAINER_RELEASE_ROLLER_POS),
-        Hang(ARM_HANG_POS, LIFT_HANG_POS, CONTAINER_HANG_POS),
-        LaunchDrone(ARM_DRONE_LAUNCH_POS, LIFT_DRONE_LAUNCH_POS, CONTAINER_DRONE_LAUNCH_POS);
+        Intake(0, 0, 0.65),
+        ScoreLow(2900, 0, 0.25),
+        ScoreMedium(2750, 0, 0.25),
+        ScoreHigh(2500, 0, 0.25),
+        Start(0, 0, 0.65),
+        ReleaseRoller(1200, 0, 0),
+        Hang(2000, 0, 0.65),
+        LaunchDrone(1225, 0, 0.9);
 
         private final int armPosition;
         private final int liftPosition;
@@ -81,9 +55,9 @@ public class Arm implements Mechanism {
     }
 
     // PID control constants. TODO: change to private final once tuned
-    public static double ARM_KP = 0.005;
-    public static double ARM_KI = 0.0;
-    public static double ARM_KD = 0.0;
+    public static double ARM_KP = 0.0095;
+    public static double ARM_KI = 0.0001;
+    public static double ARM_KD = 0.0005;
     public static double LIFT_KP = 0.0;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;

@@ -31,7 +31,8 @@ public class PixelMover implements Mechanism {
     public static double STOPPED_POWER = 0.0;
     public static double CONTAINER_ROLLER_FORWARD_POWER = 1.0;
     public static double CONTAINER_ROLLER_REVERSE_POWER = -1.0;
-    public static double BRUSH_ROLLER_FORWARD_POWER = 0.15;
+    public static double CONTAINER_ROLLER_STOPPED_POWER = -.08;
+    public static double BRUSH_ROLLER_FORWARD_POWER = 0.08;
     public static double BRUSH_ROLLER_REVERSE_POWER = -0.5;
     private enum PixelMoverState {
         PICKING_UP,
@@ -93,11 +94,17 @@ public class PixelMover implements Mechanism {
     }
 
     /**
-     * Do whatever is needed to be able to start picking up pixels.
+     * This method is invoked when an autonomous opmode is started.
+     *
+     * The pixel container is assumed to be pre-loaded with two pixels and the
+     * robot is assumed to be in its folded position that fits in an
+     * 18X18X18 cube.  The robot needs to be unfolded and prepared to perform
+     * an autonomous sequence.
      *
      * Things that need to be done so that the robot can pickup pixels.
      *
      *   - Drop the brush roller.
+     *   - Lock the pixels in the container.
      */
     public void start(Telemetry telemetry) {
         brushRoller.setPower(BRUSH_ROLLER_FORWARD_POWER);
@@ -107,6 +114,7 @@ public class PixelMover implements Mechanism {
             telemetry.addLine("PixelMover:  Exception thrown trying to do sleep in start method.");
         }
         brushRoller.setPower(STOPPED_POWER);
+        lockPixels();
     }
 
     /**
@@ -128,10 +136,7 @@ public class PixelMover implements Mechanism {
             // Pixel mover is currently picking up pixels.
             // Stop picking up pixels.
             brushRoller.setPower(STOPPED_POWER);
-            containerRoller.setPower(STOPPED_POWER);
-            containerRoller.setPwmDisable();
-            // Lock bottom pixel.
-            containerMiddleLock.setPosition(MIDDLE_LOCK_LOCKED_POSITION);
+            lockPixels();
             state = PixelMoverState.STOPPED;
         }
     }
@@ -170,6 +175,78 @@ public class PixelMover implements Mechanism {
             state = PixelMoverState.STOPPED;
         }
     }
+
+    /**
+     * Locks the pixels in the container and sets the state to indicate
+     * it is stopped or not currently picking up or dropping off pixels.
+     *
+     */
+    public void lockPixels() {
+        containerMiddleLock.setPosition(MIDDLE_LOCK_LOCKED_POSITION);
+        containerRoller.setPower(CONTAINER_ROLLER_STOPPED_POWER);
+    }
+
+    /**
+     * Drops off only the top pixel in the container and leaves
+     * the bottom pixel locked.
+     *
+     * This method assumes there are two pixels in the container.
+     * The brush roller and the container roller are started to
+     * cause the top pixel to come out of the container and then
+     * the rollers are stopped.  The container roller is given a
+     * small amount of power to insure that the bottom pixel will
+     * not accidentally come out of the container.
+     *
+     * This method assumes it is invoked from an autonomous opmode
+     * and waits for .25 of a second to give the top pixel time
+     * to come out of the container.
+     *
+     * @param telemetry
+     */
+    public void dropOffTopPixel(Telemetry telemetry) {
+        brushRoller.setPower(BRUSH_ROLLER_FORWARD_POWER);
+        containerRoller.setPower(CONTAINER_ROLLER_FORWARD_POWER);
+        try {
+            Thread.sleep(250);
+        } catch (Exception e) {
+            telemetry.addLine("PixelMover:  Exception thrown trying to do sleep in dropOffTopPixel method.");
+        }
+        brushRoller.setPower(STOPPED_POWER);
+        containerRoller.setPower(CONTAINER_ROLLER_STOPPED_POWER);
+    }
+
+    /**
+     * Drops off the bottom pixel that is locked in the container.
+     *
+     * This method assumes that the container has just one pixel in it
+     * and that it is locked.
+     *
+     * This method assumes it is invoked from an autonomous opmode
+     * and waits for .25 of a second to give the pixel time to come
+     * out of the container.
+     *
+     * @param telemetry
+     */
+    public void dropOffBottomPixel(Telemetry telemetry) {
+        // Start container roller
+        containerRoller.setPower(CONTAINER_ROLLER_FORWARD_POWER);
+        // Unlock the pixel
+        containerMiddleLock.setPosition(MIDDLE_LOCK_STOPPED_POSITION);
+        // Push the pixel toward container roller to drop it off
+        containerBackPusher.setPosition(BACK_PUSHER_PUSHED_POSITION);
+        // Wait for pixel to come out of container
+        try {
+            Thread.sleep(250);
+        } catch (Exception e) {
+            telemetry.addLine("PixelMover:  Exception thrown trying to do sleep in dropOffBottomPixel method.");
+        }
+        // Container should now be empty, reset the servos so the container can pick up
+        // pixels again.
+        containerBackPusher.setPosition(BACK_PUSHER_STOPPED_POSITION);
+        containerRoller.setPower(STOPPED_POWER);
+        containerRoller.setPwmDisable();
+    }
+
     @Override
     public String toString() {
         return string();

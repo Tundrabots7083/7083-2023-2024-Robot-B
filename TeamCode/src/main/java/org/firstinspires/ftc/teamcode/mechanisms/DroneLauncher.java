@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 @Config
 public class DroneLauncher implements Mechanism {
-    public static double SERVO_RELEASE_POS = 0;
+    public static double SERVO_RELEASE_POS = 0.1;
     private final String deviceName;
     private final String description;
     private Servo servo;
@@ -24,6 +24,7 @@ public class DroneLauncher implements Mechanism {
         this.description = description;
 
         servo = hardwareMap.get(Servo.class, deviceName);
+        servo.setDirection(Servo.Direction.FORWARD);
     }
 
     /**
@@ -31,6 +32,14 @@ public class DroneLauncher implements Mechanism {
      */
     public void launch() {
         servo.setPosition(SERVO_RELEASE_POS);
+    }
+
+    /**
+     * Gets the position for the drone launcher servo.
+     * @return the position for the drone launcher servo.
+     */
+    public double getPosition() {
+        return servo.getPosition();
     }
 
     @Override
