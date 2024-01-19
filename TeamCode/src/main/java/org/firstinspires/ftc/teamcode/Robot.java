@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.controls.Controller;
 import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
 import org.firstinspires.ftc.teamcode.controls.PixelMoverController;
+import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,10 @@ public class Robot {
     private final Telemetry telemetry;
     public final List<Controller> controllers;
 
+    public VisionSensor visionSensor;
+    public RobotState state;
+
+
     public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         robot = this;
         this.telemetry = telemetry;
@@ -30,6 +35,8 @@ public class Robot {
         armController = new ArmController(hardwareMap, telemetry);
         droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
         controllers = Arrays.asList(mecanumDriveController, pixelMoverController, armController, droneLauncherController);
+
+        state = new RobotState();
 
         telemetry.addLine("[Robot] controllers initialized");
     }
