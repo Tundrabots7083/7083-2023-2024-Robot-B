@@ -51,6 +51,8 @@ public class BlueAllianceBackstage extends LinearOpMode {
         // Deposit the purple pixel
         robot.pixelMoverController.dropOffPixels(); // TODO: Update when Ovies pushes changes to PixelMover
 
+        sleep(3000);
+
         telemetry.addLine("Driving to parking spot");
         telemetry.update();
         // Drive to the parking spot
