@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.controls.ArmController;
 import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
 import org.firstinspires.ftc.teamcode.controls.PixelMoverController;
 
@@ -16,6 +17,7 @@ public class Robot {
     public MecanumDriveController mecanumDriveController;
     public PixelMoverController pixelMoverController;
     public ArmController armController;
+    public DroneLauncherController droneLauncherController;
     private final Telemetry telemetry;
     public final List<Controller> controllers;
 
@@ -26,7 +28,8 @@ public class Robot {
         mecanumDriveController = new MecanumDriveController(hardwareMap, telemetry);
         pixelMoverController = new PixelMoverController(hardwareMap, telemetry);
         armController = new ArmController(hardwareMap, telemetry);
-        controllers = Arrays.asList(mecanumDriveController, pixelMoverController, armController);
+        droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
+        controllers = Arrays.asList(mecanumDriveController, pixelMoverController, armController, droneLauncherController);
 
         telemetry.addLine("[Robot] controllers initialized");
     }
