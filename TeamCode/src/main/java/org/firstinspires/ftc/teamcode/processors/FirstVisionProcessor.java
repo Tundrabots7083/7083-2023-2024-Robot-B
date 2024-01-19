@@ -18,18 +18,12 @@ import org.opencv.imgproc.Imgproc;
 
 @Config
 public class FirstVisionProcessor implements VisionProcessor {
-    public enum Selected {
-        NONE,
-        LEFT,
-        MIDDLE,
-        RIGHT
-    }
 
     public static double MIN_PERCENT_DIFFERENCE = 32;
     public Rect rectLeft = new Rect(0, 365, 155, 105);
     public Rect rectMiddle = new Rect(250, 345, 240, 95);
 
-    Selected selection = Selected.NONE;
+    TeamElementLocation selection = TeamElementLocation.NONE;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
 
@@ -52,13 +46,13 @@ public class FirstVisionProcessor implements VisionProcessor {
         telemetry.addData("Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
-            return Selected.RIGHT;
+            return TeamElementLocation.RIGHT;
         } else if (satRectLeft > satRectMiddle) {
-            return Selected.LEFT;
+            return TeamElementLocation.LEFT;
         } else if (satRectMiddle > satRectLeft) {
-            return Selected.MIDDLE;
+            return TeamElementLocation.MIDDLE;
         }
-        return Selected.RIGHT;
+        return TeamElementLocation.RIGHT;
     }
 
     private double getPercentDifference(double val1, double val2) {
@@ -93,7 +87,7 @@ public class FirstVisionProcessor implements VisionProcessor {
         android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft, scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleMiddle = makeGraphicsRect(rectMiddle, scaleBmpPxToCanvasPx);
 
-        selection = (Selected) userContext;
+        selection = (TeamElementLocation) userContext;
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Selection", selection);
         switch (selection) {
@@ -116,7 +110,7 @@ public class FirstVisionProcessor implements VisionProcessor {
         }
     }
 
-    public Selected getSelection() {
+    public TeamElementLocation getSelection() {
         return selection;
     }
 }

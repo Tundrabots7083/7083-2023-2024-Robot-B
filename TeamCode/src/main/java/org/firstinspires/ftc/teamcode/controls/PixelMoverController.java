@@ -57,4 +57,8 @@ public class PixelMoverController implements Controller {
             bButtonPressed = false;
         }
     }
+
+    public void dropOffPixels() {
+        pixelMover.dropOffPixels();
+    }
 }

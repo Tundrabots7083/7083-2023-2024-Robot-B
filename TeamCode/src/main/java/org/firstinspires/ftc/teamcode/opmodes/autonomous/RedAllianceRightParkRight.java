@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -12,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Red Alliance Right", group ="Active")
@@ -41,7 +41,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
 
         // Find the randomized team prop. This must be after waitForStart() to allow for
         // randomization
-        FirstVisionProcessor.Selected selection = visionProcessor.getSelection();
+        TeamElementLocation selection = visionProcessor.getSelection();
         telemetry.addData("Spike Mark", selection);
         // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
