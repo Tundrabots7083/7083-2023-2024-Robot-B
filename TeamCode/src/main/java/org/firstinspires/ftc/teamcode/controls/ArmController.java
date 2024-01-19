@@ -60,9 +60,7 @@ public class ArmController implements Controller {
         }
 
         // Automatic update of controls
-        if (gamepad1.right_bumper) {
-            arm.setTarget(Arm.Position.LaunchDrone);
-        } else if (gamepad1.dpad_down) {
+        if (gamepad1.dpad_down) {
             arm.setTarget(Arm.Position.Intake);
         } else if (gamepad1.dpad_left) {
             arm.setTarget(Arm.Position.ScoreLow);
@@ -70,6 +68,8 @@ public class ArmController implements Controller {
             arm.setTarget(Arm.Position.ScoreMedium);
         } else if (gamepad1.dpad_up) {
             arm.setTarget(Arm.Position.ScoreHigh);
+        } else if (gamepad1.x) {
+            arm.setTarget(Arm.Position.LaunchDrone);
         } else if (gamepad1.y) {
             arm.setTarget(Arm.Position.Hang);
         }
