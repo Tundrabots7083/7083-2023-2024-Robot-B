@@ -25,13 +25,6 @@ public class PrimaryTeleOp extends OpMode {
     }
 
     @Override
-    public void start() {
-        robot.pixelMoverController.start(telemetry);
-        telemetry.addLine("Brush roller dropped.");
-        telemetry.update();
-    }
-
-    @Override
     public void loop() {
         for (Controller controller : robot.controllers) {
             controller.execute(gamepad1, gamepad2, telemetry);
