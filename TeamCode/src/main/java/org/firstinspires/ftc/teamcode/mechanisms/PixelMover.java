@@ -130,10 +130,7 @@ public class PixelMover implements Mechanism {
             // Stop picking up pixels.
             brushRoller.setPower(STOPPED_POWER);
             containerRoller.setPower(CONTAINER_ROLLER_STOPPED_POWER);
-            // containerRoller.setPwmDisable();
-            // Lock bottom pixel.
-            containerMiddleLock.setPosition(MIDDLE_LOCK_LOCKED_POSITION);
-            state = PixelMoverState.STOPPED;
+            lockBottomPixel();
         }
     }
 
@@ -171,6 +168,16 @@ public class PixelMover implements Mechanism {
             state = PixelMoverState.STOPPED;
         }
     }
+
+    /**
+     * Locks the bottom pixel in the container.
+     *
+     */
+    public void lockBottomPixel() {
+        containerMiddleLock.setPosition(MIDDLE_LOCK_LOCKED_POSITION);
+        state = PixelMoverState.STOPPED;
+    }
+
     @Override
     public String toString() {
         return string();
