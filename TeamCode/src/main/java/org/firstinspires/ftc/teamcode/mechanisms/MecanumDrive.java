@@ -109,12 +109,15 @@ public class MecanumDrive implements Mechanism {
     }
 
     private double getAdjustedPower(double power) {
+        return power;
+        /*
         double sign = 1;
         if (power < 0) {
             sign = -1;
         }
         double adjustedPower = Math.sqrt(Math.abs(power)) * sign;
         return adjustedPower;
+        */
     }
 
     /**
