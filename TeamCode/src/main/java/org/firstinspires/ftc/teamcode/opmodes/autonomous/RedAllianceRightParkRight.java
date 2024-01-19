@@ -48,7 +48,7 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         // randomization
         FirstVisionProcessor.Selected selection = visionProcessor.getSelection();
         telemetry.addData("Spike Mark", selection);
-        // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
+        visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
         switch (selection) {
             case LEFT:
