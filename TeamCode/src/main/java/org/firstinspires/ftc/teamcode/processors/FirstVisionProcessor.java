@@ -46,13 +46,13 @@ public class FirstVisionProcessor implements VisionProcessor {
         telemetry.addData("Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
-            return TeamElementLocation.RIGHT;
+            return TeamElementLocation.OUTER;
         } else if (satRectLeft > satRectMiddle) {
-            return TeamElementLocation.LEFT;
+            return TeamElementLocation.INNER;
         } else if (satRectMiddle > satRectLeft) {
             return TeamElementLocation.MIDDLE;
         }
-        return TeamElementLocation.RIGHT;
+        return TeamElementLocation.OUTER;
     }
 
     private double getPercentDifference(double val1, double val2) {
@@ -91,7 +91,7 @@ public class FirstVisionProcessor implements VisionProcessor {
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Selection", selection);
         switch (selection) {
-            case LEFT:
+            case INNER:
                 canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;
@@ -99,7 +99,7 @@ public class FirstVisionProcessor implements VisionProcessor {
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 break;
-            case RIGHT:
+            case OUTER:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;

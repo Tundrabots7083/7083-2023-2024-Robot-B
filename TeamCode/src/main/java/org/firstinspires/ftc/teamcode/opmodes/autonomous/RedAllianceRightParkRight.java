@@ -46,11 +46,11 @@ public class RedAllianceRightParkRight extends LinearOpMode {
         // visionPortal.close(); // TODO: to use the vision portal elsewhere, then remove this line
 
         switch (selection) {
-            case LEFT:
+            case INNER:
                 telemetry.addLine("Left Spike Mark");
                 telemetry.update();
                 break;
-            case RIGHT:
+            case OUTER:
                 telemetry.addLine("Right Spike Mark");
                 telemetry.update();
                 break;

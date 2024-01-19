@@ -12,25 +12,27 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 
 public class AutonomousBehaviorTreeNodes {
 
-    public static final int RED_FRONTSTAGE_LEFT_SPIKE_X = -46;
-    public static final int RED_FRONTSTAGE_LEFT_SPIKE_Y = -40;
-    public static final int RED_FRONTSTAGE_LEFT_SPIKE_HEADING = 90;
+    public static final int RED_LEFT_LEFT_SPIKE_X = -46;
+    public static final int RED_LEFT_LEFT_SPIKE_Y = -40;
+    public static final int RED_LEFT_LEFT_SPIKE_HEADING = 90;
 
-    public static final int RED_FRONTSTAGE_RIGHT_SPIKE_X = -36;
-    public static final int RED_FRONTSTAGE_RIGHT_SPIKE_Y = -34;
-    public static final int RED_FRONTSTAGE_RIGHT_SPIKE_HEADING = 0;
+    public static final int RED_LEFT_RIGHT_SPIKE_X = -36;
+    public static final int RED_LEFT_RIGHT_SPIKE_Y = -34;
+    public static final int RED_LEFT_RIGHT_SPIKE_HEADING = 0;
 
-    public static final int RED_FRONTSTAGE_MIDDLE_SPIKE_X = -40;
-    public static final int RED_FRONTSTAGE_MIDDLE_SPIKE_Y = -40;
-    public static final int RED_FRONTSTAGE_MIDDLE_SPIKE_HEADING = 90;
+    public static final int RED_LEFT_MIDDLE_SPIKE_X = -40;
+    public static final int RED_LEFT_MIDDLE_SPIKE_Y = -40;
+    public static final int RED_LEFT_MIDDLE_SPIKE_HEADING = 90;
 
-    public static final int RED_FRONTSTAGE_POST_SPIKE_X = -40;
-    public static final int RED_FRONTSTAGE_POST_SPIKE_Y = -40;
-    public static final int RED_FRONTSTAGE_POST_SPIKE_HEADING = 90;
+    public static final int RED_LEFT_POST_SPIKE_X = -40;
+    public static final int RED_LEFT_POST_SPIKE_Y = -40;
+    public static final int RED_LEFT_POST_SPIKE_HEADING = 90;
 
-    public static final int RED_PRE_BACKDROP_X = -34;
-    public static final int RED_PRE_BACKDROP_Y = -58;
-    public static final int RED_PRE_BACKDROP_HEADING = 0;
+    public static final int RED_LEFT_PRE_STAGE_X = -35;
+    public static final int RED_LEFT_PRE_STAGE_Y = -58;
+    public static final int RED_LEFT_PRE_STAGE_HEADING = -58;
+    public static final int RED_LEFT_POST_STAGE_X = 35;
+
 
 
 
@@ -43,20 +45,20 @@ public class AutonomousBehaviorTreeNodes {
 
 
         switch (targetLocation) {
-            case LEFT:
-                x = isBackstage ? RED_FRONTSTAGE_LEFT_SPIKE_X : RED_FRONTSTAGE_LEFT_SPIKE_X;
-                y = isBackstage ? RED_FRONTSTAGE_LEFT_SPIKE_Y : RED_FRONTSTAGE_LEFT_SPIKE_Y;
-                heading = isBackstage ? RED_FRONTSTAGE_LEFT_SPIKE_HEADING : RED_FRONTSTAGE_LEFT_SPIKE_HEADING;
+            case INNER:
+                x = isBackstage ? RED_LEFT_LEFT_SPIKE_X : RED_LEFT_LEFT_SPIKE_X;
+                y = isBackstage ? RED_LEFT_LEFT_SPIKE_Y : RED_LEFT_LEFT_SPIKE_Y;
+                heading = isBackstage ? RED_LEFT_LEFT_SPIKE_HEADING : RED_LEFT_LEFT_SPIKE_HEADING;
                 break;
-            case RIGHT:
-                x = isBackstage ? RED_FRONTSTAGE_RIGHT_SPIKE_X : RED_FRONTSTAGE_RIGHT_SPIKE_X;
-                y = isBackstage ? RED_FRONTSTAGE_RIGHT_SPIKE_Y : RED_FRONTSTAGE_RIGHT_SPIKE_Y;
-                heading = isBackstage ? RED_FRONTSTAGE_RIGHT_SPIKE_HEADING : RED_FRONTSTAGE_RIGHT_SPIKE_HEADING;
+            case OUTER:
+                x = isBackstage ? RED_LEFT_RIGHT_SPIKE_X : RED_LEFT_RIGHT_SPIKE_X;
+                y = isBackstage ? RED_LEFT_RIGHT_SPIKE_Y : RED_LEFT_RIGHT_SPIKE_Y;
+                heading = isBackstage ? RED_LEFT_RIGHT_SPIKE_HEADING : RED_LEFT_RIGHT_SPIKE_HEADING;
                 break;
             case MIDDLE:
-                x = isBackstage ? RED_FRONTSTAGE_MIDDLE_SPIKE_X : RED_FRONTSTAGE_MIDDLE_SPIKE_X;
-                y = isBackstage ? RED_FRONTSTAGE_MIDDLE_SPIKE_Y : RED_FRONTSTAGE_MIDDLE_SPIKE_Y;
-                heading = isBackstage ? RED_FRONTSTAGE_MIDDLE_SPIKE_HEADING : RED_FRONTSTAGE_MIDDLE_SPIKE_HEADING;
+                x = isBackstage ? RED_LEFT_MIDDLE_SPIKE_X : RED_LEFT_MIDDLE_SPIKE_X;
+                y = isBackstage ? RED_LEFT_MIDDLE_SPIKE_Y : RED_LEFT_MIDDLE_SPIKE_Y;
+                heading = isBackstage ? RED_LEFT_MIDDLE_SPIKE_HEADING : RED_LEFT_MIDDLE_SPIKE_HEADING;
                 break;
         }
 
@@ -105,7 +107,6 @@ public class AutonomousBehaviorTreeNodes {
         double x = 0;
         double y = 0;
         double heading = 0;
-
 
 
 

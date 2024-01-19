@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.processors;
 
 public enum TeamElementLocation {
     NONE,
-    LEFT,
+    INNER,
     MIDDLE,
-    RIGHT
+    OUTER
 }
