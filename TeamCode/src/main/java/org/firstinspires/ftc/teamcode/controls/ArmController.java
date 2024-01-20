@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Arm;
 public class ArmController implements Controller {
     private final Arm arm;
     private Telemetry telemetry;
+    private boolean manualOverride = false;
 
     /**
      * Initializes the arm hardware.
@@ -41,8 +42,30 @@ public class ArmController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+        // Automatic update of controls
+        if (gamepad1.dpad_down) {
+            arm.setTarget(Arm.Position.Intake);
+            manualOverride = false;
+        } else if (gamepad1.dpad_left) {
+            arm.setTarget(Arm.Position.ScoreLow);
+            manualOverride = false;
+        } else if (gamepad1.dpad_right) {
+            arm.setTarget(Arm.Position.ScoreMedium);
+            manualOverride = false;
+        } else if (gamepad1.dpad_up) {
+            arm.setTarget(Arm.Position.ScoreHigh);
+            manualOverride = false;
+        } else if (gamepad1.x) {
+            arm.setTarget(Arm.Position.LaunchDrone);
+            manualOverride = false;
+        } else if (gamepad1.y) {
+            arm.setTarget(Arm.Position.Hang);
+            manualOverride = false;
+        }
+
         // Manual override of controls
-        if (gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0) {
+        if (manualOverride || (gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0)) {
+            manualOverride = true;
             if (gamepad1.left_trigger > 0.0) {
                 // arm.disableRunToPosition();
                 arm.setArmPower(gamepad1.left_trigger);
@@ -57,21 +80,6 @@ public class ArmController implements Controller {
                 telemetry.addData("[ARM] Power", 0.0);
             }
             return ;
-        }
-
-        // Automatic update of controls
-        if (gamepad1.dpad_down) {
-            arm.setTarget(Arm.Position.Intake);
-        } else if (gamepad1.dpad_left) {
-            arm.setTarget(Arm.Position.ScoreLow);
-        } else if (gamepad1.dpad_right) {
-            arm.setTarget(Arm.Position.ScoreMedium);
-        } else if (gamepad1.dpad_up) {
-            arm.setTarget(Arm.Position.ScoreHigh);
-        } else if (gamepad1.x) {
-            arm.setTarget(Arm.Position.LaunchDrone);
-        } else if (gamepad1.y) {
-            arm.setTarget(Arm.Position.Hang);
         }
 
         arm.update();
