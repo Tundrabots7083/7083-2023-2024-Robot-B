@@ -6,21 +6,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.autonomous.BlueBackstageTrajectoryGenerator;
-import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.BlueFrontstageTrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
-@Autonomous(name="Blue Alliance Backstage", group="Autonomous")
-public class BlueAllianceBackstage extends LinearOpMode {
+@Autonomous(name="Blue Alliance Frontstage", group="Autonomous")
+public class BlueAllianceFrontstage extends LinearOpMode {
 
     public static final Pose2d STARTING_POSE = new Pose2d(12, 63.5, Math.toRadians(-90));
 
     @Override
     public void runOpMode() throws InterruptedException {
-
 
         VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"));
 
@@ -46,8 +44,7 @@ public class BlueAllianceBackstage extends LinearOpMode {
         telemetry.addData("Element", element);
         telemetry.update();
 
-        TrajectoryGenerator trajectoryGenerator = new BlueBackstageTrajectoryGenerator(TeamElementLocation.OUTER);
-
+        BlueFrontstageTrajectoryGenerator trajectoryGenerator = new BlueFrontstageTrajectoryGenerator(TeamElementLocation.OUTER);
 
         Trajectory toSpikeMark = trajectoryGenerator.toSpikeMark(drive.trajectoryBuilder(STARTING_POSE));
 
@@ -65,6 +62,15 @@ public class BlueAllianceBackstage extends LinearOpMode {
 
         telemetry.addLine("Driving to parking spot");
         telemetry.update();
+
+        // Prepare to drive under the stage
+        Trajectory toPreStageCrossing = trajectoryGenerator.toPreStageCrossing(drive.trajectoryBuilder(drive.getPoseEstimate()));
+        drive.followTrajectory(toPreStageCrossing);
+
+        telemetry.addLine("Preparing to drive under stage");
+        telemetry.update();
+
+
         // Drive to the parking spot
         Trajectory toParkingSpot = trajectoryGenerator.toParkingSpot(drive.trajectoryBuilder(drive.getPoseEstimate()));
         drive.followTrajectory(toParkingSpot);
