@@ -58,13 +58,14 @@ public class MeepMeepTesting {
 //                                .build()
 //                );
 
-        BlueBackstageTrajectoryBuilder blueBackstageTrajectoryBuilder = new BlueBackstageTrajectoryBuilder();
+        AutonomousTrajectoryBuilder trajectoryBuilder = new BlueFrontstageTrajectoryBuilder();
+//        AutonomousTrajectoryBuilder trajectoryBuilder = new BlueBackstageTrajectoryBuilder();
 
         RoadRunnerBotEntity redAllianceRight = new DefaultBotBuilder(meepMeep)
             .setColorScheme(new ColorSchemeRedDark())
             .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 14)
             .followTrajectorySequence(drive ->
-                    blueBackstageTrajectoryBuilder.getTrajectory(TeamElementLocation.MIDDLE, drive)
+                    trajectoryBuilder.getTrajectory(TeamElementLocation.OUTER, drive)
             );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
