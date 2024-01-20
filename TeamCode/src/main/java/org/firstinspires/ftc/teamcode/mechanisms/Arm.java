@@ -35,7 +35,7 @@ public class Arm implements Mechanism {
         Start(0, 0, 0.65),
         ReleaseRoller(1200, 0, 0),
         Hang(2000, 0, 0.65),
-        LaunchDrone(1225, 0, 0.9);
+        LaunchDrone(1605, 0, 1.0);
 
         private final int armPosition;
         private final int liftPosition;
