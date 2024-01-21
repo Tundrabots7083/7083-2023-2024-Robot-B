@@ -24,10 +24,13 @@ public class ArmController implements Controller {
     }
 
     public void start() {
-        arm.setTarget(Arm.Position.Start);
+        arm.setTarget(Arm.Position.Intake);
+        arm.update();
     }
 
     public void setToLauncheDrone() {
+        arm.setTarget(Arm.Position.Start);
+        arm.update();
         arm.setTarget(Arm.Position.LaunchDrone);
         while (!arm.isAtTarget()) {
             arm.update();

@@ -24,6 +24,12 @@ public class PrimaryTeleOp extends OpMode {
     }
 
     @Override
+    public void start() {
+        robot.armController.start();
+        telemetry.addLine("Robot Started");
+    }
+
+    @Override
     public void loop() {
         for (Controller controller : robot.controllers) {
             controller.execute(gamepad1, gamepad2, telemetry);

@@ -106,15 +106,18 @@ public class PixelMover implements Mechanism {
      *   - Drop the brush roller.
      *   - Lock the pixels in the container.
      */
-    public void start(Telemetry telemetry) {
+    public void start(Telemetry telemetry, boolean lock) {
         brushRoller.setPower(BRUSH_ROLLER_FORWARD_POWER);
         try {
-            Thread.sleep(250);
+            Thread.sleep(3000);
         } catch (Exception e) {
             telemetry.addLine("PixelMover:  Exception thrown trying to do sleep in start method.");
         }
         brushRoller.setPower(STOPPED_POWER);
-        lockPixels();
+
+        if (lock) {
+            lockPixels();
+        }
     }
 
     /**

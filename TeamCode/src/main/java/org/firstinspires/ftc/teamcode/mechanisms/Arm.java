@@ -28,14 +28,14 @@ public class Arm implements Mechanism {
      * Position defines the position of the arm and pixel container.
      */
     public enum Position {
-        Intake(0, 0, 0.65),
+        Intake(0, 0, 0.61),
         ScoreLow(2900, 0, 0.25),
         ScoreMedium(2750, 0, 0.25),
         ScoreHigh(2500, 0, 0.25),
-        Start(0, 0, 0.65),
+        Start(0, 0, 0.25),
         ReleaseRoller(1200, 0, 0),
         Hang(2000, 0, 0.65),
-        LaunchDrone(1605, 0, 1.0);
+        LaunchDrone(1455, 0, 1.0);
 
         private final int armPosition;
         private final int liftPosition;
@@ -55,9 +55,9 @@ public class Arm implements Mechanism {
     }
 
     // PID control constants. TODO: change to private final once tuned
-    public static double ARM_KP = 0.0095;
-    public static double ARM_KI = 0.0001;
-    public static double ARM_KD = 0.0005;
+    public static double ARM_KP = 0.0053;
+    public static double ARM_KI = 0.0;
+    public static double ARM_KD = 0.0;
     public static double LIFT_KP = 0.0;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
@@ -207,6 +207,12 @@ public class Arm implements Mechanism {
         }
 
         return power;
+    }
+
+    public void start() {
+        target = Position.Intake;
+        containerServo.setPosition(target.servoPosition);
+        update();
     }
 
     /**
