@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Arm;
  */
 public class ArmController implements Controller {
     private final Arm arm;
-    private Telemetry telemetry;
+    private final Telemetry telemetry;
     private boolean manualOverride = false;
 
     /**
@@ -28,23 +28,13 @@ public class ArmController implements Controller {
         arm.update();
     }
 
-    public void setToLauncheDrone() {
-        arm.setTarget(Arm.Position.Start);
-        arm.update();
-        arm.setTarget(Arm.Position.LaunchDrone);
-        while (!arm.isAtTarget()) {
-            arm.update();
-        }
-    }
-
     /**
      * Sets the position of the arm, and calls the arm to update the position.
      * @param gamepad1 the gamepad1 controller for the arm.
-     * @param gamepad1 the gamepad2 controller for the arm.
-     * @param telemetry the telemetry used to output data for the arm.
+     * @param gamepad2 the gamepad2 controller for the arm.
      */
     @Override
-    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+    public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         // Automatic update of controls
         if (gamepad1.dpad_down) {
             arm.setTarget(Arm.Position.Intake);
@@ -70,12 +60,10 @@ public class ArmController implements Controller {
         if (manualOverride || (gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0)) {
             manualOverride = true;
             if (gamepad1.left_trigger > 0.0) {
-                // arm.disableRunToPosition();
                 arm.setArmPower(gamepad1.left_trigger);
                 telemetry.addData("[ARM] Power", gamepad1.left_trigger);
             }
             else if (gamepad1.right_trigger > 0.0) {
-                // arm.disableRunToPosition();
                 arm.setArmPower(-gamepad1.right_trigger);
                 telemetry.addData("[ARM] Power", -gamepad1.right_trigger);
             } else {
@@ -90,30 +78,7 @@ public class ArmController implements Controller {
         telemetry.addData("[ARM] At Target", arm.isAtTarget());
         telemetry.addData("[ARM] Arm Target Pos", arm.getTargetArmPosition());
         telemetry.addData("[ARM] Arm Current Pos", arm.getCurrentArmPosition());
-        // telemetry.addData("[ARM] Lift Target Pos", arm.getTargetLiftPosition());
-        // telemetry.addData("[ARM] Lift Current Pos", arm.getCurrentLiftPosition());
         telemetry.addData("[ARM] Servo Target Pos", arm.getTargetContainerServoPosition());
         telemetry.addData("[ARM] Servo Current Pos", arm.getCurrentContainerServoPosition());
-
-        /*
-
-        if (gamepad1.left_trigger > 0.0) {
-            // arm.disableRunToPosition();
-            arm.setArmPower(gamepad1.left_trigger);
-            telemetry.addData("[ARM] Power", gamepad1.left_trigger);
-        }
-        else if (gamepad1.right_trigger > 0.0) {
-            // arm.disableRunToPosition();
-            arm.setArmPower(-gamepad1.right_trigger);
-            telemetry.addData("[ARM] Power", -gamepad1.right_trigger);
-        } else {
-            arm.setArmPower(0.0);
-            telemetry.addData("[ARM] Power", 0.0);
-        }
-         */
-    }
-
-    Arm getArm() {
-        return arm;
     }
 }

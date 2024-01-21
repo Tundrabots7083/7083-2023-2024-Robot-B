@@ -20,6 +20,6 @@ public class TestArm extends OpMode {
 
     @Override
     public void loop() {
-        armController.execute(gamepad1, gamepad2, telemetry);
+        armController.execute(gamepad1, gamepad2);
     }
 }

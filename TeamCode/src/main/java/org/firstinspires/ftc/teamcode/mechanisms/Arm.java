@@ -15,7 +15,6 @@ import com.qualcomm.robotcore.util.Range;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
-import org.firstinspires.ftc.teamcode.utils.SizedStack;
 
 import java.util.Collection;
 
@@ -28,18 +27,17 @@ public class Arm implements Mechanism {
      * Position defines the position of the arm and pixel container.
      */
     public enum Position {
+        Start(0, 0, 0),
         Intake(0, 0, 0.61),
         ScoreLow(2900, 0, 0.25),
         ScoreMedium(2750, 0, 0.25),
         ScoreHigh(2500, 0, 0.25),
-        Start(0, 0, 0.25),
-        ReleaseRoller(1200, 0, 0),
         Hang(2000, 0, 0.65),
         LaunchDrone(1455, 0, 1.0);
 
-        private final int armPosition;
-        private final int liftPosition;
-        private final double servoPosition;
+        public final int armPosition;
+        public final int liftPosition;
+        public  final double servoPosition;
 
         /**
          * Creates a new Position for the given arm and servo.
@@ -58,9 +56,6 @@ public class Arm implements Mechanism {
     public static double ARM_KP = 0.0053;
     public static double ARM_KI = 0.0;
     public static double ARM_KD = 0.0;
-    public static double LIFT_KP = 0.0;
-    public static double LIFT_KI = 0.0;
-    public static double LIFT_KD = 0.0;
     public static double INTEGRAL_LIMIT = 1;
 
     public static int TOLERABLE_ERROR = 20;
@@ -70,16 +65,14 @@ public class Arm implements Mechanism {
     private final String deviceName;
     private final String description;
 
-    private DcMotorEx armMotor;
+    private final DcMotorEx armMotor;
     // private DcMotorEx liftMotor;
-    private Servo containerServo;
+    private final Servo containerServo;
 
     private PIDController armController;
     // private PIDFController liftController;
 
     private Position target = Position.Start;
-
-    private final SizedStack<Integer> armPosition = new SizedStack<>(100);
 
     /**
      * Creates a new scoring arm with the given device name and description.
@@ -95,12 +88,9 @@ public class Arm implements Mechanism {
         containerServo = hardwareMap.get(Servo.class, "containerFlip");
 
         initMotor(armMotor);
-        // initMotor(liftMotor);
 
         armController = new PIDController(new PIDCoefficients(ARM_KP, ARM_KI, ARM_KD));
         armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
-        // liftController = new PIDFController(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
-        // liftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
     }
 
     /**
@@ -123,13 +113,9 @@ public class Arm implements Mechanism {
     public boolean isAtTarget() {
         int armPos = armMotor.getCurrentPosition();
         boolean atTarget = Math.abs(target.armPosition - armPos) <= TOLERABLE_ERROR;
-        // if (atTarget) {
-            // int liftPos = liftMotor.getCurrentPosition();
-            // atTarget = Math.abs(target.liftPosition - liftPos) <= TOLERABLE_ERROR;
-        // }
         if (atTarget) {
             double servoPos = getCurrentContainerServoPosition();
-            atTarget = servoPos == target.servoPosition;
+            atTarget = (servoPos == target.servoPosition);
         }
         return atTarget;
     }
@@ -145,10 +131,6 @@ public class Arm implements Mechanism {
         }
     }
 
-    public void disableRunToPosition() {
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
     public void setArmPower(double power) {
         power = Range.clip(power, -1, 1);
         armMotor.setPower(power);
@@ -162,25 +144,7 @@ public class Arm implements Mechanism {
 
         // Short-circuit the processing if the arm is at it's target
         if (isAtTarget()) {
-            armPosition.clear();
             return;
-        }
-
-        // Check for the "smack of doom" scenario
-        armPosition.push(armMotor.getCurrentPosition());
-        if (armPosition.size() == armPosition.capacity()) {
-            boolean posChanged = false;
-            int lastPos = armPosition.get(0);
-            for (int i = 1; i < armPosition.size(); i++) {
-                if (lastPos != armPosition.get(i)) {
-                    posChanged = true;
-                    break;
-                }
-            }
-            if (!posChanged) {
-                telemetry.addLine("[ARM] Smack of Doom!!!");
-                return;
-            }
         }
 
         // No "smack of doom", so update the power for the arm and lift, and make sure the container
@@ -188,8 +152,6 @@ public class Arm implements Mechanism {
         double power = calculate(armController, target.armPosition, armMotor.getCurrentPosition());
         telemetry.addData("[ARM] Power", power);
         armMotor.setPower(power);
-        // power = calculate(liftController);
-        // liftMotor.setPower(power);
         containerServo.setPosition(target.servoPosition);
     }
 
@@ -221,17 +183,11 @@ public class Arm implements Mechanism {
     private void resetPIDController() {
         armController = new PIDController(new PIDCoefficients(ARM_KP, ARM_KI, ARM_KD));
         armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
-        // liftController.reset();
-        // liftController.setPIDF(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
     }
 
     public int getCurrentArmPosition() {
         return armMotor.getCurrentPosition();
     }
-
-    // public int getCurrentLiftPosition() {
-    //    return liftMotor.getCurrentPosition();
-    // }
 
     public double getCurrentContainerServoPosition() {
         double servoPos = containerServo.getPosition();
@@ -242,10 +198,6 @@ public class Arm implements Mechanism {
 
     public int getTargetArmPosition() {
         return target.armPosition;
-    }
-
-    public int getTargetLiftPosition() {
-        return target.liftPosition;
     }
 
     public double getTargetContainerServoPosition() {

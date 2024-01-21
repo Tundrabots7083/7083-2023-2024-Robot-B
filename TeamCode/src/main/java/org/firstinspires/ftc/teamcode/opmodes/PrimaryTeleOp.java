@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.controls.Controller;
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {
     private Robot robot;
+    private boolean started = false;
 
     @Override
     public void init() {
@@ -31,8 +32,14 @@ public class PrimaryTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        // TODO: see if this drops the container flip servo
+        if (!started) {
+            robot.armController.start();
+            telemetry.addLine("Robot Started");
+            started = true;
+        }
         for (Controller controller : robot.controllers) {
-            controller.execute(gamepad1, gamepad2, telemetry);
+            controller.execute(gamepad1, gamepad2);
         }
         telemetry.update();
     }

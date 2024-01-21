@@ -20,7 +20,7 @@ public class TestDroneLauncher extends OpMode {
 
     @Override
     public void loop() {
-        droneLauncherController.execute(gamepad1, gamepad2, telemetry);
+        droneLauncherController.execute(gamepad1, gamepad2);
     }
 }
 

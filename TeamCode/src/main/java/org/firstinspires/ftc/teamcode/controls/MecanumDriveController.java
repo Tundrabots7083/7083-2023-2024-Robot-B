@@ -34,7 +34,7 @@ public class MecanumDriveController implements Controller {
         }
         bumperPressed = gamepad.right_bumper || gamepad.left_bumper;
     }
-    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+    public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         setGain(gamepad1);
 
         double x = gamepad1.left_stick_x * driveGain;

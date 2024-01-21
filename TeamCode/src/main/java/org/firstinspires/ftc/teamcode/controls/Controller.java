@@ -9,5 +9,5 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Controller is the base interface for all controls on the robot.
  */
 public interface Controller {
-    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry);
+    public void execute(Gamepad gamepad1, Gamepad gamepad2);
 }

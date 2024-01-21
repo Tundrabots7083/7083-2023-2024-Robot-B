@@ -26,7 +26,7 @@ public class PixelMoverController implements Controller {
      * @param gamepad2
      * @param telemetry
      */
-    public void execute(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+    public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         if (!aButtonPressed && gamepad1.a) {
             // User pressed the a button
             aButtonPressed = true;

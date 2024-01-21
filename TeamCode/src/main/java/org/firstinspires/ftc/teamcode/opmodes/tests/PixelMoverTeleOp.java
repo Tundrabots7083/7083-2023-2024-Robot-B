@@ -21,6 +21,6 @@ public class PixelMoverTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        pixelMoverController.execute(gamepad1, gamepad2, telemetry);
+        pixelMoverController.execute(gamepad1, gamepad2);
     }
 }
