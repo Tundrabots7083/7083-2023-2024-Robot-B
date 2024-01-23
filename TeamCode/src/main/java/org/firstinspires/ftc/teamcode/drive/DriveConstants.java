@@ -46,11 +46,11 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 1.8898; // in
+    public static double WHEEL_RADIUS = 1.88976378; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 12.18; // in
+    public static double TRACK_WIDTH = 11.24; // in
     public static double WHEEL_BASE = 14; // in
-    public static double LATERAL_MULTIPLIER = 1.44;
+    public static double LATERAL_MULTIPLIER = 1.23076923;
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -59,9 +59,9 @@ public class DriveConstants {
      * empirically tuned.
      */
     // public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
-    public static double kV = 0.002;
-    public static double kA = 0.01375;
-    public static double kStatic = 0.015;
+    public static double kV = 0.01185;
+    public static double kA = 0.0022;
+    public static double kStatic = 0.0797;
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -93,7 +93,7 @@ public class DriveConstants {
      */
     public static double MAX_VEL = 45;
     public static double MAX_ACCEL = 73.17330064499293;
-    public static double MAX_ANG_VEL = 4.878010705498652;
+    public static double MAX_ANG_VEL = 4.754158634666015;
     public static double MAX_ANG_ACCEL = Math.toRadians(349.376775);
 
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;

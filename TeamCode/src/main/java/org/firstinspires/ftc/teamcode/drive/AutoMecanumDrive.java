@@ -65,8 +65,8 @@ public class AutoMecanumDrive extends Drive {
     private TrajectoryFollower follower;
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0.009, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(19, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0.0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
     private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
 

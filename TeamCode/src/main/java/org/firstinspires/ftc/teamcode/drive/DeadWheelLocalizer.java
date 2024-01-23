@@ -33,9 +33,10 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 0.944882; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    // TODO: measure these
-    public static double LATERAL_DISTANCE = 8.5; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = -7.25; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 8.45597644273896; // in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = -7.75; // in; offset of the lateral wheel
+    public static double X_MULTIPLIER = 0.99346005;
+    public static double Y_MULTIPLIER = 1.00843467;
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
@@ -58,7 +59,7 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
         // TODO: may need to set to FORWARD
         leftEncoder.setDirection(Encoder.Direction.REVERSE);
         rightEncoder.setDirection(Encoder.Direction.REVERSE);
-        frontEncoder.setDirection(Encoder.Direction.REVERSE);
+        frontEncoder.setDirection(Encoder.Direction.FORWARD);
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -78,9 +79,9 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
         lastEncPositions.add(frontPos);
 
         return Arrays.asList(
-                encoderTicksToInches(leftPos),
-                encoderTicksToInches(rightPos),
-                encoderTicksToInches(frontPos)
+                encoderTicksToInches(leftPos) * X_MULTIPLIER,
+                encoderTicksToInches(rightPos) * X_MULTIPLIER,
+                encoderTicksToInches(frontPos) * Y_MULTIPLIER
         );
     }
 
@@ -97,9 +98,9 @@ public class DeadWheelLocalizer extends ThreeTrackingWheelLocalizer {
         lastEncVels.add(frontVel);
 
         return Arrays.asList(
-                encoderTicksToInches(leftVel),
-                encoderTicksToInches(rightVel),
-                encoderTicksToInches(frontVel)
+                encoderTicksToInches(leftVel) * X_MULTIPLIER,
+                encoderTicksToInches(rightVel) * X_MULTIPLIER,
+                encoderTicksToInches(frontVel) * Y_MULTIPLIER
         );
     }
 }
