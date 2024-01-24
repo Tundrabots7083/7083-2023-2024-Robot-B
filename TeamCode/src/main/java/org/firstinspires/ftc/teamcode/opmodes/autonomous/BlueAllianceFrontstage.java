@@ -13,11 +13,10 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
-@Disabled
 @Autonomous(name="Blue Alliance Frontstage", group="Autonomous")
 public class BlueAllianceFrontstage extends LinearOpMode {
 
-    public static final Pose2d STARTING_POSE = new Pose2d(12, 63.5, Math.toRadians(-90));
+    public static final Pose2d STARTING_POSE = new Pose2d(-36, 63.5, Math.toRadians(-90));
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -25,6 +24,7 @@ public class BlueAllianceFrontstage extends LinearOpMode {
         VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"));
 
         AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry);
+        drive.setPoseEstimate(STARTING_POSE);
 
         PixelMover pixelMover = new PixelMover("pixelMover", "Collects pixels and moves them", hardwareMap);
 
@@ -66,15 +66,14 @@ public class BlueAllianceFrontstage extends LinearOpMode {
         telemetry.update();
 
         // Prepare to drive under the stage
-        Trajectory toPreStageCrossing = trajectoryGenerator.toPreStageCrossing(drive.trajectoryBuilder(drive.getPoseEstimate()));
+        Trajectory toPreStageCrossing = trajectoryGenerator.toPreStageCrossing(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toPreStageCrossing);
 
         telemetry.addLine("Preparing to drive under stage");
         telemetry.update();
 
-
         // Drive to the parking spot
-        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpot(drive.trajectoryBuilder(drive.getPoseEstimate()));
+        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpot(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toParkingSpot);
 
         while (opModeIsActive()) {

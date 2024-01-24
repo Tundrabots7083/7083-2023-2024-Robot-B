@@ -19,6 +19,7 @@ public class VisionSensor {
 
 
     public VisionSensor(WebcamName frontWebcamName) {
+        this.frontWebcamName = frontWebcamName;
         visionProcessor = new FirstVisionProcessor();
     }
 

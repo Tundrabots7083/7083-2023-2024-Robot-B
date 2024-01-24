@@ -7,13 +7,13 @@ import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 
 public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
-
-
-    public static final Pose2d INNER_SPIKE_POSITION = new Pose2d(11, 32, Math.toRadians(180));
+    
+    public static final Pose2d INNER_SPIKE_POSITION = new Pose2d(-35, 32, Math.toRadians(0));
     public static final int INNER_SPIKE_BASE_HEADING = 180;
-    public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(12, 34, Math.toRadians(-90));
+
+    public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(-36, 34, Math.toRadians(-90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
-    public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(23, 40, Math.toRadians(-90));
+    public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(-47, 40, Math.toRadians(-90));
     public static final int OUTER_SPIKE_BASE_HEADING = -90;
     public static final Pose2d BACK_STAGE_PARKING_POSITION = new Pose2d(59, 59, Math.toRadians(180));
 
