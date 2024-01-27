@@ -7,18 +7,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.controls.ArmController;
+import org.firstinspires.ftc.teamcode.controls.LiftController;
 
 @Config
 @TeleOp (name="Flip Servo Test", group="test")
 public class TestFlipServo extends OpMode {
     public static double FLIP_SERVO_POS = 0.625;
     private Servo flipServo;
-    private ArmController armController;
+    private LiftController liftController;
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        armController = new ArmController(hardwareMap, telemetry);
+        liftController = new LiftController(hardwareMap, telemetry);
         flipServo = hardwareMap.get(Servo.class, "containerFlip");
         telemetry.addLine("Initialization Complete");
         telemetry.update();

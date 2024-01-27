@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.mechanisms.Arm;
+import org.firstinspires.ftc.teamcode.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.PixelMover;
 
@@ -21,7 +21,7 @@ public class RedAllianceBackstageStrafe extends LinearOpMode {
 
     private MecanumDrive drive;
     private PixelMover pixelMover;
-    private Arm arm;
+    private Lift lift;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -32,13 +32,13 @@ public class RedAllianceBackstageStrafe extends LinearOpMode {
         // Create the auto mecanum drive
         drive = new MecanumDrive("drive", "Mecanum Drive", hardwareMap);
         pixelMover = new PixelMover("pixelMover", "Pixel Mover", hardwareMap);
-        arm = new Arm("arm", "Arm", hardwareMap);
+        lift = new Lift("arm", "Arm", hardwareMap);
 
         telemetry.addLine("Initialization Complete");
 
         waitForStart();
 
-        arm.setTarget(Arm.Position.Intake);
+        lift.setTarget(Lift.Position.Intake);
         pixelMover.start(telemetry, false);
 
         ElapsedTime timer = new ElapsedTime();

@@ -26,7 +26,7 @@ public class PrimaryTeleOp extends OpMode {
 
     @Override
     public void start() {
-        robot.armController.start();
+        robot.liftController.start();
         telemetry.addLine("Robot Started");
     }
 
@@ -34,7 +34,7 @@ public class PrimaryTeleOp extends OpMode {
     public void loop() {
         // TODO: see if this drops the container flip servo
         if (!started) {
-            robot.armController.start();
+            robot.liftController.start();
             telemetry.addLine("Robot Started");
             started = true;
         }

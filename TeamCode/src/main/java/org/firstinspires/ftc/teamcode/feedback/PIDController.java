@@ -60,6 +60,10 @@ public class PIDController {
         return dt;
     }
 
+    public void reset() {
+        hasRun = false;
+    }
+
     protected double calculateError(double reference, double state) {
         return reference - state;
     }
