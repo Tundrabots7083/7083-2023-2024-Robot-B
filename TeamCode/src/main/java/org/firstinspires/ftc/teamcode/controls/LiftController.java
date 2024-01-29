@@ -48,10 +48,10 @@ public class LiftController implements Controller {
         } else if (gamepad1.dpad_up) {
             lift.setTarget(Lift.Position.ScoreHigh);
             manualOverride = false;
-        } else if (gamepad1.x) {
+        } else if (gamepad1.y) {
             lift.setTarget(Lift.Position.LaunchDrone);
             manualOverride = false;
-        } else if (gamepad1.y) {
+        } else if (gamepad2.x) {
             lift.setTarget(Lift.Position.Hang);
             manualOverride = false;
         }
