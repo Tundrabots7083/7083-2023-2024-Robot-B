@@ -32,11 +32,9 @@ public class Robot {
 
         mecanumDriveController = new MecanumDriveController(hardwareMap, telemetry);
         liftController = new LiftController(hardwareMap, telemetry);
-        droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
+//        droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
         pixelContainerController = new PixelContainerController(hardwareMap, telemetry);
-        controllers = Arrays.asList(mecanumDriveController, liftController, droneLauncherController);
-
-        state = new RobotState();
+        controllers = Arrays.asList(mecanumDriveController, liftController, pixelContainerController);
 
         telemetry.addLine("[Robot] controllers initialized");
     }

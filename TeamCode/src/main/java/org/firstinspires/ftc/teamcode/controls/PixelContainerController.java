@@ -17,7 +17,9 @@ public class PixelContainerController implements Controller {
 
 
     public PixelContainerController(HardwareMap hardwareMap, Telemetry telemetry) {
-        this.rightPixelCollector = rightPixelCollector;
+        this.rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
+        this.leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
+
         this.telemetry = telemetry;
     }
 

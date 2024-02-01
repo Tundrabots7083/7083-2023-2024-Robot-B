@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
@@ -20,31 +21,32 @@ public class PixelCollector implements Mechanism {
     String deviceName;
     String description;
     Telemetry telemetry;
-    ServoEx spinner;
-    ServoEx flap;
+    CRServo spinner;
+    Servo flap;
     long lastToggleTime;
     PixelCollectorState state;
+    boolean leftServo;
 
     enum PixelCollectorState {
-        COLLECTING(1, 0),
-        DEPOSITING(0, 0),
-        CLOSED(0.5, 1);
+        COLLECTING(0.3, 1),
+        DEPOSITING(-0.2, 1),
+        CLOSED(0, 0);
 
-        double spinnerPosition;
+        double spinnerPower;
         double flapPosition;
 
-        PixelCollectorState(double spinnerPosition, double flapPosition) {
-            this.spinnerPosition = spinnerPosition;
+        PixelCollectorState(double spinnerPower, double flapPosition) {
+            this.spinnerPower = spinnerPower;
             this.flapPosition = flapPosition;
         }
 
 
     }
 
-    public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry) {
+    public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean leftServo) {
 
-        this.spinner = hardwareMap.get(ServoEx.class, deviceName + "_spinner");
-        this.flap = hardwareMap.get(ServoEx.class, deviceName + "_flap");
+        this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
+        this.flap = hardwareMap.get(Servo.class, deviceName + "Flap");
         this.telemetry = telemetry;
         this.deviceName = deviceName;
         this.description = description;
@@ -65,7 +67,7 @@ public class PixelCollector implements Mechanism {
 
             lastToggleTime = System.currentTimeMillis();
 
-            spinner.setPosition(state.spinnerPosition);
+            spinner.setPower(state.spinnerPower);
             flap.setPosition(state.flapPosition);
         }
     }
