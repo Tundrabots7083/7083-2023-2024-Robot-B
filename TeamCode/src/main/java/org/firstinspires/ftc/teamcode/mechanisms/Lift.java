@@ -25,19 +25,19 @@ import java.util.Collection;
 public class Lift implements Mechanism {
 
 
-    public static double LIFT_KP = 0.0053;
+    public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
     public static double INTEGRAL_LIMIT = 1;
-    public static double LIFT_MAX_ACCELERATION = 0.5;
-    public static double LIFT_MAX_VELOCITY = 0.5;
-    public static double MINIMUM_LIFT_POWER = 0.1;
+    public static double LIFT_MAX_ACCELERATION = 3000;
+    public static double LIFT_MAX_VELOCITY = 8000;
+    public static double MINIMUM_LIFT_POWER = 0.05;
 
-    public static double ARM_KP = 0.0053;
+    public static double ARM_KP = 0.003;
     public static double ARM_KI = 0.0;
     public static double ARM_KD = 0.0;
-    public static double ARM_MAX_ACCELERATION = 0.5;
-    public static double ARM_MAX_VELOCITY = 0.5;
+    public static double ARM_MAX_ACCELERATION = 3000;
+    public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.1;
 
     DcMotorEx leftMotor;
@@ -73,9 +73,9 @@ public class Lift implements Mechanism {
     public enum Position {
         Start(0, 0),
         Intake(0, 0),
-        ScoreLow(-2700, -800),
-        ScoreMedium(-2700, -1000),
-        ScoreHigh(-2700, -1600),
+        ScoreLow(-2700, -0),
+        ScoreMedium(-2700, -700),
+        ScoreHigh(-2700, -1100),
         Hang(-1700, -1800),
         LaunchDrone(0, 0);
 
@@ -127,10 +127,12 @@ public class Lift implements Mechanism {
 
         // Build the motion profile to move the lift to the target position
         liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
+        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, armMotor.getCurrentPosition(), position.armPosition);
 
         // Reset the PID controllers
         leftController.reset();
         rightController.reset();
+        armController.reset();
     }
 
     public void update() {
