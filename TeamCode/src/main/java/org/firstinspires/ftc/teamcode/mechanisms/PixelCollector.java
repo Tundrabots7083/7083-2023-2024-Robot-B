@@ -30,7 +30,7 @@ public class PixelCollector implements Mechanism {
     enum PixelCollectorState {
         COLLECTING(0.3, 1),
         DEPOSITING(-0.2, 1),
-        CLOSED(0, 0);
+        CLOSED(0, 0.65);
 
         double spinnerPower;
         double flapPosition;
@@ -43,13 +43,17 @@ public class PixelCollector implements Mechanism {
 
     }
 
-    public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean leftServo) {
+    public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean reverseFlapServo) {
 
         this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
         this.flap = hardwareMap.get(Servo.class, deviceName + "Flap");
         this.telemetry = telemetry;
         this.deviceName = deviceName;
         this.description = description;
+
+        if (reverseFlapServo) {
+            this.flap.setDirection(Servo.Direction.REVERSE);
+        }
 
         state = PixelCollectorState.CLOSED;
     }
@@ -60,15 +64,16 @@ public class PixelCollector implements Mechanism {
                 state = PixelCollectorState.CLOSED;
             } else if (deposit) {
                 state = PixelCollectorState.DEPOSITING;
+                flap.setPosition(state.spinnerPower);
+                flap.setPosition(state.flapPosition);
             }
             else {
                 state = PixelCollectorState.COLLECTING;
+                flap.setPosition(state.flapPosition);
+                spinner.setPower(state.spinnerPower);
             }
 
             lastToggleTime = System.currentTimeMillis();
-
-            spinner.setPower(state.spinnerPower);
-            flap.setPosition(state.flapPosition);
         }
     }
 

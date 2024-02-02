@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 
-public class PixelContainerController implements Controller {
+public class PixelCollectorController implements Controller {
 
 
 
@@ -16,7 +16,7 @@ public class PixelContainerController implements Controller {
     private final Telemetry telemetry;
 
 
-    public PixelContainerController(HardwareMap hardwareMap, Telemetry telemetry) {
+    public PixelCollectorController(HardwareMap hardwareMap, Telemetry telemetry) {
         this.rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
         this.leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
 

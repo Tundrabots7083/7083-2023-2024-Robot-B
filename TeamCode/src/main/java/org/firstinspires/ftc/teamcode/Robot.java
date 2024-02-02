@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.controls.LiftController;
 import org.firstinspires.ftc.teamcode.controls.Controller;
 import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
-import org.firstinspires.ftc.teamcode.controls.PixelContainerController;
+import org.firstinspires.ftc.teamcode.controls.PixelCollectorController;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 import java.util.Arrays;
@@ -17,8 +17,7 @@ public class Robot {
     public static Robot robot;
     public MecanumDriveController mecanumDriveController;
     public LiftController liftController;
-    public PixelContainerController pixelContainerController;
-    public DroneLauncherController droneLauncherController;
+    public PixelCollectorController pixelCollectorController;
     private final Telemetry telemetry;
     public final List<Controller> controllers;
 
@@ -32,9 +31,8 @@ public class Robot {
 
         mecanumDriveController = new MecanumDriveController(hardwareMap, telemetry);
         liftController = new LiftController(hardwareMap, telemetry);
-//        droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
-        pixelContainerController = new PixelContainerController(hardwareMap, telemetry);
-        controllers = Arrays.asList(mecanumDriveController, liftController, pixelContainerController);
+        pixelCollectorController = new PixelCollectorController(hardwareMap, telemetry);
+        controllers = Arrays.asList(mecanumDriveController, liftController, pixelCollectorController);
 
         telemetry.addLine("[Robot] controllers initialized");
     }
