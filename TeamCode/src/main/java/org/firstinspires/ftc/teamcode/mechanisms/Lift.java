@@ -25,19 +25,19 @@ import java.util.Collection;
 public class Lift implements Mechanism {
 
 
-    public static double LIFT_KP = 0.0053;
+    public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
     public static double INTEGRAL_LIMIT = 1;
-    public static double LIFT_MAX_ACCELERATION = 0.5;
-    public static double LIFT_MAX_VELOCITY = 0.5;
-    public static double MINIMUM_LIFT_POWER = 0.1;
+    public static double LIFT_MAX_ACCELERATION = 3000;
+    public static double LIFT_MAX_VELOCITY = 8000;
+    public static double MINIMUM_LIFT_POWER = 0.05;
 
-    public static double ARM_KP = 0.0053;
+    public static double ARM_KP = 0.003;
     public static double ARM_KI = 0.0;
     public static double ARM_KD = 0.0;
-    public static double ARM_MAX_ACCELERATION = 0.5;
-    public static double ARM_MAX_VELOCITY = 0.5;
+    public static double ARM_MAX_ACCELERATION = 3000;
+    public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.1;
 
     DcMotorEx leftMotor;
@@ -73,11 +73,11 @@ public class Lift implements Mechanism {
     public enum Position {
         Start(0, 0),
         Intake(0, 0),
-        ScoreLow(2900, 0),
-        ScoreMedium(2750, 0),
-        ScoreHigh(2500, 0),
-        Hang(2000, 0),
-        LaunchDrone(1455, 0);
+        ScoreLow(-2700, -0),
+        ScoreMedium(-2700, -700),
+        ScoreHigh(-2700, -1100),
+        Hang(-1700, -1800),
+        LaunchDrone(0, 0);
 
         public final int armPosition;
         public final int liftPosition;
@@ -93,7 +93,9 @@ public class Lift implements Mechanism {
         }
     }
 
-    public Lift(HardwareMap hardwareMap) {
+    public Lift(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+
         this.leftMotor = hardwareMap.get(DcMotorEx.class, "leftLift");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -101,6 +103,7 @@ public class Lift implements Mechanism {
         this.rightMotor = hardwareMap.get(DcMotorEx.class, "rightLift");
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         this.armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -114,6 +117,9 @@ public class Lift implements Mechanism {
         rightController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
 
         liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, 0, Position.Start.liftPosition);
+        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.Start.armPosition);
+
+
     }
 
     public void setTarget(Position position) {
@@ -121,10 +127,12 @@ public class Lift implements Mechanism {
 
         // Build the motion profile to move the lift to the target position
         liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
+        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, armMotor.getCurrentPosition(), position.armPosition);
 
         // Reset the PID controllers
         leftController.reset();
         rightController.reset();
+        armController.reset();
     }
 
     public void update() {
@@ -190,5 +198,25 @@ public class Lift implements Mechanism {
             power = 0;
         }
         return power;
+    }
+
+    public void overrideArmPower(double power) {
+        armMotor.setPower(power);
+        setArmTelemetry();
+    }
+
+    public void overrideLiftPower(double power) {
+        leftMotor.setPower(power);
+        rightMotor.setPower(power);
+        setLiftTelemetry();
+    }
+
+    private void setArmTelemetry() {
+        telemetry.addData("[ARM] position", armMotor.getCurrentPosition());
+    }
+
+    private void setLiftTelemetry() {
+        telemetry.addData("[LIFT] left position", leftMotor.getCurrentPosition());
+        telemetry.addData("[LIFT] right position", rightMotor.getCurrentPosition());
     }
 }

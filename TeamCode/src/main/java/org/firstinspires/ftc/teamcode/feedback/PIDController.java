@@ -31,6 +31,10 @@ public class PIDController {
      * @return PID output
      */
     public double calculate(double reference, double state) {
+        if (Double.isNaN(reference)) {
+            return 0;
+        }
+
         double dt = getDT();
         double error = calculateError(reference, state);
         double derivative = calculateDerivative(error,dt);
@@ -62,6 +66,8 @@ public class PIDController {
 
     public void reset() {
         hasRun = false;
+        timer.reset();
+
     }
 
     protected double calculateError(double reference, double state) {
@@ -75,6 +81,11 @@ public class PIDController {
 
     protected double calculateDerivative(double error, double dt) {
         derivative = (error - previousError) / dt;
+
+        if (Double.isNaN(derivative)) {
+            derivative = 0;
+        }
+
         return derivative;
     }
 

@@ -27,6 +27,10 @@ public class MotionProfile {
         this.maxVelocity = maxVelocity;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
+
+        if (this.startPosition == this.endPosition) {
+            this.endPosition += 1;
+        }
     }
 
     /**
@@ -52,10 +56,10 @@ public class MotionProfile {
         }
 
         accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
-        maxVelocity = maxAcceleration * accelerationDt;
+        double localMaxVelocity = maxAcceleration * accelerationDt;
         double decelerationDt = accelerationDt;
         double cruiseDistance = distance - 2 * accelerationDistance;
-        double cruiseDt = cruiseDistance / maxVelocity;
+        double cruiseDt = cruiseDistance / localMaxVelocity;
         double decelerationTime = accelerationDt + cruiseDt;
         double entireDt = accelerationDt + cruiseDt + decelerationDt;
 
@@ -70,13 +74,13 @@ public class MotionProfile {
             // Cruise Phase
             accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
             double cruiseCurrentDt = elapsedTime - accelerationDt;
-            position = accelerationDistance + maxVelocity * cruiseCurrentDt;
+            position = accelerationDistance + localMaxVelocity * cruiseCurrentDt;
         } else {
             // Deceleration Phase
             accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
-            cruiseDistance = maxVelocity * cruiseDt;
+            cruiseDistance = localMaxVelocity * cruiseDt;
             double decelerationCurrentTime = elapsedTime - decelerationTime;
-            position = accelerationDistance + cruiseDistance + maxVelocity * decelerationCurrentTime - 0.5 * maxAcceleration * Math.pow(decelerationCurrentTime, 2);
+            position = accelerationDistance + cruiseDistance + localMaxVelocity * decelerationCurrentTime - 0.5 * maxAcceleration * Math.pow(decelerationCurrentTime, 2);
         }
 
         return startPosition + direction * position;

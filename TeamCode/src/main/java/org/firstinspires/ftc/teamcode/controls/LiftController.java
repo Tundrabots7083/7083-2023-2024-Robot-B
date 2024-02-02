@@ -20,7 +20,7 @@ public class LiftController implements Controller {
      */
     public LiftController(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap, telemetry);
     }
 
     public void start() {
@@ -56,22 +56,21 @@ public class LiftController implements Controller {
             manualOverride = false;
         }
 
-        // Manual override of controls
-//        if (manualOverride || (gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0)) {
-//            manualOverride = true;
-//            if (gamepad1.left_trigger > 0.0) {
-//                lift.setArmPower(gamepad1.left_trigger);
-//                telemetry.addData("[ARM] Power", gamepad1.left_trigger);
-//            }
-//            else if (gamepad1.right_trigger > 0.0) {
-//                lift.setArmPower(-gamepad1.right_trigger);
-//                telemetry.addData("[ARM] Power", -gamepad1.right_trigger);
-//            } else {
-//                lift.setArmPower(0.0);
-//                telemetry.addData("[ARM] Power", 0.0);
-//            }
-//            return ;
-//        }
+        if (manualOverride || (gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0)) {
+            manualOverride = true;
+            if (gamepad1.left_trigger > 0.0) {
+                lift.overrideLiftPower(gamepad1.left_trigger);
+                telemetry.addData("[LIFT] Power", gamepad1.left_trigger);
+            }
+            else if (gamepad1.right_trigger > 0.0) {
+                lift.overrideLiftPower(-gamepad1.right_trigger);
+                telemetry.addData("[LIFT] Power", -gamepad1.right_trigger);
+            } else {
+                lift.overrideLiftPower(0.0);
+                telemetry.addData("[ARM] Power", 0.0);
+            }
+            return ;
+        }
 
         lift.update();
     }
