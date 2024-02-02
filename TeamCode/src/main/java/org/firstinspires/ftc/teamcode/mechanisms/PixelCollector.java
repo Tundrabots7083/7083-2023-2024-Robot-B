@@ -18,18 +18,24 @@ public class PixelCollector implements Mechanism {
 
     public static final long TOGGLE_DELAY = 500;
 
+    /**
+     * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
+     */
+    public static final long SPINNER_DELAY = 250;
+
     String deviceName;
     String description;
     Telemetry telemetry;
     CRServo spinner;
     Servo flap;
     long lastToggleTime;
+    long spinnerDelayTime;
     PixelCollectorState state;
     boolean leftServo;
 
     enum PixelCollectorState {
-        COLLECTING(0.3, 1),
-        DEPOSITING(-0.2, 1),
+        COLLECTING(-0.3, 0),
+        DEPOSITING(0.2, 0),
         CLOSED(0, 0.65);
 
         double spinnerPower;
@@ -53,28 +59,48 @@ public class PixelCollector implements Mechanism {
 
         if (reverseFlapServo) {
             this.flap.setDirection(Servo.Direction.REVERSE);
+            this.spinner.setDirection(CRServo.Direction.REVERSE);
         }
 
         state = PixelCollectorState.CLOSED;
+
+        spinnerDelayTime = System.currentTimeMillis();
     }
 
     public void toggleState(boolean deposit) {
         if (lastToggleTime + TOGGLE_DELAY < System.currentTimeMillis()) {
             if (state != PixelCollectorState.CLOSED) {
                 state = PixelCollectorState.CLOSED;
+//                spinner.setPower(state.spinnerPower);
+//                flap.setPosition(state.flapPosition);
             } else if (deposit) {
                 state = PixelCollectorState.DEPOSITING;
-                flap.setPosition(state.spinnerPower);
-                flap.setPosition(state.flapPosition);
+//                spinner.setPower(state.spinnerPower);
+//                flap.setPosition(state.flapPosition);
             }
             else {
                 state = PixelCollectorState.COLLECTING;
-                flap.setPosition(state.flapPosition);
-                spinner.setPower(state.spinnerPower);
+                spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
+//                flap.setPosition(state.flapPosition);
+//                spinner.setPower(state.spinnerPower);
             }
 
             lastToggleTime = System.currentTimeMillis();
         }
+    }
+
+    public void update() {
+
+        // Set the flap servo position to the current target
+        flap.setPosition(state.flapPosition);
+
+        // Check if we can set the spinner position yet
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime > spinnerDelayTime) {
+            spinner.setPower(state.spinnerPower);
+        }
+
     }
 
 

@@ -46,5 +46,9 @@ public class PixelCollectorController implements Controller {
             // Toggle depositing on or off
             rightPixelCollector.toggleState(true);
         }
+
+
+        leftPixelCollector.update();
+        rightPixelCollector.update();
     }
 }
