@@ -33,10 +33,10 @@ public class FirstVisionProcessor implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
+//        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
+        double satRectLeft = getAvgSaturation(frame, rectLeft);
+        double satRectMiddle = getAvgSaturation(frame, rectMiddle);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Left Spike", satRectLeft);
@@ -46,13 +46,13 @@ public class FirstVisionProcessor implements VisionProcessor {
         telemetry.addData("Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
-            return TeamElementLocation.OUTER;
+            return TeamElementLocation.LEFT;
         } else if (satRectLeft > satRectMiddle) {
-            return TeamElementLocation.INNER;
+            return TeamElementLocation.RIGHT;
         } else if (satRectMiddle > satRectLeft) {
             return TeamElementLocation.MIDDLE;
         }
-        return TeamElementLocation.OUTER;
+        return TeamElementLocation.RIGHT;
     }
 
     private double getPercentDifference(double val1, double val2) {
@@ -62,7 +62,7 @@ public class FirstVisionProcessor implements VisionProcessor {
     protected double getAvgSaturation(Mat input, Rect rect) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
-        return color.val[1];
+        return color.val[0];
     }
 
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
@@ -91,7 +91,7 @@ public class FirstVisionProcessor implements VisionProcessor {
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Selection", selection);
         switch (selection) {
-            case INNER:
+            case LEFT:
                 canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;
@@ -99,7 +99,7 @@ public class FirstVisionProcessor implements VisionProcessor {
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 break;
-            case OUTER:
+            case RIGHT:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;
