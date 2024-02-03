@@ -197,7 +197,6 @@ public class Lift implements Mechanism {
         }
 
         // Apply the power to the arm motor
-        // TODO: uncomment out the next line
         armMotor.setPower(armPower);
 
         telemetry.addData("[ARM] target", targetPosition);
