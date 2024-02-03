@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class PIDController {
 
-    PIDCoefficients coefficients;
+    public PIDCoefficients coefficients;
 
     protected boolean hasRun = false;
 

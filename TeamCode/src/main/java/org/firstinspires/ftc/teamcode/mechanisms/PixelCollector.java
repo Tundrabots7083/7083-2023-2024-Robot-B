@@ -35,7 +35,7 @@ public class PixelCollector implements Mechanism {
 
     enum PixelCollectorState {
         COLLECTING(-0.3, 0),
-        DEPOSITING(0.2, 0),
+        DEPOSITING(0.1, 0),
         CLOSED(0, 0.65);
 
         double spinnerPower;
