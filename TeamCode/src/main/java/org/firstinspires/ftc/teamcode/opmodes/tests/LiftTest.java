@@ -23,7 +23,7 @@ public class LiftTest extends OpMode {
 
     @Override
     public void loop() {
-        lift.overrideLiftPower(Lift.LIFT_KG);
+        lift.overrideLiftPower(-Lift.LIFT_KG);
         telemetry.update();
     }
 }

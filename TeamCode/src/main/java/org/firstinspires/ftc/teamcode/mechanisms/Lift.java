@@ -29,7 +29,7 @@ public class Lift implements Mechanism {
     public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
-    public static double LIFT_KG = 0.0;
+    public static double LIFT_KG = 0.1;
 
     public static double INTEGRAL_LIMIT = 1;
     public static double LIFT_MAX_ACCELERATION = 3000;
@@ -103,11 +103,11 @@ public class Lift implements Mechanism {
 
         this.leftMotor = hardwareMap.get(DcMotorEx.class, "leftLift");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         this.rightMotor = hardwareMap.get(DcMotorEx.class, "rightLift");
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         this.armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
@@ -157,7 +157,7 @@ public class Lift implements Mechanism {
         double leftPower = leftController.calculate(targetPosition, leftPosition);
         double rightPower = rightController.calculate(targetPosition, rightPosition);
 
-        if (this.targetPosition == Position.Intake && (Math.abs(leftPosition) < Math.abs(LIFT_MAXIMUM_LOWER_VALUE) && Math.abs(rightPosition) < LIFT_MAXIMUM_LOWER_VALUE)) {
+        if (targetPosition == Position.Intake.liftPosition) {
             leftPower = 0;
             rightPower = 0;
             telemetry.addLine("[LIFT] close to bottom - let it fall");
@@ -188,7 +188,7 @@ public class Lift implements Mechanism {
         // Calculate the power for the arm motor using the PID controller
         double armPower = armController.calculate(targetPosition, armPosition);
 
-        if (this.targetPosition == Position.Intake && (Math.abs(armPosition) < Math.abs(ARM_MAXIMUM_LOWER_VALUE))) {
+        if (targetPosition == Position.Intake.armPosition) {
             armPower = 0;
             telemetry.addLine("[ARM] close to bottom - let it fall");
         } else {
