@@ -62,7 +62,7 @@ public class FirstVisionProcessor implements VisionProcessor {
     protected double getAvgSaturation(Mat input, Rect rect) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
-        return color.val[0];
+        return color.val[1];
     }
 
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
