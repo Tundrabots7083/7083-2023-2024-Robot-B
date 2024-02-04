@@ -129,7 +129,7 @@ public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
 //        lift.setTarget(Lift.Position.Intake);
 //        lift.update();
 
-        // Drive to the edge parking spot
+        // Drive to the center parking spot
         telemetry.addLine("Drive to parking spot");
         telemetry.update();
         Trajectory toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
