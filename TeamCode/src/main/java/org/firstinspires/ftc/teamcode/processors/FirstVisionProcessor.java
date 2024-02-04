@@ -41,7 +41,7 @@ public class FirstVisionProcessor implements VisionProcessor {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
         double satRectLeft = getAvgSaturation(hsvMat, rectLeft, TeamElementLocation.LEFT);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.RIGHT);
+        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.MIDDLE);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("[VISION] Left Spike", satRectLeft);
