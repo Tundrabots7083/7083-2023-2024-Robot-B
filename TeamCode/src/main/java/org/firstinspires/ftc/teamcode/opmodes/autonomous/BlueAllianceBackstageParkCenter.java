@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 @Autonomous(name="Blue Alliance Backstage Park Edge", group="Autonomous Blue")
-public class BlueAllianceBackstageParkEdge extends LinearOpMode {
+public class BlueAllianceBackstageParkCenter extends LinearOpMode {
 
     public static final Pose2d STARTING_POSE = new Pose2d(12, 63.5, Math.toRadians(-90));
     private Lift lift;
@@ -88,7 +88,7 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         Trajectory toArmLiftPosition = trajectoryGenerator.toArmLiftPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toArmLiftPosition);
 
-        // Move the lift and arm to the scoring position
+        // Move the arm to the scoring position
         telemetry.addLine("Raise arm");
         telemetry.update();
         // TODO: un-comment out these two lines. Also, do we need a way to tell when the lift has
@@ -130,7 +130,7 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         // Drive to the edge parking spot
         telemetry.addLine("Drive to parking spot");
         telemetry.update();
-        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpotEdge(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
+        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toParkingSpot);
     }
 }

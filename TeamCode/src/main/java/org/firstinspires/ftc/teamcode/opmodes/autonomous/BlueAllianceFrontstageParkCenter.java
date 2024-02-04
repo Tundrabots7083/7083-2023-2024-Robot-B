@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.autonomous.BlueBackstageTrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.BlueFrontstageTrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.Lift;
@@ -16,10 +16,11 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
-@Autonomous(name="Blue Alliance Backstage Park Edge", group="Autonomous Blue")
-public class BlueAllianceBackstageParkEdge extends LinearOpMode {
+@Autonomous(name="Blue Alliance Frontstage Park Edge", group="Autonomous Blue")
+public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
 
-    public static final Pose2d STARTING_POSE = new Pose2d(12, 63.5, Math.toRadians(-90));
+    public static final Pose2d STARTING_POSE = new Pose2d(-36, 63.5, Math.toRadians(-90));
+
     private Lift lift;
     private PixelCollector rightPixelCollector;
     private PixelCollector leftPixelCollector;
@@ -43,8 +44,9 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
         leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
 
-        // Wait for webcam to initialize
+
         while(!visionSensor.webcamInitialized()) {}
+
         telemetry.addData("Webcam", "Initialized");
         telemetry.update();
 
@@ -58,7 +60,7 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         visionSensor.close();
 
         // Create the new trajectory generator
-        TrajectoryGenerator trajectoryGenerator = new BlueBackstageTrajectoryGenerator(element);
+        TrajectoryGenerator trajectoryGenerator = new BlueFrontstageTrajectoryGenerator(element);
 
         // Drive to the correct spike mark
         telemetry.addLine("Drive to spike mark");
@@ -130,7 +132,7 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         // Drive to the edge parking spot
         telemetry.addLine("Drive to parking spot");
         telemetry.update();
-        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpotEdge(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
+        Trajectory toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toParkingSpot);
     }
 }
