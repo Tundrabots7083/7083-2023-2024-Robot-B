@@ -32,7 +32,7 @@ public class BlueAllianceFrontstageParkEdge extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         // Create the vision sensor
-        VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"));
+        VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
         visionSensor.initializeVisionPortal();
 
         // Create the drivetrain and set the initial pose

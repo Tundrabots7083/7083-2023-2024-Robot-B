@@ -17,7 +17,7 @@ public class FirstVisionOpMode extends OpMode {
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        visionProcessor = new FirstVisionProcessor();
+        visionProcessor = new FirstVisionProcessor(telemetry);
         visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
         telemetry.addLine("Initialization Complete");
     }

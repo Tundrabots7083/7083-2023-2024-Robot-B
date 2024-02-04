@@ -20,12 +20,17 @@ import org.opencv.imgproc.Imgproc;
 public class FirstVisionProcessor implements VisionProcessor {
 
     public static double MIN_PERCENT_DIFFERENCE = 32;
+    private final Telemetry telemetry;
     public Rect rectLeft = new Rect(0, 365, 155, 105);
     public Rect rectMiddle = new Rect(310, 320, 250, 95);
 
     TeamElementLocation selection = TeamElementLocation.NONE;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
+
+    public FirstVisionProcessor(Telemetry telemetry) {
+        this.telemetry = telemetry;
+    }
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -62,6 +67,9 @@ public class FirstVisionProcessor implements VisionProcessor {
     protected double getAvgSaturation(Mat input, Rect rect) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
+        telemetry.addData("[VISION] Hue", color.val[0]);
+        telemetry.addData("[VISION] Saturation", color.val[1]);
+        telemetry.addData("[VISION] Value", color.val[2]);
         return color.val[1];
     }
 

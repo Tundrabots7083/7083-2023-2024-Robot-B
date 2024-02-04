@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
-@Autonomous(name="Blue Alliance Frontstage Park Edge", group="Autonomous Blue")
+@Autonomous(name="Blue Alliance Frontstage Park Center", group="Autonomous Blue")
 public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
 
     public static final Pose2d STARTING_POSE = new Pose2d(-36, 63.5, Math.toRadians(-90));
@@ -32,7 +32,7 @@ public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         // Create the vision sensor
-        VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"));
+        VisionSensor visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
         visionSensor.initializeVisionPortal();
 
         // Create the drivetrain and set the initial pose
