@@ -33,10 +33,10 @@ public class FirstVisionProcessor implements VisionProcessor {
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-//        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
+        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double satRectLeft = getAvgSaturation(frame, rectLeft);
-        double satRectMiddle = getAvgSaturation(frame, rectMiddle);
+        double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
+        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Left Spike", satRectLeft);
