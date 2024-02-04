@@ -69,15 +69,13 @@ public class BlueAllianceBackstageParkCenter extends LinearOpMode {
         // Drop off the top pixel at the spike mark
         telemetry.addLine("Drop off purple pixel");
         telemetry.update();
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been deposited on the spike mark, and in the interim keep the pixel deposit
-        //       continuing
+        // TODO: un-comment out these three lines.
 //        rightPixelCollector.toggleState(true);
 //        rightPixelCollector.update();
+//        sleep(250); // TODO: see if this is long enough
 
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been reset?
         // Turn off the pixel container
+        // TODO: un-comment out these two lines.
 //        rightPixelCollector.toggleState(false);
 //        rightPixelCollector.update();
 
@@ -91,24 +89,22 @@ public class BlueAllianceBackstageParkCenter extends LinearOpMode {
         // Move the arm to the scoring position
         telemetry.addLine("Raise arm");
         telemetry.update();
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the lift has
-        //       reached it's target position, and in the interim update the arm?
-        // lift.setTarget(Lift.Position.ScoreLow);
-        // lift.update();
+        // TODO: un-comment out these three lines.
+//        lift.setTarget(Lift.Position.ScoreLow);
+//        lift.update();
+//        sleep(500); // TODO: see if this is long enough
 
         // Move to the backdrop and score the botton pixel
         telemetry.addLine("Drive to backdrop and score yellow pixel");
         telemetry.update();
         Trajectory toBackdropPosition = trajectoryGenerator.toBackdropPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toBackdropPosition);
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been deposited on the backdrop, and in the interim keep the pixel deposit
-        //       continuing
+        // TODO: un-comment out these two lines.
 //        leftPixelCollector.toggleState(true);
+//        sleep(250); // TODO: see if this is long enough
 
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been reset?
         // Turn off the pixel container
+        // TODO: un-comment out these two lines.
 //        leftPixelCollector.toggleState(false);
 //        leftPixelCollector.update();
 
@@ -121,11 +117,10 @@ public class BlueAllianceBackstageParkCenter extends LinearOpMode {
         // Lower the lift and arm to the pixel intake position
         telemetry.addLine("Lower arm");
         telemetry.update();
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been deposited on the spike mark, and in the interim keep the pixel deposit
-        //       continuing
+        // TODO: un-comment out these three lines.
 //        lift.setTarget(Lift.Position.Intake);
 //        lift.update();
+//        sleep(250); // TODO: see if this is long enough
 
         // Drive to the center parking spot
         telemetry.addLine("Drive to parking spot");

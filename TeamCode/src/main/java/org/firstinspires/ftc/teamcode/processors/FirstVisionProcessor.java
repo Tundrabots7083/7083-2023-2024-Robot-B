@@ -40,15 +40,15 @@ public class FirstVisionProcessor implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
+        double satRectLeft = getAvgSaturation(hsvMat, rectLeft, TeamElementLocation.LEFT);
+        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.RIGHT);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
-        telemetry.addData("Left Spike", satRectLeft);
-        telemetry.addData("Middle Spike", satRectMiddle);
+        telemetry.addData("[VISION] Left Spike", satRectLeft);
+        telemetry.addData("[VISION] Middle Spike", satRectMiddle);
 
         double percentDifference = getPercentDifference(satRectLeft, satRectMiddle);
-        telemetry.addData("Percent Difference", percentDifference);
+        telemetry.addData("[VISION] Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
             return TeamElementLocation.LEFT;
@@ -64,12 +64,12 @@ public class FirstVisionProcessor implements VisionProcessor {
         return Math.abs(val1-val2) / ((val1 + val2) / 2) * 100;
     }
 
-    protected double getAvgSaturation(Mat input, Rect rect) {
+    protected double getAvgSaturation(Mat input, Rect rect, TeamElementLocation location) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
-        telemetry.addData("[VISION] Hue", color.val[0]);
-        telemetry.addData("[VISION] Saturation", color.val[1]);
-        telemetry.addData("[VISION] Value", color.val[2]);
+        telemetry.addData("[VISION-" + location + "] Hue", color.val[0]);
+        telemetry.addData("[VISION-" + location + "] Saturation", color.val[1]);
+        telemetry.addData("[VISION-" + location + "] Value", color.val[2]);
         return color.val[1];
     }
 
