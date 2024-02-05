@@ -32,9 +32,11 @@ public class DroneLauncherController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
+        if (gamepad1.x) {
+            droneLauncher.setToLaunchPosition();
+        }
         if (gamepad1.right_bumper && gamepad2.right_bumper) {
             droneLauncher.launch();
-            telemetry.addData("[DRONE] Position", droneLauncher.getPosition());
             telemetry.addLine("[Drone] Launched");
         }
     }

@@ -14,32 +14,42 @@ import java.util.Collection;
  */
 @Config
 public class DroneLauncher implements Mechanism {
+    public static double LAUNCH_POS = 0.5;
     public static double SERVO_RELEASE_POS = 0.1;
     private final String deviceName;
     private final String description;
-    private Servo servo;
+    private Servo releaseServo;
+    private Servo positionServo;
 
+    /**
+     * Createss the drone launcher
+     * @param deviceName
+     * @param description
+     * @param hardwareMap
+     */
     public DroneLauncher(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
         this.description = description;
 
-        servo = hardwareMap.get(Servo.class, deviceName);
-        servo.setDirection(Servo.Direction.FORWARD);
+        releaseServo = hardwareMap.get(Servo.class, deviceName);
+        releaseServo.setDirection(Servo.Direction.FORWARD);
+
+        positionServo = hardwareMap.get(Servo.class, "dronePosition");
+        positionServo.setDirection(Servo.Direction.FORWARD);
+    }
+
+    /**
+     * Moves the drone launcher into launch position
+     */
+    public void setToLaunchPosition() {
+        positionServo.setPosition(LAUNCH_POS);
     }
 
     /**
      * Launches the drone, hopefully scoring a lot of points in the process.
      */
     public void launch() {
-        servo.setPosition(SERVO_RELEASE_POS);
-    }
-
-    /**
-     * Gets the position for the drone launcher servo.
-     * @return the position for the drone launcher servo.
-     */
-    public double getPosition() {
-        return servo.getPosition();
+        releaseServo.setPosition(SERVO_RELEASE_POS);
     }
 
     @Override
