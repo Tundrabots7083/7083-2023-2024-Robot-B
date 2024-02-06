@@ -26,7 +26,7 @@ public class FirstVisionProcessor implements VisionProcessor {
     public static int MIDDLE_RECTANGLE_WIDTH = 250;
     public static int MIDDLE_RECTANGLE_Y = 320;
     public static int MIDDLE_RECTANGLE_HEIGHT = 95;
-    public static double MIN_PERCENT_DIFFERENCE = 45;
+    public static double MIN_PERCENT_DIFFERENCE = 50;
     private final Telemetry telemetry;
     public Rect rectLeft = new Rect(LEFT_RECTANGLE_X, LEFT_RECTANGLE_Y, LEFT_RECTANGLE_WIDTH, LEFT_RECTANGLE_HEIGHT);
     public Rect rectMiddle = new Rect(MIDDLE_RECTANGLE_X, MIDDLE_RECTANGLE_Y, MIDDLE_RECTANGLE_WIDTH, MIDDLE_RECTANGLE_HEIGHT);
