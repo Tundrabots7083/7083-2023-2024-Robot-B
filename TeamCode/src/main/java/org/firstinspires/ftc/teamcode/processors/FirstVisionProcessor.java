@@ -18,11 +18,18 @@ import org.opencv.imgproc.Imgproc;
 
 @Config
 public class FirstVisionProcessor implements VisionProcessor {
-
-    public static double MIN_PERCENT_DIFFERENCE = 32;
+    public static int LEFT_RECTANGLE_X = 0;
+    public static int LEFT_RECTANGLE_WIDTH = 155;
+    public static int LEFT_RECTANGLE_Y = 365;
+    public static int LEFT_RECTANGLE_HEIGHT = 105;
+    public static int MIDDLE_RECTANGLE_X = 375;
+    public static int MIDDLE_RECTANGLE_WIDTH = 250;
+    public static int MIDDLE_RECTANGLE_Y = 320;
+    public static int MIDDLE_RECTANGLE_HEIGHT = 95;
+    public static double MIN_PERCENT_DIFFERENCE = 45;
     private final Telemetry telemetry;
-    public Rect rectLeft = new Rect(0, 365, 155, 105);
-    public Rect rectMiddle = new Rect(310, 320, 250, 95);
+    public Rect rectLeft = new Rect(LEFT_RECTANGLE_X, LEFT_RECTANGLE_Y, LEFT_RECTANGLE_WIDTH, LEFT_RECTANGLE_HEIGHT);
+    public Rect rectMiddle = new Rect(MIDDLE_RECTANGLE_X, MIDDLE_RECTANGLE_Y, MIDDLE_RECTANGLE_WIDTH, MIDDLE_RECTANGLE_HEIGHT);
 
     TeamElementLocation selection = TeamElementLocation.NONE;
     Mat submat = new Mat();
@@ -67,9 +74,9 @@ public class FirstVisionProcessor implements VisionProcessor {
     protected double getAvgSaturation(Mat input, Rect rect, TeamElementLocation location) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
-        telemetry.addData("[VISION-" + location + "] Hue", color.val[0]);
-        telemetry.addData("[VISION-" + location + "] Saturation", color.val[1]);
-        telemetry.addData("[VISION-" + location + "] Value", color.val[2]);
+//        telemetry.addData("[VISION-" + location + "] Hue", color.val[0]);
+//        telemetry.addData("[VISION-" + location + "] Saturation", color.val[1]);
+//        telemetry.addData("[VISION-" + location + "] Value", color.val[2]);
         return color.val[1];
     }
 

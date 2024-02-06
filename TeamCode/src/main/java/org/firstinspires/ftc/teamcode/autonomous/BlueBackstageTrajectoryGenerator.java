@@ -11,23 +11,22 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 @Config
 public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {
 
-    public static final Pose2d INNER_SPIKE_BASE = new Pose2d(16, 35, Math.toRadians(180));
+    public static final Pose2d INNER_SPIKE_BASE = new Pose2d(14, 35, Math.toRadians(179));
     public static final int INNER_SPIKE_BASE_HEADING = 180;
-    
-    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(15.25, 34.75, Math.toRadians(-90));
+    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(15.25, 37.5, Math.toRadians(-90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
-    public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(23.5, 50, Math.toRadians(-90));
+    public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(24, 47, Math.toRadians(-90));
     public static final int OUTER_SPIKE_BASE_HEADING = -90;
 
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(40.5, 43);
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(41.80, 44);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(39, 36.5);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(39.6, 30.5);
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(47, 43);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(47.5, 36.5);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(45, 30.5);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
-    public static double BACKDROP_EDGE_ROTATE = 0;
+    public static double BACKDROP_EDGE_ROTATE = -1;
 
-    public static double BACKDROP_FORWARD_DISTANCE = 1.5;
+    public static double BACKDROP_FORWARD_DISTANCE = 3;
     public static double BACKDROP_BACKWARD_DISTANCE = 3.0;
 
     public static final Vector2d REVERSE_POSITION = new Vector2d(27, 59);

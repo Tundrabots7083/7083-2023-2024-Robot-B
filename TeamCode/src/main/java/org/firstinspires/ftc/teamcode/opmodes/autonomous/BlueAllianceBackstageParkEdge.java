@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.autonomous.BlueBackstageTrajectoryGenerator;
@@ -18,14 +19,20 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 @Autonomous(name="Blue Alliance Backstage Park Edge", group="Autonomous Blue")
 public class BlueAllianceBackstageParkEdge extends LinearOpMode {
+    public static long PIXEL_SPIKE_MARK_TIMER = 3000;
+    public static long PIXEL_BACKDROP_TIMER = 500;
+    public static long RAISE_LIFT_TIMER = 2000;
+    public static long LOWER_LIFT_TIMER = 2000;
 
-    public static final Pose2d STARTING_POSE = new Pose2d(12, 63.5, Math.toRadians(-90));
+    public static final Pose2d STARTING_POSE = new Pose2d(15.25, 63.125, Math.toRadians(-90));
     private Lift lift;
     private PixelCollector rightPixelCollector;
     private PixelCollector leftPixelCollector;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        ElapsedTime timer = new ElapsedTime();
+
         // Setup to send telemetry data to the FTC Dashboard
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
@@ -66,20 +73,16 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         Trajectory toSpikeMark = trajectoryGenerator.toSpikeMark(drive.trajectoryBuilder(STARTING_POSE));
         drive.followTrajectory(toSpikeMark);
 
-        // Drop off the top pixel at the spike mark
+        // Drop off the purple pixel at the spike mark
         telemetry.addLine("Drop off purple pixel");
         telemetry.update();
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been deposited on the spike mark, and in the interim keep the pixel deposit
-        //       continuing
-//        rightPixelCollector.toggleState(true);
-//        rightPixelCollector.update();
+        leftPixelCollector.toggleState(true);
+        leftPixelCollector.update();
+        sleep(PIXEL_SPIKE_MARK_TIMER);
 
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been reset?
         // Turn off the pixel container
-//        rightPixelCollector.toggleState(false);
-//        rightPixelCollector.update();
+        leftPixelCollector.toggleState(false);
+        leftPixelCollector.update();
 
         // Drive to the proper location (edge, middle, center) in front of the backdrop at which
         // the arm is rotated
@@ -88,29 +91,30 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         Trajectory toArmLiftPosition = trajectoryGenerator.toArmLiftPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toArmLiftPosition);
 
-        // Move the lift and arm to the scoring position
-        telemetry.addLine("Raise arm");
+        // Move the lift to the scoring position
+        telemetry.addLine("Raise lift");
         telemetry.update();
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the lift has
-        //       reached it's target position, and in the interim update the arm?
-        // lift.setTarget(Lift.Position.ScoreLow);
-        // lift.update();
+        lift.setTarget(Lift.Position.ScoreLow);
+        timer.reset();
+        while (timer.milliseconds() < RAISE_LIFT_TIMER) {
+            lift.update();
+        }
 
-        // Move to the backdrop and score the botton pixel
+        // Move to the backdrop and score the yellow pixel
         telemetry.addLine("Drive to backdrop and score yellow pixel");
         telemetry.update();
         Trajectory toBackdropPosition = trajectoryGenerator.toBackdropPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toBackdropPosition);
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been deposited on the backdrop, and in the interim keep the pixel deposit
-        //       continuing
-//        leftPixelCollector.toggleState(true);
+        rightPixelCollector.toggleState(true);
+        rightPixelCollector.update();
+        timer.reset();
+        while (timer.milliseconds() < PIXEL_BACKDROP_TIMER) {
+            lift.update();
+        }
 
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been reset?
         // Turn off the pixel container
-//        leftPixelCollector.toggleState(false);
-//        leftPixelCollector.update();
+        rightPixelCollector.toggleState(false);
+        rightPixelCollector.update();
 
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
         telemetry.addLine("Score yellow pixel on backdrop");
@@ -121,11 +125,11 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode {
         // Lower the lift and arm to the pixel intake position
         telemetry.addLine("Lower arm");
         telemetry.update();
-        // TODO: un-comment out these two lines. Also, do we need a way to tell when the pixel has
-        //       been deposited on the spike mark, and in the interim keep the pixel deposit
-        //       continuing
-//        lift.setTarget(Lift.Position.Intake);
-//        lift.update();
+        lift.setTarget(Lift.Position.Intake);
+        timer.reset();
+        while (timer.milliseconds() < LOWER_LIFT_TIMER) {
+            lift.update();
+        }
 
         // Drive to the edge parking spot
         telemetry.addLine("Drive to parking spot");
