@@ -18,14 +18,26 @@ import org.opencv.imgproc.Imgproc;
 
 @Config
 public class FirstVisionProcessor implements VisionProcessor {
-
-    public static double MIN_PERCENT_DIFFERENCE = 32;
-    public Rect rectLeft = new Rect(0, 365, 155, 105);
-    public Rect rectMiddle = new Rect(310, 320, 250, 95);
+    public static int LEFT_RECTANGLE_X = 0;
+    public static int LEFT_RECTANGLE_WIDTH = 155;
+    public static int LEFT_RECTANGLE_Y = 365;
+    public static int LEFT_RECTANGLE_HEIGHT = 105;
+    public static int MIDDLE_RECTANGLE_X = 375;
+    public static int MIDDLE_RECTANGLE_WIDTH = 250;
+    public static int MIDDLE_RECTANGLE_Y = 320;
+    public static int MIDDLE_RECTANGLE_HEIGHT = 95;
+    public static double MIN_PERCENT_DIFFERENCE = 50;
+    private final Telemetry telemetry;
+    public Rect rectLeft = new Rect(LEFT_RECTANGLE_X, LEFT_RECTANGLE_Y, LEFT_RECTANGLE_WIDTH, LEFT_RECTANGLE_HEIGHT);
+    public Rect rectMiddle = new Rect(MIDDLE_RECTANGLE_X, MIDDLE_RECTANGLE_Y, MIDDLE_RECTANGLE_WIDTH, MIDDLE_RECTANGLE_HEIGHT);
 
     TeamElementLocation selection = TeamElementLocation.NONE;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
+
+    public FirstVisionProcessor(Telemetry telemetry) {
+        this.telemetry = telemetry;
+    }
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -35,33 +47,36 @@ public class FirstVisionProcessor implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
+        double satRectLeft = getAvgSaturation(hsvMat, rectLeft, TeamElementLocation.LEFT);
+        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.MIDDLE);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
-        telemetry.addData("Left Spike", satRectLeft);
-        telemetry.addData("Middle Spike", satRectMiddle);
+        telemetry.addData("[VISION] Left Spike", satRectLeft);
+        telemetry.addData("[VISION] Middle Spike", satRectMiddle);
 
         double percentDifference = getPercentDifference(satRectLeft, satRectMiddle);
-        telemetry.addData("Percent Difference", percentDifference);
+        telemetry.addData("[VISION] Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
-            return TeamElementLocation.OUTER;
+            return TeamElementLocation.RIGHT;
         } else if (satRectLeft > satRectMiddle) {
-            return TeamElementLocation.INNER;
+            return TeamElementLocation.LEFT;
         } else if (satRectMiddle > satRectLeft) {
             return TeamElementLocation.MIDDLE;
         }
-        return TeamElementLocation.OUTER;
+        return TeamElementLocation.RIGHT;
     }
 
     private double getPercentDifference(double val1, double val2) {
         return Math.abs(val1-val2) / ((val1 + val2) / 2) * 100;
     }
 
-    protected double getAvgSaturation(Mat input, Rect rect) {
+    protected double getAvgSaturation(Mat input, Rect rect, TeamElementLocation location) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
+//        telemetry.addData("[VISION-" + location + "] Hue", color.val[0]);
+//        telemetry.addData("[VISION-" + location + "] Saturation", color.val[1]);
+//        telemetry.addData("[VISION-" + location + "] Value", color.val[2]);
         return color.val[1];
     }
 
@@ -91,7 +106,7 @@ public class FirstVisionProcessor implements VisionProcessor {
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Selection", selection);
         switch (selection) {
-            case INNER:
+            case LEFT:
                 canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;
@@ -99,7 +114,7 @@ public class FirstVisionProcessor implements VisionProcessor {
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 break;
-            case OUTER:
+            case RIGHT:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;

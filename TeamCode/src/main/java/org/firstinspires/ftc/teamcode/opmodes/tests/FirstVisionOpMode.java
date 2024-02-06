@@ -17,9 +17,10 @@ public class FirstVisionOpMode extends OpMode {
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        visionProcessor = new FirstVisionProcessor();
+        visionProcessor = new FirstVisionProcessor(telemetry);
         visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
         telemetry.addLine("Initialization Complete");
+        telemetry.update();
     }
 
     @Override
@@ -34,5 +35,6 @@ public class FirstVisionOpMode extends OpMode {
     @Override
     public void loop() {
         telemetry.addData("Identified", visionProcessor.getSelection()); // TODO: in a real game, do something with the vision data
+        telemetry.update();
     }
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.sensors;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
@@ -18,9 +19,9 @@ public class VisionSensor {
 
 
 
-    public VisionSensor(WebcamName frontWebcamName) {
+    public VisionSensor(WebcamName frontWebcamName, Telemetry telemetry) {
         this.frontWebcamName = frontWebcamName;
-        visionProcessor = new FirstVisionProcessor();
+        visionProcessor = new FirstVisionProcessor(telemetry);
     }
 
 

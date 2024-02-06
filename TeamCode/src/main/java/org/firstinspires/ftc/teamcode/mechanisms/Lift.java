@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
 import org.firstinspires.ftc.teamcode.feedback.PIDCoefficients;
+import org.firstinspires.ftc.teamcode.feedback.PIDCoefficientsEx;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -24,21 +26,24 @@ import java.util.Collection;
 @Config
 public class Lift implements Mechanism {
 
-
     public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
+    public static double LIFT_KG = 0.1;
+
     public static double INTEGRAL_LIMIT = 1;
     public static double LIFT_MAX_ACCELERATION = 3000;
     public static double LIFT_MAX_VELOCITY = 8000;
-    public static double MINIMUM_LIFT_POWER = 0.05;
+    public static double MINIMUM_LIFT_POWER = 0.1;
+    public static double LIFT_MAXIMUM_LOWER_VALUE = -100;
 
     public static double ARM_KP = 0.003;
     public static double ARM_KI = 0.0;
     public static double ARM_KD = 0.0;
     public static double ARM_MAX_ACCELERATION = 3000;
     public static double ARM_MAX_VELOCITY = 5000;
-    public static double MINIMUM_ARM_POWER = 0.1;
+    public static double MINIMUM_ARM_POWER = 0.16;
+    public static double ARM_MAXIMUM_LOWER_VALUE = 50;
 
     DcMotorEx leftMotor;
     DcMotorEx rightMotor;
@@ -73,14 +78,14 @@ public class Lift implements Mechanism {
     public enum Position {
         Start(0, 0),
         Intake(0, 0),
-        ScoreLow(-2700, -0),
+        ScoreLow(-2700, -350),
         ScoreMedium(-2700, -700),
         ScoreHigh(-2700, -1100),
         Hang(-1700, -1800),
         LaunchDrone(0, 0);
 
-        public final int armPosition;
-        public final int liftPosition;
+        public int armPosition;
+        public int liftPosition;
 
         /**
          * Creates a new Position for the given arm and servo.
@@ -98,28 +103,26 @@ public class Lift implements Mechanism {
 
         this.leftMotor = hardwareMap.get(DcMotorEx.class, "leftLift");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         this.rightMotor = hardwareMap.get(DcMotorEx.class, "rightLift");
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         this.armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        leftController = new PIDController(new PIDCoefficients(LIFT_KP, LIFT_KI, LIFT_KD));
-        rightController = new PIDController(new PIDCoefficients(LIFT_KP, LIFT_KI, LIFT_KD));
+        leftController = new PIDControllerEx(new PIDCoefficientsEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KG));
+        rightController = new PIDControllerEx(new PIDCoefficientsEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KG));
         armController = new PIDController(new PIDCoefficients(ARM_KP, ARM_KI, ARM_KD));
 
         leftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
         rightController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
 
-        liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, 0, Position.Start.liftPosition);
-        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.Start.armPosition);
-
-
+        liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, 0, Position.Intake.liftPosition);
+        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.Intake.armPosition);
     }
 
     public void setTarget(Position position) {
@@ -154,24 +157,30 @@ public class Lift implements Mechanism {
         double leftPower = leftController.calculate(targetPosition, leftPosition);
         double rightPower = rightController.calculate(targetPosition, rightPosition);
 
-        // Cap the motor power at 1 and -1
-        leftPower = modifyMotorPower(leftPower, MINIMUM_LIFT_POWER);
-        rightPower = modifyMotorPower(rightPower, MINIMUM_LIFT_POWER);
+        if (targetPosition == Position.Intake.liftPosition) {
+            leftPower = 0;
+            rightPower = 0;
+            telemetry.addLine("[LIFT] close to bottom - let it fall");
+        } else {
+            // Cap the motor power at 1 and -1
+            leftPower = modifyMotorPower(leftPower, MINIMUM_LIFT_POWER);
+            rightPower = modifyMotorPower(rightPower, MINIMUM_LIFT_POWER);
+        }
 
         // Apply the power to each motor
         leftMotor.setPower(leftPower);
         rightMotor.setPower(rightPower);
 
-        String leftMotorTelemetry = "power: " + leftPower + ", position: " + leftPosition;
-        String rightMotorTelemetry = "power: " + rightPower + ", position: " + rightPosition;
         telemetry.addData("[LIFT] target", targetPosition);
-        telemetry.addData("[LIFT] left", leftMotorTelemetry);
-        telemetry.addData("[LIFT] right", rightMotorTelemetry);
+        telemetry.addData("[LIFT] left position", leftPosition);
+        telemetry.addData("[LIFT] left power", leftPower);
+        telemetry.addData("[LIFT] right position", rightPosition);
+        telemetry.addData("[LIFT] right power", rightPower);
     }
 
     private void setArmPower() {
         // Read the current position of the arm motor
-        double armPosition = armMotor.getCurrentPosition();
+        int armPosition = armMotor.getCurrentPosition();
 
         // Get the target position from our motion profile
         double targetPosition = armProfile.calculatePosition();
@@ -179,8 +188,13 @@ public class Lift implements Mechanism {
         // Calculate the power for the arm motor using the PID controller
         double armPower = armController.calculate(targetPosition, armPosition);
 
-        // Cap the motor power at 1 and -1
-        armPower = modifyMotorPower(armPower, MINIMUM_LIFT_POWER);
+        if (targetPosition == Position.Intake.armPosition) {
+            armPower = 0;
+            telemetry.addLine("[ARM] close to bottom - let it fall");
+        } else {
+            // Cap the motor power at 1 and -1
+            armPower = modifyMotorPower(armPower, MINIMUM_ARM_POWER);
+        }
 
         // Apply the power to the arm motor
         armMotor.setPower(armPower);
@@ -195,6 +209,7 @@ public class Lift implements Mechanism {
         power = Math.max(-1, Math.min(1, power));
         // If the power level of the motor is below the minimum threshold, set it to 0
         if (Math.abs(power) < minPower) {
+            telemetry.addLine("Minimum Power Hit");
             power = 0;
         }
         return power;
@@ -216,7 +231,9 @@ public class Lift implements Mechanism {
     }
 
     private void setLiftTelemetry() {
+        telemetry.addData("[LIFT] left power", leftMotor.getPower());
         telemetry.addData("[LIFT] left position", leftMotor.getCurrentPosition());
+        telemetry.addData("[LIFT] right power", rightMotor.getPower());
         telemetry.addData("[LIFT] right position", rightMotor.getCurrentPosition());
     }
 }
