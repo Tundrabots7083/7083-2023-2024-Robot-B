@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,14 +15,16 @@ import java.util.Collection;
  * A pixel collector is defined as a flap servo + a spinner servo.
  * Robot B has two pixel collectors
  */
+@Config
 public class PixelCollector implements Mechanism {
 
-    public static final long TOGGLE_DELAY = 500;
+
+    public static long TOGGLE_DELAY = 500;
 
     /**
      * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
      */
-    public static final long SPINNER_DELAY = 250;
+    public static long SPINNER_DELAY = 250;
 
     String deviceName;
     String description;

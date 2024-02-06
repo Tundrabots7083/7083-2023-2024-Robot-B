@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -16,10 +17,12 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
+@Config
 @Autonomous(name="Blue Alliance Backstage Park Center", group="Autonomous Blue")
 public class BlueAllianceBackstageParkCenter extends LinearOpMode {
+    public static long PIXEL_DROPOFF_TIMER = 3000;
 
-    public static final Pose2d STARTING_POSE = new Pose2d(12, 63.5, Math.toRadians(-90));
+    public static final Pose2d STARTING_POSE = new Pose2d(15.25, 63.125, Math.toRadians(-90));
     private Lift lift;
     private PixelCollector rightPixelCollector;
     private PixelCollector leftPixelCollector;
@@ -70,9 +73,11 @@ public class BlueAllianceBackstageParkCenter extends LinearOpMode {
         telemetry.addLine("Drop off purple pixel");
         telemetry.update();
         // TODO: un-comment out these three lines.
-//        rightPixelCollector.toggleState(true);
-//        rightPixelCollector.update();
-//        sleep(250); // TODO: see if this is long enough
+        leftPixelCollector.toggleState(true);
+        leftPixelCollector.update();
+        sleep(PIXEL_DROPOFF_TIMER);
+
+        /*
 
         // Turn off the pixel container
         // TODO: un-comment out these two lines.
@@ -127,5 +132,6 @@ public class BlueAllianceBackstageParkCenter extends LinearOpMode {
         telemetry.update();
         Trajectory toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toParkingSpot);
+         */
     }
 }

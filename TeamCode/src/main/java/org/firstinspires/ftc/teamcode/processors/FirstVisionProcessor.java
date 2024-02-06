@@ -51,9 +51,9 @@ public class FirstVisionProcessor implements VisionProcessor {
         telemetry.addData("[VISION] Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
-            return TeamElementLocation.LEFT;
-        } else if (satRectLeft > satRectMiddle) {
             return TeamElementLocation.RIGHT;
+        } else if (satRectLeft > satRectMiddle) {
+            return TeamElementLocation.LEFT;
         } else if (satRectMiddle > satRectLeft) {
             return TeamElementLocation.MIDDLE;
         }

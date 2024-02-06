@@ -13,7 +13,8 @@ public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {
 
     public static final Pose2d INNER_SPIKE_BASE = new Pose2d(16, 35, Math.toRadians(180));
     public static final int INNER_SPIKE_BASE_HEADING = 180;
-    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(11, 41, Math.toRadians(-90));
+    
+    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(15.25, 34.75, Math.toRadians(-90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
     public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(23.5, 50, Math.toRadians(-90));
     public static final int OUTER_SPIKE_BASE_HEADING = -90;
@@ -43,22 +44,18 @@ public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {
 
     @Override
     public Trajectory toSpikeMark(TrajectoryBuilder builder) {
-
         // The first step is to drive the robot from the starting position to the correct spike mark.
-        Pose2d spikePose;
-        int spikeHeading;
         if (targetLocation == TeamElementLocation.LEFT) {
-            spikePose = OUTER_SPIKE_BASE;
-            spikeHeading = OUTER_SPIKE_BASE_HEADING;
+            return builder.splineToLinearHeading(OUTER_SPIKE_BASE, Math.toRadians(OUTER_SPIKE_BASE_HEADING))
+                    .build();
         } else if (targetLocation == TeamElementLocation.MIDDLE) {
-            spikePose = MIDDLE_SPIKE_BASE;
-            spikeHeading = MIDDLE_SPIKE_BASE_HEADING;
+            return builder//.splineToLinearHeading(MIDDLE_SPIKE_MOVE_CAN, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING))
+                    .splineToLinearHeading(MIDDLE_SPIKE_BASE, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING))
+                    .build();
         } else {
-            spikePose = INNER_SPIKE_BASE;
-            spikeHeading = INNER_SPIKE_BASE_HEADING;
+            return builder.splineToLinearHeading(INNER_SPIKE_BASE, Math.toRadians(INNER_SPIKE_BASE_HEADING))
+                    .build();
         }
-        return builder.splineToLinearHeading(spikePose, Math.toRadians(spikeHeading))
-                .build();
     }
 
     @Override
@@ -71,11 +68,11 @@ public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {
                 builder.splineToConstantHeading(BACKDROP_EDGE_POSITION, Math.toRadians(BACKDROP_EDGE_ROTATE));
                 break;
             case MIDDLE:
-                builder.splineToConstantHeading(BACKDROP_INTERMEDIATE_POSITION, Math.toRadians(0))
+                builder.splineToConstantHeading(BACKDROP_INTERMEDIATE_POSITION, Math.toRadians(BACKDROP_MIDDLE_ROTATE))
                         .splineToConstantHeading(BACKDROP_MIDDLE_POSITION, Math.toRadians(BACKDROP_MIDDLE_ROTATE));
                 break;
             default:
-                builder.splineToConstantHeading(BACKDROP_INTERMEDIATE_POSITION, Math.toRadians(0))
+                builder.splineToConstantHeading(BACKDROP_INTERMEDIATE_POSITION, Math.toRadians(BACKDROP_MIDDLE_ROTATE))
                         .splineToConstantHeading(BACKDROP_CENTER_POSITION, Math.toRadians(BACKDROP_CENTER_ROTATE));
         }
         return builder.build();
