@@ -23,9 +23,9 @@ public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d UNDER_STAGE_TARGET_POSITION = new Vector2d(-12, 61);
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(38, 60);
 
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(40, 42.5);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(39.5, 35.5);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(42, 32);
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(43, 42.5);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(43, 35.5);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(44, 32);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
     public static double BACKDROP_EDGE_ROTATE = -1;

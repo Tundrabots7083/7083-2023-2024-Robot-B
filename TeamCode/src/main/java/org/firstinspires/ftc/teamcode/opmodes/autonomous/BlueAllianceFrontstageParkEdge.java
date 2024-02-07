@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 @Autonomous(name="Blue Alliance Frontstage Park Edge", group="Autonomous Blue")
 public class BlueAllianceFrontstageParkEdge extends LinearOpMode {
-    public static long PIXEL_SPIKE_MARK_TIMER = 3000;
+    public static long PIXEL_SPIKE_MARK_TIMER = 3250;
     public static long PIXEL_BACKDROP_TIMER = 500;
     public static long RAISE_LIFT_TIMER = 2000;
     public static long LOWER_LIFT_TIMER = 2000;
