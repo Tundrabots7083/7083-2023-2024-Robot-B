@@ -8,13 +8,15 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 
 public class PixelCollectorController implements Controller {
 
-
-
     PixelCollector leftPixelCollector;
     PixelCollector rightPixelCollector;
 
     private final Telemetry telemetry;
 
+    private boolean dpad_down_was_pressed = false;
+    private boolean dpad_right_was_pressed = false;
+    private boolean gamepad_a_was_pressed = false;
+    private boolean gamepad_b_was_pressed = false;
 
     public PixelCollectorController(HardwareMap hardwareMap, Telemetry telemetry) {
         this.rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
@@ -30,23 +32,34 @@ public class PixelCollectorController implements Controller {
         // a and b will be used for the right pixel collector's state
 
         // Left pixel collector
-        if (gamepad2.dpad_down) {
+        if (!dpad_down_was_pressed && gamepad2.dpad_down) {
+            dpad_down_was_pressed = true;
             // Toggle collection on or off
-            leftPixelCollector.toggleState(false);
-        } else if (gamepad2.dpad_right) {
+            leftPixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
+        } else if (!dpad_right_was_pressed && gamepad2.dpad_right) {
+            dpad_right_was_pressed = true;
+            leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
             // Toggle depositing on or off
-            leftPixelCollector.toggleState(true);
+        } else if (!gamepad2.dpad_down && !gamepad2.dpad_right && (dpad_down_was_pressed || dpad_right_was_pressed)) {
+            dpad_down_was_pressed = false;
+            dpad_right_was_pressed = false;
+            leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
         }
 
         // Right pixel collector
-        if (gamepad2.a) {
+        if (!gamepad_a_was_pressed && gamepad2.a) {
+            gamepad_a_was_pressed = true;
             // Toggle collection on or off
-            rightPixelCollector.toggleState(false);
-        } else if (gamepad2.b) {
+            rightPixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
+        } else if (!gamepad_b_was_pressed && gamepad2.b) {
+            gamepad_b_was_pressed = true;
+            rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
             // Toggle depositing on or off
-            rightPixelCollector.toggleState(true);
+        } else if (!gamepad2.a && !gamepad2.b && (gamepad_a_was_pressed || gamepad_b_was_pressed)) {
+            gamepad_a_was_pressed = false;
+            gamepad_b_was_pressed = false;
+            rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
         }
-
 
         leftPixelCollector.update();
         rightPixelCollector.update();

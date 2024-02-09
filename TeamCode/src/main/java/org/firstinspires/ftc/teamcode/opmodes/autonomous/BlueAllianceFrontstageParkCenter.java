@@ -94,7 +94,7 @@ public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
         // Move the lift to the scoring position
         telemetry.addLine("Raise lift");
         telemetry.update();
-        lift.setTarget(Lift.Position.ScoreLow);
+        lift.setTarget(Lift.Position.Autonomous);
         timer.reset();
         while (timer.milliseconds() < RAISE_LIFT_TIMER) {
             lift.update();

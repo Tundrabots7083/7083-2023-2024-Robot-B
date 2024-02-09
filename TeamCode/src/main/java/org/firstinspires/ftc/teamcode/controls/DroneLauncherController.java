@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
 
 /**
@@ -32,8 +31,9 @@ public class DroneLauncherController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
-        if (gamepad1.x) {
-            droneLauncher.setToLaunchPosition();
+        if (gamepad2.x) {
+            droneLauncher.setToLaunchAngle();
+            telemetry.addLine("[Drone] Set to Launch Angle");
         }
         if (gamepad1.right_bumper && gamepad2.right_bumper) {
             droneLauncher.launch();

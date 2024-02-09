@@ -36,7 +36,7 @@ public class PixelCollector implements Mechanism {
     PixelCollectorState state;
     boolean leftServo;
 
-    enum PixelCollectorState {
+    public enum PixelCollectorState {
         COLLECTING(-0.3, 0),
         DEPOSITING(0.1, 0),
         CLOSED(0, 0.65);
@@ -72,6 +72,7 @@ public class PixelCollector implements Mechanism {
 
     public void toggleState(boolean deposit) {
         if (lastToggleTime + TOGGLE_DELAY < System.currentTimeMillis()) {
+            spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
             if (state != PixelCollectorState.CLOSED) {
                 state = PixelCollectorState.CLOSED;
 //                spinner.setPower(state.spinnerPower);
@@ -83,7 +84,6 @@ public class PixelCollector implements Mechanism {
             }
             else {
                 state = PixelCollectorState.COLLECTING;
-                spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
 //                flap.setPosition(state.flapPosition);
 //                spinner.setPower(state.spinnerPower);
             }
@@ -92,20 +92,28 @@ public class PixelCollector implements Mechanism {
         }
     }
 
-    public void update() {
-
-        // Set the flap servo position to the current target
-        flap.setPosition(state.flapPosition);
-
-        // Check if we can set the spinner position yet
-        long currentTime = System.currentTimeMillis();
-
-        if (currentTime > spinnerDelayTime) {
-            spinner.setPower(state.spinnerPower);
-        }
-
+    public void setState(PixelCollectorState state) {
+        this.state = state;
+        spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
     }
 
+    public void update() {
+        long currentTime = System.currentTimeMillis();
+        if (state == PixelCollectorState.CLOSED) {
+            spinner.setPower(state.spinnerPower);
+            if (currentTime > spinnerDelayTime) {
+                flap.setPosition(state.flapPosition);
+            }
+        } else {
+            // Set the flap servo position to the current target
+            flap.setPosition(state.flapPosition);
+
+            // Check if we can set the spinner position yet
+            if (currentTime > spinnerDelayTime) {
+                spinner.setPower(state.spinnerPower);
+            }
+        }
+    }
 
     @Override
     public String getDeviceName() {

@@ -14,12 +14,12 @@ import java.util.Collection;
  */
 @Config
 public class DroneLauncher implements Mechanism {
-    public static double LAUNCH_POS = 0.5;
-    public static double SERVO_RELEASE_POS = 0.1;
+    public static double SERVO_LAUNCH_ANGLE = 0.145;
+    public static double SERVO_RELEASE_POS = 0.7;
     private final String deviceName;
     private final String description;
     private Servo releaseServo;
-    private Servo positionServo;
+    private Servo angleServo;
 
     /**
      * Createss the drone launcher
@@ -31,18 +31,18 @@ public class DroneLauncher implements Mechanism {
         this.deviceName = deviceName;
         this.description = description;
 
-        releaseServo = hardwareMap.get(Servo.class, deviceName);
+        releaseServo = hardwareMap.get(Servo.class, "droneLauncher");
         releaseServo.setDirection(Servo.Direction.FORWARD);
 
-        positionServo = hardwareMap.get(Servo.class, "dronePosition");
-        positionServo.setDirection(Servo.Direction.FORWARD);
+        angleServo = hardwareMap.get(Servo.class, "dronePosition");
+        angleServo.setDirection(Servo.Direction.REVERSE);
     }
 
     /**
      * Moves the drone launcher into launch position
      */
-    public void setToLaunchPosition() {
-        positionServo.setPosition(LAUNCH_POS);
+    public void setToLaunchAngle() {
+        angleServo.setPosition(SERVO_LAUNCH_ANGLE);
     }
 
     /**

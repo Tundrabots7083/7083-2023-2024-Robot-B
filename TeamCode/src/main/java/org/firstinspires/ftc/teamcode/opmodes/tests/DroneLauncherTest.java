@@ -3,12 +3,9 @@ package org.firstinspires.ftc.teamcode.opmodes.tests;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
-import org.firstinspires.ftc.teamcode.mechanisms.Lift;
 
 @TeleOp(name="Drone Launcher Test", group="test")
 public class DroneLauncherTest extends LinearOpMode {
@@ -24,7 +21,7 @@ public class DroneLauncherTest extends LinearOpMode {
 
         waitForStart();
 
-        droneLauncher.setToLaunchPosition();
+        droneLauncher.setToLaunchAngle();
         sleep(250);
         droneLauncher.launch();
     }

@@ -27,7 +27,7 @@ public class FirstVisionProcessor implements VisionProcessor {
     public static int MIDDLE_RECTANGLE_Y = 310;
     public static int MIDDLE_RECTANGLE_HEIGHT = 95;
 
-    public static double MIN_PERCENT_DIFFERENCE = 45;
+    public static double MIN_PERCENT_DIFFERENCE = 33;
     public static double MIN_LEFT_SAT = 50;
     public static double MIN_MIDDLE_SAT = 30;
 

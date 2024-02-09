@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
@@ -9,11 +8,8 @@ import org.firstinspires.ftc.teamcode.feedback.PIDCoefficientsEx;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.Range;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
 import org.firstinspires.ftc.teamcode.tests.Test;
@@ -76,12 +72,13 @@ public class Lift implements Mechanism {
     }
 
     public enum Position {
-        Start(0, 0),
         Intake(0, 0),
+        Autonomous(-2700, -150),
         ScoreLow(-2700, -350),
         ScoreMedium(-2700, -700),
         ScoreHigh(-2700, -1100),
-        Hang(-1700, -1800),
+        HangStart(-1100, -1550),
+        HangEnd(-1100, -700),
         LaunchDrone(0, 0);
 
         public int armPosition;

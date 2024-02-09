@@ -18,6 +18,7 @@ public class Robot {
     public MecanumDriveController mecanumDriveController;
     public LiftController liftController;
     public PixelCollectorController pixelCollectorController;
+    public DroneLauncherController droneLauncherController;
     private final Telemetry telemetry;
     public final List<Controller> controllers;
 
@@ -32,7 +33,8 @@ public class Robot {
         mecanumDriveController = new MecanumDriveController(hardwareMap, telemetry);
         liftController = new LiftController(hardwareMap, telemetry);
         pixelCollectorController = new PixelCollectorController(hardwareMap, telemetry);
-        controllers = Arrays.asList(mecanumDriveController, liftController, pixelCollectorController);
+        droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
+        controllers = Arrays.asList(mecanumDriveController, liftController, pixelCollectorController, droneLauncherController);
 
         telemetry.addLine("[Robot] controllers initialized");
     }

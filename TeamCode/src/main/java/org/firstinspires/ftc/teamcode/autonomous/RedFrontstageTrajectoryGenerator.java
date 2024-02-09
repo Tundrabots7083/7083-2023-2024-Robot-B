@@ -11,20 +11,20 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 @Config
 public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
 
-    public static final Vector2d INNER_SPIKE_MARK_INTERMEDIATE_POSITION = new Vector2d(-41.5, -32);
-    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-36, -32);
+    public static final Vector2d INNER_SPIKE_MARK_INTERMEDIATE_POSITION = new Vector2d(-41.5, -30.5);
+    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-36, -30.5);
     public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(-36, -37.5, Math.toRadians(90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = 90;
     public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(-45, -47, Math.toRadians(90));
     public static final int OUTER_SPIKE_BASE_HEADING = 90;
 
-    public static final Vector2d REVERSE_POSITION = new Vector2d(-36, -60);
+    public static final Vector2d REVERSE_POSITION = new Vector2d(-38, -60);
 
     public static final Vector2d UNDER_STAGE_TARGET_POSITION = new Vector2d(-12, -61);
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(38, -60);
 
     public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(41, -44);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(42, -39);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(41, -37);
     public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(42, -32);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
@@ -36,7 +36,7 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_CENTER = new Vector2d(45, -18);
     public static final Vector2d PARKING_POSITION_CENTER = new Vector2d(58, -14);
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_EDGE = new Vector2d(45, -57);
-    public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, -61);
+    public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, -60.5);
 
     private final TeamElementLocation targetLocation;
 
