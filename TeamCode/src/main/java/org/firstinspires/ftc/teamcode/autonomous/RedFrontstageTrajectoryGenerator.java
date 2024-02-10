@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
 
     public static final Vector2d INNER_SPIKE_MARK_INTERMEDIATE_POSITION = new Vector2d(-41.5, -30.5);
-    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-36, -30.5);
+    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-35.5, -30.5);
     public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(-37, -36.5, Math.toRadians(90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = 90;
     public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(-45, -47, Math.toRadians(90));
@@ -25,7 +25,7 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
 
     public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(42, -44);
     public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(42, -37);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(42, -32);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(43.5, -32);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
     public static double BACKDROP_EDGE_ROTATE = 0;
