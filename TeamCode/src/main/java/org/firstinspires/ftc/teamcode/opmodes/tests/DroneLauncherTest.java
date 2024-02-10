@@ -23,6 +23,6 @@ public class DroneLauncherTest extends LinearOpMode {
 
         droneLauncher.setToLaunchAngle();
         sleep(250);
-        droneLauncher.launch();
+        droneLauncher.launchDrone();
     }
 }

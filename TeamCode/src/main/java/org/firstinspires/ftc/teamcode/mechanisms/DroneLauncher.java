@@ -14,18 +14,21 @@ import java.util.Collection;
  */
 @Config
 public class DroneLauncher implements Mechanism {
-    public static double SERVO_LAUNCH_ANGLE = 0.145;
-    public static double SERVO_RELEASE_POS = 0.7;
+
+    public static double SERVO_LAUNCH_START_ANGLE = 0.08;
+    public static double SERVO_LAUNCH_ANGLE = 0.37; // Using tension of 4.25, and bot centered on outer spike mark
+    public static double SERVO_RELEASE_INITIAL = 0.675;
+    public static double SERVO_RELEASE_POS = 0.2;
     private final String deviceName;
     private final String description;
     private Servo releaseServo;
     private Servo angleServo;
 
     /**
-     * Createss the drone launcher
-     * @param deviceName
-     * @param description
-     * @param hardwareMap
+     * Creates the drone launcher
+     * @param deviceName name of the drone launcher device.
+     * @param description description of the drone launcher.
+     * @param hardwareMap the hardware map that contains the drone launcher hardware.
      */
     public DroneLauncher(String deviceName, String description, HardwareMap hardwareMap) {
         this.deviceName = deviceName;
@@ -33,9 +36,18 @@ public class DroneLauncher implements Mechanism {
 
         releaseServo = hardwareMap.get(Servo.class, "droneLauncher");
         releaseServo.setDirection(Servo.Direction.FORWARD);
+        releaseServo.setPosition(SERVO_RELEASE_INITIAL); // TODO: verify drone launch servo doesn't move
 
         angleServo = hardwareMap.get(Servo.class, "dronePosition");
         angleServo.setDirection(Servo.Direction.REVERSE);
+        angleServo.setPosition(SERVO_LAUNCH_START_ANGLE); // TODO: verify angle is flat
+    }
+
+    /**
+     * Moves the drone launcher into the down position
+     */
+    public void setToStartAngle() {
+        angleServo.setPosition(SERVO_LAUNCH_START_ANGLE);
     }
 
     /**
@@ -48,7 +60,7 @@ public class DroneLauncher implements Mechanism {
     /**
      * Launches the drone, hopefully scoring a lot of points in the process.
      */
-    public void launch() {
+    public void launchDrone() {
         releaseServo.setPosition(SERVO_RELEASE_POS);
     }
 
