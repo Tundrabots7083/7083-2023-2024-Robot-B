@@ -19,7 +19,7 @@ public class RedBackstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final int OUTER_SPIKE_BASE_HEADING = 90;
 
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(40.5, -43);
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(47, -43);
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(48, -43);
     public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(46.5, -39);
     public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(46, -29.5);
     public static double BACKDROP_MIDDLE_ROTATE = 93;
@@ -33,7 +33,7 @@ public class RedBackstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_CENTER = new Vector2d(45, -16);
     public static final Vector2d PARKING_POSITION_CENTER = new Vector2d(59, -11);
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_EDGE = new Vector2d(45, -57);
-    public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, -60);
+    public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, -59);
 
     private final TeamElementLocation targetLocation;
 
