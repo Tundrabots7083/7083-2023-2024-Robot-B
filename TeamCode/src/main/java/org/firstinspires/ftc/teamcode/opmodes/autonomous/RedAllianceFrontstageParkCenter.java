@@ -19,7 +19,8 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 @Autonomous(name="Red Alliance Frontstage Park Center", group="Autonomous Red")
 public class RedAllianceFrontstageParkCenter extends LinearOpMode {
-    public static long PIXEL_SPIKE_MARK_TIMER = 3250;
+    public static long PIXEL_SPIKE_MARK_TIMER = 4000;
+    public static long CONTAINER_CLOSED_TIMER = 500;
     public static long PIXEL_BACKDROP_TIMER = 500;
     public static long RAISE_LIFT_TIMER = 2000;
     public static long LOWER_LIFT_TIMER = 2000;
@@ -51,6 +52,7 @@ public class RedAllianceFrontstageParkCenter extends LinearOpMode {
         rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
         leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
 
+        // Wait for webcam to initialize
         while(!visionSensor.webcamInitialized()) {}
         telemetry.addData("Webcam", "Initialized");
         telemetry.update();
@@ -76,13 +78,18 @@ public class RedAllianceFrontstageParkCenter extends LinearOpMode {
         // Drop off the top pixel at the spike mark
         telemetry.addLine("Drop off purple pixel");
         telemetry.update();
-        leftPixelCollector.toggleState(true);
-        leftPixelCollector.update();
-        sleep(PIXEL_SPIKE_MARK_TIMER);
+        leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+        timer.reset();
+        while (timer.milliseconds() < PIXEL_SPIKE_MARK_TIMER) {
+            leftPixelCollector.update();
+        }
 
         // Turn off the pixel container
-        leftPixelCollector.toggleState(false);
-        leftPixelCollector.update();
+        leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+        timer.reset();
+        while (timer.milliseconds() < CONTAINER_CLOSED_TIMER) {
+            leftPixelCollector.update();
+        }
 
         // Drive to the proper location (edge, middle, center) in front of the backdrop at which
         // the arm is rotated
@@ -105,16 +112,19 @@ public class RedAllianceFrontstageParkCenter extends LinearOpMode {
         telemetry.update();
         Trajectory toBackdropPosition = trajectoryGenerator.toBackdropPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true));
         drive.followTrajectory(toBackdropPosition);
-        rightPixelCollector.toggleState(true);
-        rightPixelCollector.update();
+        rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
         timer.reset();
         while (timer.milliseconds() < PIXEL_BACKDROP_TIMER) {
+            rightPixelCollector.update();
             lift.update();
         }
 
         // Turn off the pixel container
-        rightPixelCollector.toggleState(false);
-        rightPixelCollector.update();
+        rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+        timer.reset();
+        while (timer.milliseconds() < CONTAINER_CLOSED_TIMER) {
+            rightPixelCollector.update();
+        }
 
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
         telemetry.addLine("Score yellow pixel on backdrop");

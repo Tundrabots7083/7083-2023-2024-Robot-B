@@ -33,14 +33,17 @@ public class PixelCollectorController implements Controller {
 
         // Left pixel collector
         if (!dpad_down_was_pressed && gamepad2.dpad_down) {
+            telemetry.addLine("[LEFT PC] Set to collecting");
             dpad_down_was_pressed = true;
             // Toggle collection on or off
             leftPixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
         } else if (!dpad_right_was_pressed && gamepad2.dpad_right) {
+            telemetry.addLine("[LEFT PC] Set to depositing");
             dpad_right_was_pressed = true;
             leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
             // Toggle depositing on or off
         } else if (!gamepad2.dpad_down && !gamepad2.dpad_right && (dpad_down_was_pressed || dpad_right_was_pressed)) {
+            telemetry.addLine("[LEFT PC] Set to closed");
             dpad_down_was_pressed = false;
             dpad_right_was_pressed = false;
             leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
@@ -48,14 +51,17 @@ public class PixelCollectorController implements Controller {
 
         // Right pixel collector
         if (!gamepad_a_was_pressed && gamepad2.a) {
+            telemetry.addLine("[RIGHT PC] Set to collecting");
             gamepad_a_was_pressed = true;
             // Toggle collection on or off
             rightPixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
         } else if (!gamepad_b_was_pressed && gamepad2.b) {
+            telemetry.addLine("[LEFT PC] Set to depositing");
             gamepad_b_was_pressed = true;
             rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
             // Toggle depositing on or off
         } else if (!gamepad2.a && !gamepad2.b && (gamepad_a_was_pressed || gamepad_b_was_pressed)) {
+            telemetry.addLine("[LEFT PC] Set to closed");
             gamepad_a_was_pressed = false;
             gamepad_b_was_pressed = false;
             rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
