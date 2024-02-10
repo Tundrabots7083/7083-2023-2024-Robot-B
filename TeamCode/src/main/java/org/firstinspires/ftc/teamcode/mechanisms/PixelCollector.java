@@ -65,7 +65,9 @@ public class PixelCollector implements Mechanism {
             this.spinner.setDirection(CRServo.Direction.REVERSE);
         }
 
-        state = PixelCollectorState.CLOSED;
+        this.state = PixelCollectorState.CLOSED;
+        this.flap.setPosition(this.state.flapPosition);
+        this.spinner.setPower(this.state.spinnerPower);
 
         spinnerDelayTime = System.currentTimeMillis();
     }
