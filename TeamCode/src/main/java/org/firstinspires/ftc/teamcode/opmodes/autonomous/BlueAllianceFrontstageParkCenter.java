@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
 
 @Autonomous(name="Blue Alliance Frontstage Park Center", group="Autonomous Blue")
-public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
+public class BlueAllianceFrontstageParkCenter extends LinearOpMode implements AutonomousOpmode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -19,7 +19,7 @@ public class BlueAllianceFrontstageParkCenter extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Create the trajectory follower
-        TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry);
+        TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry, DELAY_FRONTSTAGE_IN_MILLIS);
 
         waitForStart();
 

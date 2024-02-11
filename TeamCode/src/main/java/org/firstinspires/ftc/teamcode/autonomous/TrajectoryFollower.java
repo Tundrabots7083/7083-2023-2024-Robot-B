@@ -22,9 +22,9 @@ public class TrajectoryFollower {
     public static long PIXEL_BACKDROP_TIMER = 2000;
     public static long RAISE_LIFT_TIMER = 2000;
     public static long LOWER_LIFT_TIMER = 2000;
-    public static long DELAY_TIME_MILLIS = 0;
 
     private final Telemetry telemetry;
+    private final long delayOpmodeInMillis;
 
     private final Lift lift;
     private final AutoMecanumDrive drive;
@@ -37,8 +37,9 @@ public class TrajectoryFollower {
      * @param hardwareMap hardware map for the robot.
      * @param telemetry telemetry class for displaying data.
      */
-    public TrajectoryFollower(HardwareMap hardwareMap, Telemetry telemetry) {
+    public TrajectoryFollower(HardwareMap hardwareMap, Telemetry telemetry, long delayOpmodeInMillis) {
         this.telemetry = telemetry;
+        this.delayOpmodeInMillis = delayOpmodeInMillis;
 
         // Create the drivetrain and set the initial pose
         drive = new AutoMecanumDrive(hardwareMap, telemetry);
@@ -84,7 +85,7 @@ public class TrajectoryFollower {
         telemetry.update();
         visionSensor.close();
 
-        sleep(DELAY_TIME_MILLIS);
+        sleep(delayOpmodeInMillis);
 
         // Set the starting pose
         drive.setPoseEstimate(startingPose);
