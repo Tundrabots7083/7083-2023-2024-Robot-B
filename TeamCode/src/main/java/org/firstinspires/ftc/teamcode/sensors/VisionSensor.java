@@ -10,20 +10,14 @@ public class VisionSensor {
 
     FirstVisionProcessor visionProcessor;
 
-
     WebcamName frontWebcamName;
 
-
-
     VisionPortal frontWebcamPortal;
-
-
 
     public VisionSensor(WebcamName frontWebcamName, Telemetry telemetry) {
         this.frontWebcamName = frontWebcamName;
         visionProcessor = new FirstVisionProcessor(telemetry);
     }
-
 
     public void initializeVisionPortal() {
         frontWebcamPortal = VisionPortal.easyCreateWithDefaults(frontWebcamName, visionProcessor);
@@ -44,5 +38,4 @@ public class VisionSensor {
             frontWebcamPortal.close();
         }
     }
-
 }
