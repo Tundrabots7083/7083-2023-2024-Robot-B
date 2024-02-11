@@ -15,8 +15,8 @@ import java.util.Collection;
 @Config
 public class DroneLauncher implements Mechanism {
 
-    public static double SERVO_LAUNCH_START_ANGLE = 0.08;
-    public static double SERVO_LAUNCH_ANGLE = 0.37; // Using tension of 4.25, and bot centered on outer spike mark
+    public static double SERVO_LAUNCH_START_ANGLE = 0.125;
+    public static double SERVO_LAUNCH_ANGLE = 0.36; // Using tension of 4.25, and bot centered on outer spike mark
     public static double SERVO_RELEASE_INITIAL = 0.675;
     public static double SERVO_RELEASE_POS = 0.2;
     private final String deviceName;

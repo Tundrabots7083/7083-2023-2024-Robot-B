@@ -2,28 +2,22 @@ package org.firstinspires.ftc.teamcode.sensors;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.teamcode.processors.VisionProcessor;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 public class VisionSensor {
 
-    FirstVisionProcessor visionProcessor;
-
+    VisionProcessor visionProcessor;
 
     WebcamName frontWebcamName;
 
-
-
     VisionPortal frontWebcamPortal;
-
-
 
     public VisionSensor(WebcamName frontWebcamName, Telemetry telemetry) {
         this.frontWebcamName = frontWebcamName;
-        visionProcessor = new FirstVisionProcessor(telemetry);
+        visionProcessor = new VisionProcessor(telemetry);
     }
-
 
     public void initializeVisionPortal() {
         frontWebcamPortal = VisionPortal.easyCreateWithDefaults(frontWebcamName, visionProcessor);
@@ -44,5 +38,4 @@ public class VisionSensor {
             frontWebcamPortal.close();
         }
     }
-
 }

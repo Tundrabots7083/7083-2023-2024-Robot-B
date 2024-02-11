@@ -6,18 +6,18 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.teamcode.processors.VisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous (name="First Vision Processor", group="vision")
 public class FirstVisionOpMode extends OpMode {
-    private FirstVisionProcessor visionProcessor;
+    private VisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        visionProcessor = new FirstVisionProcessor(telemetry);
+        visionProcessor = new VisionProcessor(telemetry);
         visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
         telemetry.addLine("Initialization Complete");
         telemetry.update();

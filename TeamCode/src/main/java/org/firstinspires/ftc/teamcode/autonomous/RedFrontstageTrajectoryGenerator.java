@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 
 @Config
 public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
+    public static final Pose2d STARTING_POSE = new Pose2d(-36, -63.125, Math.toRadians(90));
 
     public static final Vector2d INNER_SPIKE_MARK_INTERMEDIATE_POSITION = new Vector2d(-41.5, -30.5);
     public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-35.5, -30.5);
@@ -23,9 +24,9 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d UNDER_STAGE_TARGET_POSITION = new Vector2d(-12, -61);
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(38, -60);
 
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(42, -44);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(42, -37);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(43.5, -32);
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(44, -44);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(44, -37);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(44.5, -32);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
     public static double BACKDROP_EDGE_ROTATE = 0;
@@ -38,18 +39,17 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_EDGE = new Vector2d(45, -57);
     public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, -60.5);
 
-    private final TeamElementLocation targetLocation;
-
-    public RedFrontstageTrajectoryGenerator(TeamElementLocation targetLocation) {
-        this.targetLocation = targetLocation;
+    @Override
+    public Pose2d getStartingPose() {
+        return STARTING_POSE;
     }
 
     @Override
-    public Trajectory toSpikeMark(TrajectoryBuilder builder) {
+    public Trajectory toSpikeMark(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         // The first step is to drive the robot from the starting position to the correct spike mark.
-        if (targetLocation == TeamElementLocation.LEFT) {
+        if (teamElementLocation == TeamElementLocation.LEFT) {
             builder.splineToLinearHeading(OUTER_SPIKE_POSITION, Math.toRadians(OUTER_SPIKE_BASE_HEADING));
-        } else if (targetLocation == TeamElementLocation.MIDDLE) {
+        } else if (teamElementLocation == TeamElementLocation.MIDDLE) {
             builder.splineToLinearHeading(MIDDLE_SPIKE_POSITION, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING));
         } else {
             builder.splineTo(INNER_SPIKE_MARK_INTERMEDIATE_POSITION, Math.toRadians(0));
@@ -59,12 +59,12 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     }
 
     @Override
-    public Trajectory toArmLiftPosition(TrajectoryBuilder builder) {
+    public Trajectory toArmLiftPosition(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         builder.splineTo(REVERSE_POSITION, Math.toRadians(0))
                 .splineToConstantHeading(UNDER_STAGE_TARGET_POSITION, Math.toRadians(0))
                 .splineToConstantHeading(BACKDROP_INTERMEDIATE_POSITION, Math.toRadians(0));
 
-        switch (targetLocation) {
+        switch (teamElementLocation) {
             case LEFT:
                 builder.splineToConstantHeading(BACKDROP_CENTER_POSITION, Math.toRadians(BACKDROP_CENTER_ROTATE));
                 break;
@@ -79,30 +79,30 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     }
 
     @Override
-    public Trajectory toBackdropPosition(TrajectoryBuilder builder) {
-        return toBackdropPosition(builder, BACKDROP_FORWARD_DISTANCE);
+    public Trajectory toBackdropPosition(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
+        return toBackdropPosition(builder, teamElementLocation, BACKDROP_FORWARD_DISTANCE);
     }
 
     @Override
-    public Trajectory toBackdropPosition(TrajectoryBuilder builder, double distance) {
+    public Trajectory toBackdropPosition(TrajectoryBuilder builder, TeamElementLocation teamElementLocation, double distance) {
         return builder.back(distance)
                 .build();
     }
 
     @Override
-    public Trajectory toArmRetractionPosition(TrajectoryBuilder builder) {
+    public Trajectory toArmRetractionPosition(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         return builder.forward(BACKDROP_BACKWARD_DISTANCE)
                 .build();
     }
 
-    public Trajectory toParkingSpotCenter(TrajectoryBuilder builder) {
+    public Trajectory toParkingSpotCenter(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         return builder.splineToConstantHeading(INTERMEDIATE_PARKING_POSITION_CENTER, Math.toRadians(0))
                 .splineToConstantHeading(PARKING_POSITION_CENTER, Math.toRadians(0))
                 .build();
     }
 
     @Override
-    public Trajectory toParkingSpotEdge(TrajectoryBuilder builder) {
+    public Trajectory toParkingSpotEdge(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         return builder.splineToConstantHeading(INTERMEDIATE_PARKING_POSITION_EDGE, Math.toRadians(0))
                 .splineToConstantHeading(PARKING_POSITION_EDGE, Math.toRadians(0))
                 .build();
