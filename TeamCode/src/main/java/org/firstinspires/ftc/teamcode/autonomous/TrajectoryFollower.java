@@ -89,6 +89,7 @@ public class TrajectoryFollower {
         telemetry.update();
         visionSensor.close();
 
+        // Delay the start of the opmode the requested number of milliseconds
         sleep(delayOpmodeInMillis);
 
         // Set the starting pose
