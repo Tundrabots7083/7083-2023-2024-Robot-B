@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 /**
  * Generic code to follow a Roadrunner autonomous trajectory.
  */
+@Config
 public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 4000;
     public static long CONTAINER_CLOSED_TIMER = 500;
