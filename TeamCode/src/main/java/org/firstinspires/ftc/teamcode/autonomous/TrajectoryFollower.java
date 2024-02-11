@@ -36,6 +36,10 @@ public class TrajectoryFollower {
      * Class to follow a given trajectory.
      * @param hardwareMap hardware map for the robot.
      * @param telemetry telemetry class for displaying data.
+     * @param delayOpmodeInMillis number of milliseconds to delay the start of the autonomous
+     *                            execution. This can be useful when starting in the frontstage to
+     *                            give an alliance partner more time to complete their autonomous
+     *                            run.
      */
     public TrajectoryFollower(HardwareMap hardwareMap, Telemetry telemetry, long delayOpmodeInMillis) {
         this.telemetry = telemetry;
