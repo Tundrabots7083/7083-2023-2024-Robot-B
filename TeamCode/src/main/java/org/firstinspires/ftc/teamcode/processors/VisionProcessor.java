@@ -9,7 +9,6 @@ import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
-import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -17,7 +16,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 @Config
-public class FirstVisionProcessor implements VisionProcessor {
+public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     public static int LEFT_RECTANGLE_X = 0;
     public static int LEFT_RECTANGLE_WIDTH = 155;
     public static int LEFT_RECTANGLE_Y = 365;
@@ -39,7 +38,7 @@ public class FirstVisionProcessor implements VisionProcessor {
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
 
-    public FirstVisionProcessor(Telemetry telemetry) {
+    public VisionProcessor(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
 
