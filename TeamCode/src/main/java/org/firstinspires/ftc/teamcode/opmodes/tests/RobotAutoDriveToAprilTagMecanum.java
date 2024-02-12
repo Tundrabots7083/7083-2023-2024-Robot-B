@@ -86,7 +86,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@TeleOp(name="Drive To AprilTag", group = "Test")
+@TeleOp(name="Drive To AprilTag", group = "test")
 @Disabled
 public class RobotAutoDriveToAprilTagMecanum extends LinearOpMode
 {
