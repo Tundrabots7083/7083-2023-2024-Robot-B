@@ -47,13 +47,16 @@ public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     @Override
     public Trajectory toSpikeMark(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         // The first step is to drive the robot from the starting position to the correct spike mark.
-        if (teamElementLocation == TeamElementLocation.LEFT) {
-            builder.splineTo(INNER_SPIKE_MARK_INTERMEDIATE_POSITION, Math.toRadians(0));
-            builder.splineToConstantHeading(INNER_SPIKE_POSITION, Math.toRadians(0));
-        } else if (teamElementLocation == TeamElementLocation.MIDDLE) {
-            builder.splineToLinearHeading(MIDDLE_SPIKE_POSITION, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING));
-        } else {
-            builder.splineToLinearHeading(OUTER_SPIKE_POSITION, Math.toRadians(OUTER_SPIKE_BASE_HEADING));
+        switch (teamElementLocation) {
+            case LEFT:
+                builder.splineTo(INNER_SPIKE_MARK_INTERMEDIATE_POSITION, Math.toRadians(0))
+                        .splineToConstantHeading(INNER_SPIKE_POSITION, Math.toRadians(0));
+                break;
+            case MIDDLE:
+                builder.splineToLinearHeading(MIDDLE_SPIKE_POSITION, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING));
+                break;
+            default:
+                builder.splineToLinearHeading(OUTER_SPIKE_POSITION, Math.toRadians(OUTER_SPIKE_BASE_HEADING));
         }
         return builder.build();
     }

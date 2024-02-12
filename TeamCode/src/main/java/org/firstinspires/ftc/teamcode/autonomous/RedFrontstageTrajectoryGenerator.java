@@ -47,13 +47,16 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     @Override
     public Trajectory toSpikeMark(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         // The first step is to drive the robot from the starting position to the correct spike mark.
-        if (teamElementLocation == TeamElementLocation.LEFT) {
-            builder.splineToLinearHeading(OUTER_SPIKE_POSITION, Math.toRadians(OUTER_SPIKE_BASE_HEADING));
-        } else if (teamElementLocation == TeamElementLocation.MIDDLE) {
-            builder.splineToLinearHeading(MIDDLE_SPIKE_POSITION, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING));
-        } else {
-            builder.splineTo(INNER_SPIKE_MARK_INTERMEDIATE_POSITION, Math.toRadians(0));
-            builder.splineToConstantHeading(INNER_SPIKE_POSITION, Math.toRadians(0));
+        switch (teamElementLocation) {
+            case LEFT:
+                builder.splineToLinearHeading(OUTER_SPIKE_POSITION, Math.toRadians(OUTER_SPIKE_BASE_HEADING));
+                break;
+            case MIDDLE:
+                builder.splineToLinearHeading(MIDDLE_SPIKE_POSITION, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING));
+                break;
+            default:
+                builder.splineTo(INNER_SPIKE_MARK_INTERMEDIATE_POSITION, Math.toRadians(0))
+                        .splineToConstantHeading(INNER_SPIKE_POSITION, Math.toRadians(0));
         }
         return builder.build();
     }
@@ -74,7 +77,6 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
             default:
                 builder.splineToConstantHeading(BACKDROP_EDGE_POSITION, Math.toRadians(BACKDROP_EDGE_ROTATE));
         }
-
         return builder.build();
     }
 
