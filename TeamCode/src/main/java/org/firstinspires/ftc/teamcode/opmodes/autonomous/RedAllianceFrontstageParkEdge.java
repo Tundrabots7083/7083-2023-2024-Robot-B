@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.autonomous.ParkingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.RedFrontstageTrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
 
@@ -26,6 +27,6 @@ public class RedAllianceFrontstageParkEdge extends LinearOpMode implements Auton
 
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new RedFrontstageTrajectoryGenerator();
-        follower.followTrajectory(trajectoryGenerator, ParkingLocation.EDGE);
+        follower.followTrajectory(trajectoryGenerator, StartingLocation.FRONTSTAGE, ParkingLocation.EDGE);
     }
 }

@@ -80,7 +80,7 @@ public class TrajectoryFollower {
      * @param trajectoryGenerator the trajectory generator for the autonomous period.
      * @param parkingLocation Where to park the robot.
      */
-    public void followTrajectory(TrajectoryGenerator trajectoryGenerator, ParkingLocation parkingLocation) {
+    public void followTrajectory(TrajectoryGenerator trajectoryGenerator, StartingLocation startingLocation, ParkingLocation parkingLocation) {
         ElapsedTime timer = new ElapsedTime();
         Pose2d startingPose = trajectoryGenerator.getStartingPose();
 
@@ -129,7 +129,11 @@ public class TrajectoryFollower {
         // Move the lift to the scoring position
         telemetry.addLine("Raise lift");
         telemetry.update();
-        lift.setTarget(Lift.Position.Autonomous);
+        if (startingLocation == StartingLocation.BACKSTAGE) {
+            lift.setTarget(Lift.Position.AutonomousBackstage);
+        } else {
+            lift.setTarget(Lift.Position.AutonomousFrontstage);
+        }
         timer.reset();
         while (timer.milliseconds() < RAISE_LIFT_TIMER) {
             lift.update();
