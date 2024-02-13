@@ -10,23 +10,23 @@ public class VisionSensor {
 
     VisionProcessor visionProcessor;
 
-    WebcamName frontWebcamName;
+    WebcamName webcamName;
 
-    VisionPortal frontWebcamPortal;
+    VisionPortal webcamPortal;
 
-    public VisionSensor(WebcamName frontWebcamName, Telemetry telemetry) {
-        this.frontWebcamName = frontWebcamName;
+    public VisionSensor(WebcamName webcamName, Telemetry telemetry) {
+        this.webcamName = webcamName;
         visionProcessor = new VisionProcessor(telemetry);
     }
 
     public void initializeVisionPortal() {
-        frontWebcamPortal = VisionPortal.easyCreateWithDefaults(frontWebcamName, visionProcessor);
+        webcamPortal = VisionPortal.easyCreateWithDefaults(webcamName, visionProcessor);
     }
 
     public boolean webcamInitialized() {
-        return frontWebcamPortal != null
-                && (frontWebcamPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_READY
-                || frontWebcamPortal.getCameraState() == VisionPortal.CameraState.STREAMING);
+        return webcamPortal != null
+                && (webcamPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_READY
+                || webcamPortal.getCameraState() == VisionPortal.CameraState.STREAMING);
     }
 
     public TeamElementLocation getTeamElementLocation() {
@@ -34,8 +34,8 @@ public class VisionSensor {
     }
 
     public void close() {
-        if (frontWebcamPortal != null && frontWebcamPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_CLOSED) {
-            frontWebcamPortal.close();
+        if (webcamPortal != null && webcamPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_CLOSED) {
+            webcamPortal.close();
         }
     }
 }
