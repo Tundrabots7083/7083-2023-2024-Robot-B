@@ -17,6 +17,7 @@ public class DistanceSensor {
      * named `distanceSensor`.
      * @param hardwareMap the hardware map for the robot.
      * @param telemetry the telemetry to be used for any output to the driver station.
+     * @param deviceName the name of the distance sensor, as configured on the robot.
      */
     public DistanceSensor(HardwareMap hardwareMap, Telemetry telemetry, String deviceName) {
         this.telemetry = telemetry;
