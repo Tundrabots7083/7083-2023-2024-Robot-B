@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.autonomous.BlueBackstageTrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.autonomous.ParkingLocation;
+import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
 
@@ -25,6 +26,6 @@ public class BlueAllianceBackstageParkCenter extends LinearOpMode implements Aut
 
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new BlueBackstageTrajectoryGenerator();
-        follower.followTrajectory(trajectoryGenerator, ParkingLocation.CENTER);
+        follower.followTrajectory(trajectoryGenerator, StartingLocation.BACKSTAGE, ParkingLocation.CENTER);
     }
 }

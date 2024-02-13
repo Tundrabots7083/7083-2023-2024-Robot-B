@@ -73,7 +73,8 @@ public class Lift implements Mechanism {
 
     public enum Position {
         Intake(0, 0),
-        Autonomous(-2700, -150),
+        AutonomousBackstage(-2700, -150),
+        AutonomousFrontstage(-2700, -150),
         ScoreLow(-2700, -350),
         ScoreMedium(-2700, -700),
         ScoreHigh(-2700, -1100),
