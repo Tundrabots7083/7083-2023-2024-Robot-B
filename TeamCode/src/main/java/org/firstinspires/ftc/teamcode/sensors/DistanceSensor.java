@@ -18,9 +18,9 @@ public class DistanceSensor {
      * @param hardwareMap the hardware map for the robot.
      * @param telemetry the telemetry to be used for any output to the driver station.
      */
-    public DistanceSensor(HardwareMap hardwareMap, Telemetry telemetry) {
+    public DistanceSensor(HardwareMap hardwareMap, Telemetry telemetry, String deviceName) {
         this.telemetry = telemetry;
-        distanceSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, "distanceSensor");
+        distanceSensor = hardwareMap.get(com.qualcomm.robotcore.hardware.DistanceSensor.class, deviceName);
     }
 
     /**
