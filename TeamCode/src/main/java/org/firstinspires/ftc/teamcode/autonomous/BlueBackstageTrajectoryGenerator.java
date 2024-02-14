@@ -14,27 +14,27 @@ public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {
 
     public static final Pose2d INNER_SPIKE_BASE = new Pose2d(14, 35, Math.toRadians(179));
     public static final int INNER_SPIKE_BASE_HEADING = 180;
-    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(15.25, 37.5, Math.toRadians(-90));
+    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(14.75, 37.5, Math.toRadians(-90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
-    public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(24, 47, Math.toRadians(-90));
+    public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(23, 47, Math.toRadians(-90));
     public static final int OUTER_SPIKE_BASE_HEADING = -90;
 
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(40.5, 43);
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(48, 43);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(48.5, 36.5);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(46.5, 29.5);
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(50, 43);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(50, 36.5);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(50, 30);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
     public static double BACKDROP_EDGE_ROTATE = -1;
 
-    public static double BACKDROP_FORWARD_DISTANCE = 3;
+    public static double BACKDROP_FORWARD_DISTANCE = 3.0;
     public static double BACKDROP_BACKWARD_DISTANCE = 3.0;
 
     public static final Vector2d REVERSE_POSITION = new Vector2d(27, 59);
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_CENTER = new Vector2d(45, 16);
-    public static final Vector2d PARKING_POSITION_CENTER = new Vector2d(59, 13);
+    public static final Vector2d PARKING_POSITION_CENTER = new Vector2d(61, 13);
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_EDGE = new Vector2d(45, 57);
-    public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, 60);
+    public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(61, 60);
 
     @Override
     public Pose2d getStartingPose() {

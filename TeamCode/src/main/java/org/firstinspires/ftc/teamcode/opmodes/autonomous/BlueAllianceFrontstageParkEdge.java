@@ -22,6 +22,8 @@ public class BlueAllianceFrontstageParkEdge extends LinearOpMode implements Auto
         // Create the trajectory follower
         TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry, DELAY_FRONTSTAGE_IN_MILLIS);
 
+        waitForStart();
+
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new BlueFrontstageTrajectoryGenerator();
         follower.followTrajectory(trajectoryGenerator, StartingLocation.FRONTSTAGE, ParkingLocation.EDGE);

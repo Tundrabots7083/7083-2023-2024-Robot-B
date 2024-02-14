@@ -22,8 +22,6 @@ public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 4000;
     public static long CONTAINER_CLOSED_TIMER = 500;
     public static long PIXEL_BACKDROP_TIMER = 2000;
-    public static long RAISE_LIFT_TIMER = 2000;
-    public static long LOWER_LIFT_TIMER = 2000;
 
     private final Telemetry telemetry;
     private final long delayOpmodeInMillis;
@@ -135,7 +133,7 @@ public class TrajectoryFollower {
             lift.setTarget(Lift.Position.AutonomousFrontstage);
         }
         timer.reset();
-        while (timer.milliseconds() < RAISE_LIFT_TIMER) {
+        while (!lift.isAtTarget()) {
             lift.update();
         }
 
@@ -169,7 +167,7 @@ public class TrajectoryFollower {
         telemetry.update();
         lift.setTarget(Lift.Position.Intake);
         timer.reset();
-        while (timer.milliseconds() < LOWER_LIFT_TIMER) {
+        while (!lift.isAtTarget()) {
             lift.update();
         }
 

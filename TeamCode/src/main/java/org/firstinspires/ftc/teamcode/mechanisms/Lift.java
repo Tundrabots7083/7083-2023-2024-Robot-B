@@ -74,7 +74,7 @@ public class Lift implements Mechanism {
     public enum Position {
         Intake(0, 0),
         AutonomousBackstage(-2700, -150),
-        AutonomousFrontstage(-2700, -150),
+        AutonomousFrontstage(-2700, -400),
         ScoreLow(-2700, -350),
         ScoreMedium(-2700, -700),
         ScoreHigh(-2700, -1100),
@@ -136,6 +136,33 @@ public class Lift implements Mechanism {
         armController.reset();
     }
 
+    /**
+     * Returns indication as to whether the arm is at the target position.
+     * @return <code>true</code> if the arm is at the target position;
+     *         <code>false</code> if the arm is not.
+     */
+    public boolean isArmAtTarget() {
+        return armProfile.calculatePosition() == targetPosition.armPosition;
+    }
+
+    /**
+     * Returns indication as to whether the lift is at the target position.
+     * @return <code>true</code> if the lift is at the target position;
+     *         <code>false</code> if the lift is not.
+     */
+    public boolean isLiftAtTarget() {
+        return liftProfile.calculatePosition() == targetPosition.liftPosition;
+    }
+
+    /**
+     * Returns indication as to whether the lift and arm are at the target position.
+     * @return <code>true</code> if the lift and arm are at the target position;
+     *         <code>false</code> if either is not.
+     */
+    public boolean isAtTarget() {
+        return isLiftAtTarget() && isArmAtTarget();
+    }
+
     public void update() {
         // Update the power level for the arm motor
         setArmPower();
@@ -151,15 +178,16 @@ public class Lift implements Mechanism {
         // Get the target position from our motion profile
         double targetPosition = liftProfile.calculatePosition();
 
-        // Calculate the power for each motor using the PID controllers
-        double leftPower = leftController.calculate(targetPosition, leftPosition);
-        double rightPower = rightController.calculate(targetPosition, rightPosition);
-
+        double leftPower, rightPower;
         if (targetPosition == Position.Intake.liftPosition) {
             leftPower = 0;
             rightPower = 0;
-            telemetry.addLine("[LIFT] close to bottom - let it fall");
+            telemetry.addLine("[LIFT] at target - set power to 0");
         } else {
+            // Calculate the power for each motor using the PID controllers
+            leftPower = leftController.calculate(targetPosition, leftPosition);
+            rightPower = rightController.calculate(targetPosition, rightPosition);
+
             // Cap the motor power at 1 and -1
             leftPower = modifyMotorPower(leftPower, MINIMUM_LIFT_POWER);
             rightPower = modifyMotorPower(rightPower, MINIMUM_LIFT_POWER);
@@ -183,13 +211,14 @@ public class Lift implements Mechanism {
         // Get the target position from our motion profile
         double targetPosition = armProfile.calculatePosition();
 
-        // Calculate the power for the arm motor using the PID controller
-        double armPower = armController.calculate(targetPosition, armPosition);
-
+        double armPower;
         if (targetPosition == Position.Intake.armPosition) {
             armPower = 0;
-            telemetry.addLine("[ARM] close to bottom - let it fall");
+            telemetry.addLine("[ARM] at target - set power to 0");
         } else {
+            // Calculate the power for the arm motor using the PID controller
+            armPower = armController.calculate(targetPosition, armPosition);
+
             // Cap the motor power at 1 and -1
             armPower = modifyMotorPower(armPower, MINIMUM_ARM_POWER);
         }
