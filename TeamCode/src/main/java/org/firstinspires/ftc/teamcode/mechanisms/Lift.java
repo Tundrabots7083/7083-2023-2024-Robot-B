@@ -1,16 +1,15 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.acmerobotics.dashboard.config.Config;
-
-import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
-import org.firstinspires.ftc.teamcode.feedback.PIDCoefficients;
-import org.firstinspires.ftc.teamcode.feedback.PIDCoefficientsEx;
-import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
+import org.firstinspires.ftc.teamcode.feedback.PIDCoefficients;
+import org.firstinspires.ftc.teamcode.feedback.PIDCoefficientsEx;
+import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
@@ -21,6 +20,31 @@ import java.util.Collection;
  */
 @Config
 public class Lift implements Mechanism {
+    public enum Position {
+        INTAKE(0, 0),
+        AUTONOMOUS_BACKSTAGE(-2700, -150),
+        AUTONOMOUS_FRONTSTAGE(-2700, -400),
+        SCORE_LOW(-2700, -350),
+        SCORE_MEDIUM(-2700, -700),
+        SCORE_HIGH(-2700, -1100),
+        HANG_START(0, -1550),
+        HANG_END(0, -700),
+        LAUNCH_DRONE(0, 0);
+
+        public int armPosition;
+        public int liftPosition;
+
+        /**
+         * Creates a new Position for the given arm and servo.
+         *
+         * @param armPosition  the position of the arm.
+         * @param liftPosition the position of the lift.
+         */
+        Position(int armPosition, int liftPosition) {
+            this.armPosition = armPosition;
+            this.liftPosition = liftPosition;
+        }
+    }
 
     public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
@@ -31,7 +55,6 @@ public class Lift implements Mechanism {
     public static double LIFT_MAX_ACCELERATION = 3000;
     public static double LIFT_MAX_VELOCITY = 8000;
     public static double MINIMUM_LIFT_POWER = 0.1;
-    public static double LIFT_MAXIMUM_LOWER_VALUE = -100;
 
     public static double ARM_KP = 0.003;
     public static double ARM_KI = 0.0;
@@ -39,7 +62,6 @@ public class Lift implements Mechanism {
     public static double ARM_MAX_ACCELERATION = 3000;
     public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.16;
-    public static double ARM_MAXIMUM_LOWER_VALUE = 50;
 
     DcMotorEx leftMotor;
     DcMotorEx rightMotor;
@@ -55,46 +77,6 @@ public class Lift implements Mechanism {
     Position targetPosition;
 
     Telemetry telemetry;
-
-    @Override
-    public String getDeviceName() {
-        return "Lift";
-    }
-
-    @Override
-    public String getDescription() {
-        return "The lift is used to lift the robot off the ground and to score pixels.";
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
-    }
-
-    public enum Position {
-        Intake(0, 0),
-        AutonomousBackstage(-2700, -150),
-        AutonomousFrontstage(-2700, -400),
-        ScoreLow(-2700, -350),
-        ScoreMedium(-2700, -700),
-        ScoreHigh(-2700, -1100),
-        HangStart(-1100, -1550),
-        HangEnd(-1100, -700),
-        LaunchDrone(0, 0);
-
-        public int armPosition;
-        public int liftPosition;
-
-        /**
-         * Creates a new Position for the given arm and servo.
-         * @param armPosition the position of the arm.
-         * @param liftPosition the position of the lift.
-         */
-        Position(int armPosition, int liftPosition) {
-            this.armPosition = armPosition;
-            this.liftPosition = liftPosition;
-        }
-    }
 
     public Lift(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -119,8 +101,23 @@ public class Lift implements Mechanism {
         leftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
         rightController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
 
-        liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, 0, Position.Intake.liftPosition);
-        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.Intake.armPosition);
+        liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, 0, Position.INTAKE.liftPosition);
+        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.INTAKE.armPosition);
+    }
+
+    @Override
+    public String getDeviceName() {
+        return "Lift";
+    }
+
+    @Override
+    public String getDescription() {
+        return "The lift is used to lift the robot off the ground and to score pixels.";
+    }
+
+    @Override
+    public Collection<Test> getTests() {
+        return null;
     }
 
     public void setTarget(Position position) {
@@ -138,8 +135,9 @@ public class Lift implements Mechanism {
 
     /**
      * Returns indication as to whether the arm is at the target position.
+     *
      * @return <code>true</code> if the arm is at the target position;
-     *         <code>false</code> if the arm is not.
+     * <code>false</code> if the arm is not.
      */
     public boolean isArmAtTarget() {
         return armProfile.calculatePosition() == targetPosition.armPosition;
@@ -147,8 +145,9 @@ public class Lift implements Mechanism {
 
     /**
      * Returns indication as to whether the lift is at the target position.
+     *
      * @return <code>true</code> if the lift is at the target position;
-     *         <code>false</code> if the lift is not.
+     * <code>false</code> if the lift is not.
      */
     public boolean isLiftAtTarget() {
         return liftProfile.calculatePosition() == targetPosition.liftPosition;
@@ -156,8 +155,9 @@ public class Lift implements Mechanism {
 
     /**
      * Returns indication as to whether the lift and arm are at the target position.
+     *
      * @return <code>true</code> if the lift and arm are at the target position;
-     *         <code>false</code> if either is not.
+     * <code>false</code> if either is not.
      */
     public boolean isAtTarget() {
         return isLiftAtTarget() && isArmAtTarget();
@@ -179,7 +179,7 @@ public class Lift implements Mechanism {
         double targetPosition = liftProfile.calculatePosition();
 
         double leftPower, rightPower;
-        if (targetPosition == Position.Intake.liftPosition) {
+        if (targetPosition == Position.INTAKE.liftPosition) {
             leftPower = 0;
             rightPower = 0;
             telemetry.addLine("[LIFT] at target - set power to 0");
@@ -212,7 +212,7 @@ public class Lift implements Mechanism {
         double targetPosition = armProfile.calculatePosition();
 
         double armPower;
-        if (targetPosition == Position.Intake.armPosition) {
+        if (targetPosition == Position.INTAKE.armPosition) {
             armPower = 0;
             telemetry.addLine("[ARM] at target - set power to 0");
         } else {

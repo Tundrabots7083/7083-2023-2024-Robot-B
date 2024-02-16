@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.sensors.Sensor;
 
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {
@@ -31,9 +32,16 @@ public class PrimaryTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        // Update sensors
+        for (Sensor sensor : robot.sensors) {
+            sensor.update();
+        }
+
+        // Process controller inputs
         for (Controller controller : robot.controllers) {
             controller.execute(gamepad1, gamepad2);
         }
+
         telemetry.update();
     }
 }

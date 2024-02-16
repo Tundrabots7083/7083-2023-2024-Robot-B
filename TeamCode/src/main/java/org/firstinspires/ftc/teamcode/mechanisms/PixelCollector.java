@@ -17,15 +17,11 @@ import java.util.Collection;
  */
 @Config
 public class PixelCollector implements Mechanism {
-
-
     public static long TOGGLE_DELAY = 500;
-
     /**
      * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
      */
     public static long SPINNER_DELAY = 250;
-
     String deviceName;
     String description;
     Telemetry telemetry;
@@ -35,23 +31,6 @@ public class PixelCollector implements Mechanism {
     long spinnerDelayTime;
     PixelCollectorState state;
     boolean leftServo;
-
-    public enum PixelCollectorState {
-        COLLECTING(-0.3, 0),
-        DEPOSITING(0.1, 0),
-        CLOSED(0, 0.65);
-
-        double spinnerPower;
-        double flapPosition;
-
-        PixelCollectorState(double spinnerPower, double flapPosition) {
-            this.spinnerPower = spinnerPower;
-            this.flapPosition = flapPosition;
-        }
-
-
-    }
-
     public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean reverseFlapServo) {
 
         this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
@@ -83,8 +62,7 @@ public class PixelCollector implements Mechanism {
                 state = PixelCollectorState.DEPOSITING;
 //                spinner.setPower(state.spinnerPower);
 //                flap.setPosition(state.flapPosition);
-            }
-            else {
+            } else {
                 state = PixelCollectorState.COLLECTING;
 //                flap.setPosition(state.flapPosition);
 //                spinner.setPower(state.spinnerPower);
@@ -132,5 +110,17 @@ public class PixelCollector implements Mechanism {
         return null;
     }
 
+    public enum PixelCollectorState {
+        COLLECTING(-0.3, 0),
+        DEPOSITING(0.1, 0),
+        CLOSED(0, 0.65);
 
+        double spinnerPower;
+        double flapPosition;
+
+        PixelCollectorState(double spinnerPower, double flapPosition) {
+            this.spinnerPower = spinnerPower;
+            this.flapPosition = flapPosition;
+        }
+    }
 }

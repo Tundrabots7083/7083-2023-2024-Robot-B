@@ -28,11 +28,11 @@ public class MecanumDriveController implements Controller {
     }
 
     private void setGain(Gamepad gamepad) {
-        if (!bumperPressed && (gamepad.right_bumper || gamepad.left_bumper)) {
+        if (!bumperPressed && gamepad.left_bumper) {
             driveGain = driveGain == MAX_DRIVE_MULT ? SLOW_DRIVE_MULT : MAX_DRIVE_MULT;
             turnGain = turnGain == MAX_TURNING_MULT ? SLOW_TURNING_MULT : MAX_TURNING_MULT;
         }
-        bumperPressed = gamepad.right_bumper || gamepad.left_bumper;
+        bumperPressed = gamepad.left_bumper;
     }
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         setGain(gamepad1);

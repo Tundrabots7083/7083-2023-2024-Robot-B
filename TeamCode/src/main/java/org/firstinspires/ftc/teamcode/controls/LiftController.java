@@ -24,7 +24,7 @@ public class LiftController implements Controller {
     }
 
     public void start() {
-        lift.setTarget(Lift.Position.Intake);
+        lift.setTarget(Lift.Position.INTAKE);
         lift.update();
     }
 
@@ -37,25 +37,25 @@ public class LiftController implements Controller {
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         // Automatic update of controls
         if (gamepad1.dpad_down) {
-            lift.setTarget(Lift.Position.Intake);
+            lift.setTarget(Lift.Position.INTAKE);
             manualOverride = false;
         } else if (gamepad1.dpad_left) {
-            lift.setTarget(Lift.Position.ScoreLow);
+            lift.setTarget(Lift.Position.SCORE_LOW);
             manualOverride = false;
         } else if (gamepad1.dpad_right) {
-            lift.setTarget(Lift.Position.ScoreMedium);
+            lift.setTarget(Lift.Position.SCORE_MEDIUM);
             manualOverride = false;
         } else if (gamepad1.dpad_up) {
-            lift.setTarget(Lift.Position.ScoreHigh);
+            lift.setTarget(Lift.Position.SCORE_HIGH);
             manualOverride = false;
         } else if (gamepad2.y) {
-            lift.setTarget(Lift.Position.LaunchDrone);
+            lift.setTarget(Lift.Position.LAUNCH_DRONE);
             manualOverride = false;
         } else if (gamepad1.x) {
-            lift.setTarget(Lift.Position.HangStart);
+            lift.setTarget(Lift.Position.HANG_START);
             manualOverride = false;
         } else if (gamepad1.y) {
-            lift.setTarget(Lift.Position.HangEnd);
+            lift.setTarget(Lift.Position.HANG_END);
             manualOverride = false;
         }
 

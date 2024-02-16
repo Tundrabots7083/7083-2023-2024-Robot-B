@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 @Config
 public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 4000;
-    public static long CONTAINER_CLOSED_TIMER = 500;
+    public static long COLLECTOR_CLOSED_TIMER = 500;
     public static long PIXEL_BACKDROP_TIMER = 2000;
 
     private final Telemetry telemetry;
@@ -34,8 +34,9 @@ public class TrajectoryFollower {
 
     /**
      * Class to follow a given trajectory.
-     * @param hardwareMap hardware map for the robot.
-     * @param telemetry telemetry class for displaying data.
+     *
+     * @param hardwareMap         hardware map for the robot.
+     * @param telemetry           telemetry class for displaying data.
      * @param delayOpmodeInMillis number of milliseconds to delay the start of the autonomous
      *                            execution. This can be useful when starting in the frontstage to
      *                            give an alliance partner more time to complete their autonomous
@@ -63,6 +64,7 @@ public class TrajectoryFollower {
 
     /**
      * Wait for the specified number of milliseconds before returning.
+     *
      * @param milliseconds the number of milliseconds to wait.
      */
     private void sleep(long milliseconds) {
@@ -75,8 +77,9 @@ public class TrajectoryFollower {
 
     /**
      * Follow the given trajectory for the autonomous period.
+     *
      * @param trajectoryGenerator the trajectory generator for the autonomous period.
-     * @param parkingLocation Where to park the robot.
+     * @param parkingLocation     Where to park the robot.
      */
     public void followTrajectory(TrajectoryGenerator trajectoryGenerator, StartingLocation startingLocation, ParkingLocation parkingLocation) {
         ElapsedTime timer = new ElapsedTime();
@@ -96,13 +99,13 @@ public class TrajectoryFollower {
         drive.setPoseEstimate(startingPose);
 
         // Drive to the correct spike mark
-        telemetry.addLine("Drive to spike mark");
+        telemetry.addLine("Drive to the spike mark");
         telemetry.update();
         Trajectory toSpikeMark = trajectoryGenerator.toSpikeMark(drive.trajectoryBuilder(startingPose), element);
         drive.followTrajectory(toSpikeMark);
 
         // Drop off the purple pixel at the spike mark
-        telemetry.addLine("Drop off purple pixel");
+        telemetry.addLine("Drop off the purple pixel");
         telemetry.update();
         leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
         timer.reset();
@@ -110,38 +113,44 @@ public class TrajectoryFollower {
             leftPixelCollector.update();
         }
 
-        // Turn off the pixel container
+        // Turn off the pixel collector
+        telemetry.addLine("Turn off the pixel collector");
+        telemetry.update();
         leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
         timer.reset();
-        while (timer.milliseconds() < CONTAINER_CLOSED_TIMER) {
+        while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
             leftPixelCollector.update();
         }
 
         // Drive to the proper location (edge, middle, center) in front of the backdrop at which
         // the arm is rotated
-        telemetry.addLine("Drive to front of backdrop");
+        telemetry.addLine("Drive to the front of the backdrop");
         telemetry.update();
         Trajectory toArmLiftPosition = trajectoryGenerator.toArmLiftPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
         drive.followTrajectory(toArmLiftPosition);
 
         // Move the lift to the scoring position
-        telemetry.addLine("Raise lift");
+        telemetry.addLine("Raise the lift and arm");
         telemetry.update();
         if (startingLocation == StartingLocation.BACKSTAGE) {
-            lift.setTarget(Lift.Position.AutonomousBackstage);
+            lift.setTarget(Lift.Position.AUTONOMOUS_BACKSTAGE);
         } else {
-            lift.setTarget(Lift.Position.AutonomousFrontstage);
+            lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
         }
         timer.reset();
         while (!lift.isAtTarget()) {
             lift.update();
         }
 
-        // Move to the backdrop and score the yellow pixel
-        telemetry.addLine("Drive to backdrop and score yellow pixel");
+        // Move to the backdrop
+        telemetry.addLine("Drive the robot to the backdrop");
         telemetry.update();
         Trajectory toBackdropPosition = trajectoryGenerator.toBackdropPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
         drive.followTrajectory(toBackdropPosition);
+
+        // Score the yellow pixel
+        telemetry.addLine("Score the yellow pixel");
+        telemetry.update();
         rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
         timer.reset();
         while (timer.milliseconds() < PIXEL_BACKDROP_TIMER) {
@@ -149,30 +158,32 @@ public class TrajectoryFollower {
             lift.update();
         }
 
-        // Turn off the pixel container
+        // Turn off the pixel collector
+        telemetry.addLine("Turn off the pixel collector");
+        telemetry.update();
         rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
         timer.reset();
-        while (timer.milliseconds() < CONTAINER_CLOSED_TIMER) {
+        while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
             rightPixelCollector.update();
         }
 
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
-        telemetry.addLine("Score yellow pixel on backdrop");
+        telemetry.addLine("Drive the robot away from the backdrop");
         telemetry.update();
         Trajectory toArmRetractionPosition = trajectoryGenerator.toArmRetractionPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
         drive.followTrajectory(toArmRetractionPosition);
 
         // Lower the lift and arm to the pixel intake position
-        telemetry.addLine("Lower arm");
+        telemetry.addLine("Lower the lift and arm");
         telemetry.update();
-        lift.setTarget(Lift.Position.Intake);
+        lift.setTarget(Lift.Position.INTAKE);
         timer.reset();
         while (!lift.isAtTarget()) {
             lift.update();
         }
 
-        // Drive to the edge parking spot
-        telemetry.addLine("Drive to parking spot");
+        // Drive to the parking spot
+        telemetry.addLine("Drive to the parking spot");
         telemetry.update();
         Trajectory toParkingSpot;
         if (parkingLocation == ParkingLocation.EDGE) {

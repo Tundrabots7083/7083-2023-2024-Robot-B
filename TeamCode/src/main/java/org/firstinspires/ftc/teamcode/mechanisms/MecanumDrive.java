@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,13 +17,19 @@ import java.util.Collection;
 /**
  * MecanumDrive implements the drive chassis for the robot.
  */
+@Config
 public class MecanumDrive implements Mechanism {
+    public static double MIN_SQUARE_DIFFERENCE = 20;
+    public static double AUTO_MOTOR_POWER = 0.1;
+    public static double DISTANCE_FROM_BACKDROP = 3.25;
+
     private final String deviceName;
     private final String description;
     private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
 
     /**
      * MecanumDrive initializes a new mecanum drive trail.
+     *
      * @param deviceName  the name of the mecanum drive.
      * @param description a description of the mecanum drive.
      */
@@ -47,6 +54,7 @@ public class MecanumDrive implements Mechanism {
 
     /**
      * initMotor initializes a motor attached to the mecanum wheel.
+     *
      * @param motor the motor to be initialized.
      */
     private void initMotor(DcMotorEx motor) {
@@ -60,22 +68,22 @@ public class MecanumDrive implements Mechanism {
      * drive sets the powers to the wheel motors to result in the robot moving
      * in the direction provided on input.
      *
-     * @param x how much to move right or, if a negative value, left.
-     * @param y how much to move forward or, if a negative value, backward.
+     * @param x    how much to move right or, if a negative value, left.
+     * @param y    how much to move forward or, if a negative value, backward.
      * @param turn how much to rotate the robot.
      */
     public void drive(double x, double y, double turn) {
         double theta = Math.atan2(y, x);
         double power = Math.hypot(x, y);
 
-        double sin = Math.sin(theta - Math.PI/4);
-        double cos = Math.cos(theta - Math.PI/4);
+        double sin = Math.sin(theta - Math.PI / 4);
+        double cos = Math.cos(theta - Math.PI / 4);
         double max = Math.max(Math.abs(sin), Math.abs(cos));
 
-        double leftFrontPower = power * cos/max - turn;
-        double rightFrontPower = power * sin/max + turn;
-        double leftRearPower = power * sin/max - turn;
-        double rightRearPower = power * cos/max + turn;
+        double leftFrontPower = power * cos / max - turn;
+        double rightFrontPower = power * sin / max + turn;
+        double leftRearPower = power * sin / max - turn;
+        double rightRearPower = power * cos / max + turn;
 
         // Reduce the power until we hit a maximum amount
         if ((power + Math.abs(turn)) > 1) {
@@ -96,6 +104,7 @@ public class MecanumDrive implements Mechanism {
 
     /**
      * Adjust the power to provide more granular acceleration
+     *
      * @param power the power based on the control
      * @return the adjusted power
      */
@@ -109,9 +118,10 @@ public class MecanumDrive implements Mechanism {
 
     /**
      * setMotorPowers sets the power for the wheels, normalizing for a maximum power of 1.0.
-     * @param leftFrontPower the power for the left front motor.
-     * @param leftRearPower the power for the left rear motor
-     * @param rightRearPower the power for the right rear motor.
+     *
+     * @param leftFrontPower  the power for the left front motor.
+     * @param leftRearPower   the power for the left rear motor
+     * @param rightRearPower  the power for the right rear motor.
      * @param rightFrontPower the power for the right front motor.
      */
     public void setMotorPowers(double leftFrontPower, double leftRearPower, double rightRearPower, double rightFrontPower) {

@@ -71,7 +71,7 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
     }
 
     private double getPercentDifference(double val1, double val2) {
-        return Math.abs(val1-val2) / ((val1 + val2) / 2) * 100;
+        return Math.abs(val1 - val2) / ((val1 + val2) / 2) * 100;
     }
 
     protected double getAvgSaturation(Mat input, Rect rect, TeamElementLocation location) {
