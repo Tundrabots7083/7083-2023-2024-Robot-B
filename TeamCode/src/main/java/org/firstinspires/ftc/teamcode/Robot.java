@@ -46,7 +46,7 @@ public class Robot {
 //        visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
 //        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor, visionSensor);
 
-        telemetry.addLine("[Robot] initialized");
+        this.telemetry.addLine("[Robot] initialized");
     }
 
     public static Robot getRobot() {
