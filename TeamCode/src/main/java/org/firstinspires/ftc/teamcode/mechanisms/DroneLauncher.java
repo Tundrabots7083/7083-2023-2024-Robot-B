@@ -16,7 +16,9 @@ import java.util.Collection;
 public class DroneLauncher implements Mechanism {
 
     public static double SERVO_LAUNCH_START_ANGLE = 0.125;
-    public static double SERVO_LAUNCH_ANGLE = 0.36; // Using tension of 4.25, and bot centered on outer spike mark
+    public static double SERVO_LAUNCH_ANGLE_HIGH = 0.36; // Using tension of 4.25, and bot centered on outer spike mark
+    public static double SERVO_LAUNCH_ANGLE_LOW = 0.36; // Use when there is a noticible airflow
+    public static boolean SERVO_LAUNCH_USE_HIGH_ANGLE = true;
     public static double SERVO_RELEASE_INITIAL = 0.675;
     public static double SERVO_RELEASE_POS = 0.2;
     private final String deviceName;
@@ -54,7 +56,8 @@ public class DroneLauncher implements Mechanism {
      * Moves the drone launcher into launch position
      */
     public void setToLaunchAngle() {
-        angleServo.setPosition(SERVO_LAUNCH_ANGLE);
+        double servoAnglePosition = SERVO_LAUNCH_USE_HIGH_ANGLE ? SERVO_LAUNCH_ANGLE_HIGH : SERVO_LAUNCH_ANGLE_LOW;
+        angleServo.setPosition(servoAnglePosition);
     }
 
     /**
