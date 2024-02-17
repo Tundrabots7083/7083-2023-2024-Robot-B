@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.controls.Controller;
 import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.controls.LiftController;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
 import org.firstinspires.ftc.teamcode.controls.PixelCollectorController;
 import org.firstinspires.ftc.teamcode.sensors.DistanceSensor;
 import org.firstinspires.ftc.teamcode.sensors.Sensor;
+import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +21,7 @@ public class Robot {
     public final List<Controller> controllers;
     public final DistanceSensor leftDistanceSensor;
     public final DistanceSensor rightDistanceSensor;
+//    public final VisionSensor visionSensor;
     public final List<Sensor> sensors;
     private final Telemetry telemetry;
     public MecanumDriveController mecanumDriveController;
@@ -40,6 +43,8 @@ public class Robot {
         leftDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "leftDistanceSensor");
         rightDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "rightDistanceSensor");
         sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor);
+//        visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
+//        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor, visionSensor);
 
         telemetry.addLine("[Robot] initialized");
     }
