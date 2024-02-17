@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.processors.VisionProcessor;
 import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-public class VisionSensor {
+public class VisionSensor implements Sensor {
 
     VisionProcessor visionProcessor;
 
@@ -17,6 +17,11 @@ public class VisionSensor {
     public VisionSensor(WebcamName webcamName, Telemetry telemetry) {
         this.webcamName = webcamName;
         visionProcessor = new VisionProcessor(telemetry);
+    }
+
+    @Override
+    public void update() {
+        // NO-OP
     }
 
     public void initializeVisionPortal() {
