@@ -22,13 +22,13 @@ import java.util.Collection;
 public class Lift implements Mechanism {
     public enum Position {
         INTAKE(0, 0),
-        AUTONOMOUS_BACKSTAGE(-2700, -150),
+        AUTONOMOUS_BACKSTAGE(-2700, -200),
         AUTONOMOUS_FRONTSTAGE(-2700, -400),
         SCORE_LOW(-2700, -350),
         SCORE_MEDIUM(-2700, -700),
         SCORE_HIGH(-2700, -1100),
-        HANG_START(0, -1550),
-        HANG_END(0, -700),
+        HANG_START(0, -1450),
+        HANG_END(0, -900),
         LAUNCH_DRONE(0, 0);
 
         public int armPosition;
@@ -182,7 +182,6 @@ public class Lift implements Mechanism {
         if (targetPosition == Position.INTAKE.liftPosition) {
             leftPower = 0;
             rightPower = 0;
-            telemetry.addLine("[LIFT] at target - set power to 0");
         } else {
             // Calculate the power for each motor using the PID controllers
             leftPower = leftController.calculate(targetPosition, leftPosition);
@@ -214,7 +213,6 @@ public class Lift implements Mechanism {
         double armPower;
         if (targetPosition == Position.INTAKE.armPosition) {
             armPower = 0;
-            telemetry.addLine("[ARM] at target - set power to 0");
         } else {
             // Calculate the power for the arm motor using the PID controller
             armPower = armController.calculate(targetPosition, armPosition);
@@ -236,7 +234,6 @@ public class Lift implements Mechanism {
         power = Math.max(-1, Math.min(1, power));
         // If the power level of the motor is below the minimum threshold, set it to 0
         if (Math.abs(power) < minPower) {
-            telemetry.addLine("Minimum Power Hit");
             power = 0;
         }
         return power;

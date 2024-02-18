@@ -19,10 +19,10 @@ import java.util.List;
 public class Robot {
     public static Robot robot;
     public final List<Controller> controllers;
-    public final DistanceSensor leftDistanceSensor;
-    public final DistanceSensor rightDistanceSensor;
+//    public final DistanceSensor leftDistanceSensor;
+//    public final DistanceSensor rightDistanceSensor;
 //    public final VisionSensor visionSensor;
-    public final List<Sensor> sensors;
+//    public final List<Sensor> sensors;
     private final Telemetry telemetry;
     public MecanumDriveController mecanumDriveController;
     public LiftController liftController;
@@ -40,9 +40,9 @@ public class Robot {
         droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
         controllers = Arrays.asList(mecanumDriveController, liftController, pixelCollectorController, droneLauncherController);
 
-        leftDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "leftDistanceSensor");
-        rightDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "rightDistanceSensor");
-        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor);
+//        leftDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "leftDistanceSensor");
+//        rightDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "rightDistanceSensor");
+//        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor);
 //        visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
 //        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor, visionSensor);
 

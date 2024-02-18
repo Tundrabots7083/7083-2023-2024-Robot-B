@@ -13,7 +13,7 @@ public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Pose2d STARTING_POSE = new Pose2d(-36, 63.5, Math.toRadians(-90));
 
     public static final Vector2d INNER_SPIKE_MARK_INTERMEDIATE_POSITION = new Vector2d(-40, 35);
-    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-35, 32);
+    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-36, 32);
     public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(-36, 37.5, Math.toRadians(-90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
     public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(-47.5, 47, Math.toRadians(-90));
@@ -26,7 +26,7 @@ public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
 
     public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(45, 42.5);
     public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(45, 35.5);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(45, 31.5);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(45, 30.75);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
     public static double BACKDROP_EDGE_ROTATE = -1;

@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 4000;
     public static long COLLECTOR_CLOSED_TIMER = 500;
-    public static long PIXEL_BACKDROP_TIMER = 2000;
+    public static long PIXEL_BACKDROP_TIMER = 1500;
 
     private final Telemetry telemetry;
     private final long delayOpmodeInMillis;
@@ -90,7 +90,7 @@ public class TrajectoryFollower {
         TeamElementLocation element = visionSensor.getTeamElementLocation();
         telemetry.addData("Element", element);
         telemetry.update();
-        visionSensor.close();
+        //visionSensor.close();
 
         // Delay the start of the opmode the requested number of milliseconds
         sleep(delayOpmodeInMillis);

@@ -15,12 +15,12 @@ import java.util.Collection;
 @Config
 public class DroneLauncher implements Mechanism {
 
-    public static double SERVO_LAUNCH_START_ANGLE = 0.125;
-    public static double SERVO_LAUNCH_ANGLE_HIGH = 0.36; // Using tension of 4.25, and bot centered on outer spike mark
-    public static double SERVO_LAUNCH_ANGLE_LOW = 0.36; // Use when there is a noticible airflow
-    public static boolean SERVO_LAUNCH_ANGLE_USE_HIGH = true;
+    public static double SERVO_LAUNCH_START_ANGLE = 0.0;
+    public static double SERVO_LAUNCH_ANGLE_HIGH = 0.28; // 55º
+    public static double SERVO_LAUNCH_ANGLE_LOW = 0.25;   // 46.5º
+    public static boolean SERVO_LAUNCH_ANGLE_USE_HIGH_ANGLE = true;
     public static double SERVO_RELEASE_INITIAL = 0.675;
-    public static double SERVO_RELEASE_POS = 0.2;
+    public static double SERVO_RELEASE_POS = 0.4;
     private final String deviceName;
     private final String description;
     private Servo releaseServo;
@@ -42,7 +42,7 @@ public class DroneLauncher implements Mechanism {
 
         angleServo = hardwareMap.get(Servo.class, "dronePosition");
         angleServo.setDirection(Servo.Direction.REVERSE);
-        angleServo.setPosition(SERVO_LAUNCH_START_ANGLE); // TODO: verify angle is flat
+        angleServo.setPosition(SERVO_LAUNCH_START_ANGLE);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DroneLauncher implements Mechanism {
      * Moves the drone launcher into launch position
      */
     public void setToLaunchAngle() {
-        double servoAnglePosition = SERVO_LAUNCH_ANGLE_USE_HIGH ? SERVO_LAUNCH_ANGLE_HIGH : SERVO_LAUNCH_ANGLE_LOW;
+        double servoAnglePosition = SERVO_LAUNCH_ANGLE_USE_HIGH_ANGLE ? SERVO_LAUNCH_ANGLE_HIGH : SERVO_LAUNCH_ANGLE_LOW;
         angleServo.setPosition(servoAnglePosition);
     }
 

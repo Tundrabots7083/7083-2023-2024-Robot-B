@@ -33,9 +33,9 @@ public class PrimaryTeleOp extends OpMode {
     @Override
     public void loop() {
         // Update sensors
-        for (Sensor sensor : robot.sensors) {
-            sensor.update();
-        }
+//        for (Sensor sensor : robot.sensors) {
+//            sensor.update();
+//        }
 
         // Process controller inputs
         for (Controller controller : robot.controllers) {
