@@ -19,10 +19,6 @@ import java.util.Collection;
  */
 @Config
 public class MecanumDrive implements Mechanism {
-    public static double MIN_SQUARE_DIFFERENCE = 20;
-    public static double AUTO_MOTOR_POWER = 0.1;
-    public static double DISTANCE_FROM_BACKDROP = 3.25;
-
     private final String deviceName;
     private final String description;
     private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
