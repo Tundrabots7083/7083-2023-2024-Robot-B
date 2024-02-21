@@ -19,8 +19,7 @@ public class DroneLauncher implements Mechanism {
     public static double SERVO_LAUNCH_ANGLE_HIGH = 0.28; // 55º
     public static double SERVO_LAUNCH_ANGLE_LOW = 0.25;   // 46.5º
     public static boolean SERVO_LAUNCH_ANGLE_USE_HIGH_ANGLE = true;
-    public static double SERVO_RELEASE_INITIAL = 0.675;
-    public static double SERVO_RELEASE_POS = 0.4;
+    public static double SERVO_RELEASE_POS = 0.1;
     private final String deviceName;
     private final String description;
     private Servo releaseServo;
@@ -38,7 +37,6 @@ public class DroneLauncher implements Mechanism {
 
         releaseServo = hardwareMap.get(Servo.class, "droneLauncher");
         releaseServo.setDirection(Servo.Direction.FORWARD);
-        releaseServo.setPosition(SERVO_RELEASE_INITIAL); // TODO: verify drone launch servo doesn't move
 
         angleServo = hardwareMap.get(Servo.class, "dronePosition");
         angleServo.setDirection(Servo.Direction.REVERSE);

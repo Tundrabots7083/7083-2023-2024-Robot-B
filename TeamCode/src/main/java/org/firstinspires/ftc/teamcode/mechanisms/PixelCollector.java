@@ -51,27 +51,6 @@ public class PixelCollector implements Mechanism {
         spinnerDelayTime = System.currentTimeMillis();
     }
 
-    public void toggleState(boolean deposit) {
-        if (lastToggleTime + TOGGLE_DELAY < System.currentTimeMillis()) {
-            spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
-            if (state != PixelCollectorState.CLOSED) {
-                state = PixelCollectorState.CLOSED;
-//                spinner.setPower(state.spinnerPower);
-//                flap.setPosition(state.flapPosition);
-            } else if (deposit) {
-                state = PixelCollectorState.DEPOSITING;
-//                spinner.setPower(state.spinnerPower);
-//                flap.setPosition(state.flapPosition);
-            } else {
-                state = PixelCollectorState.COLLECTING;
-//                flap.setPosition(state.flapPosition);
-//                spinner.setPower(state.spinnerPower);
-            }
-
-            lastToggleTime = System.currentTimeMillis();
-        }
-    }
-
     public void setState(PixelCollectorState state) {
         this.state = state;
         spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
@@ -112,7 +91,7 @@ public class PixelCollector implements Mechanism {
 
     public enum PixelCollectorState {
         COLLECTING(-0.3, 0),
-        DEPOSITING(0.1, 0),
+        DEPOSITING(0.09, 0),
         CLOSED(0, 0.65);
 
         double spinnerPower;
