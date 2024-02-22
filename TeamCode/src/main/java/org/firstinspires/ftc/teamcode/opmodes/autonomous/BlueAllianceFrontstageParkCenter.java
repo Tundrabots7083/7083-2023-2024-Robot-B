@@ -20,7 +20,7 @@ public class BlueAllianceFrontstageParkCenter extends LinearOpMode implements Au
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Create the trajectory follower
-        TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry, DELAY_FRONTSTAGE_IN_MILLIS);
+        TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry, DELAY_FRONTSTAGE);
 
         waitForStart();
 

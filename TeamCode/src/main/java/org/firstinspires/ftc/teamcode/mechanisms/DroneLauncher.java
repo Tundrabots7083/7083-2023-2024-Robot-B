@@ -16,7 +16,7 @@ import java.util.Collection;
 public class DroneLauncher implements Mechanism {
 
     public static double SERVO_LAUNCH_START_ANGLE = 0.0;
-    public static double SERVO_LAUNCH_ANGLE_HIGH = 0.28; // 55º
+    public static double SERVO_LAUNCH_ANGLE_HIGH = 0.28; // 52.5º // 0.27166667; // 49º
     public static double SERVO_LAUNCH_ANGLE_LOW = 0.25;   // 46.5º
     public static boolean SERVO_LAUNCH_ANGLE_USE_HIGH_ANGLE = true;
     public static double SERVO_RELEASE_POS = 0.1;

@@ -27,7 +27,7 @@ public class Lift implements Mechanism {
         SCORE_LOW(-2700, -350),
         SCORE_MEDIUM(-2700, -700),
         SCORE_HIGH(-2700, -1100),
-        HANG_START(0, -1450),
+        HANG_START(0, -1525),
         HANG_END(0, -900),
         LAUNCH_DRONE(0, 0);
 

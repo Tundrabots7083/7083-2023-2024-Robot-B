@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public interface AutonomousOpmode {
-    long DELAY_BACKSTAGE_IN_MILLIS = 0;
-    long DELAY_FRONTSTAGE_IN_MILLIS = 3000;
+    long DELAY_BACKSTAGE = 0;
+    long DELAY_PARK_AT_BACKDROP = 7000;
+    long DELAY_FRONTSTAGE = 3000;
 }

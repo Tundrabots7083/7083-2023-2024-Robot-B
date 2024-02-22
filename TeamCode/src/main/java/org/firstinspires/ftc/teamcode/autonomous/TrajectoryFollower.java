@@ -182,15 +182,20 @@ public class TrajectoryFollower {
             lift.update();
         }
 
-        // Drive to the parking spot
-        telemetry.addLine("Drive to the parking spot");
-        telemetry.update();
-        Trajectory toParkingSpot;
-        if (parkingLocation == ParkingLocation.EDGE) {
-            toParkingSpot = trajectoryGenerator.toParkingSpotEdge(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
+        // If not parking in front of the backdrop, drive to the parking location
+        if (parkingLocation == ParkingLocation.BACKDROP) {
+            telemetry.addLine("Park in front of the backdrop");
         } else {
-            toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
+            // Drive to the parking spot
+            telemetry.addLine("Drive to the parking spot");
+            telemetry.update();
+            Trajectory toParkingSpot;
+            if (parkingLocation == ParkingLocation.EDGE) {
+                toParkingSpot = trajectoryGenerator.toParkingSpotEdge(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
+            } else {
+                toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
+            }
+            drive.followTrajectory(toParkingSpot);
         }
-        drive.followTrajectory(toParkingSpot);
     }
 }

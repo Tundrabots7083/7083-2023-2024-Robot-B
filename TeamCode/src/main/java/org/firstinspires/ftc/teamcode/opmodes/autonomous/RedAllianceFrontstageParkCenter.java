@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
 
 @Autonomous(name="Red Alliance Frontstage Park Center", group="Autonomous Red")
 public class RedAllianceFrontstageParkCenter extends LinearOpMode implements AutonomousOpmode{
-    private static long DELAY_OPMODE_IN_MILLIS = 3000;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -21,7 +20,7 @@ public class RedAllianceFrontstageParkCenter extends LinearOpMode implements Aut
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Create the trajectory follower
-        TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry, DELAY_FRONTSTAGE_IN_MILLIS);
+        TrajectoryFollower follower = new TrajectoryFollower(hardwareMap, telemetry, DELAY_FRONTSTAGE);
 
         waitForStart();
 
