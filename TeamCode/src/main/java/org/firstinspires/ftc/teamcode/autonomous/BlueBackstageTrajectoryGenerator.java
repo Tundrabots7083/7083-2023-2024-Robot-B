@@ -12,11 +12,11 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Pose2d STARTING_POSE = new Pose2d(15.25, 63.125, Math.toRadians(-90));
 
-    public static final Pose2d INNER_SPIKE_BASE = new Pose2d(15.5, 36, Math.toRadians(179));
+    public static final Pose2d INNER_SPIKE_BASE = new Pose2d(13.25, 37, Math.toRadians(180));
     public static final int INNER_SPIKE_BASE_HEADING = 180;
-    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(14.75, 37.5, Math.toRadians(-90));
+    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(17, 37, Math.toRadians(-90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
-    public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(24.5, 47, Math.toRadians(-90));
+    public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(24.75, 45, Math.toRadians(-90));
     public static final int OUTER_SPIKE_BASE_HEADING = -90;
 
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(40.5, 43);
