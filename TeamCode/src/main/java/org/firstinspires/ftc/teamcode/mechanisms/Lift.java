@@ -20,62 +20,29 @@ import java.util.Collection;
  */
 @Config
 public class Lift implements Mechanism {
-    public enum Position {
-        INTAKE(0, 0),
-        AUTONOMOUS_BACKSTAGE(-2700, -200),
-        AUTONOMOUS_FRONTSTAGE(-2700, -400),
-        SCORE_LOW(-2700, -350),
-        SCORE_MEDIUM(-2700, -700),
-        SCORE_HIGH(-2700, -1100),
-        HANG_START(0, -1525),
-        HANG_END(0, -900),
-        LAUNCH_DRONE(0, 0);
-
-        public int armPosition;
-        public int liftPosition;
-
-        /**
-         * Creates a new Position for the given arm and servo.
-         *
-         * @param armPosition  the position of the arm.
-         * @param liftPosition the position of the lift.
-         */
-        Position(int armPosition, int liftPosition) {
-            this.armPosition = armPosition;
-            this.liftPosition = liftPosition;
-        }
-    }
-
     public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
     public static double LIFT_KG = 0.1;
-
     public static double INTEGRAL_LIMIT = 1;
     public static double LIFT_MAX_ACCELERATION = 3000;
     public static double LIFT_MAX_VELOCITY = 8000;
     public static double MINIMUM_LIFT_POWER = 0.1;
-
     public static double ARM_KP = 0.003;
     public static double ARM_KI = 0.0;
     public static double ARM_KD = 0.0;
     public static double ARM_MAX_ACCELERATION = 3000;
     public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.16;
-
     DcMotorEx leftMotor;
     DcMotorEx rightMotor;
     DcMotorEx armMotor;
-
     PIDController leftController;
     PIDController rightController;
     PIDController armController;
-
     MotionProfile liftProfile;
     MotionProfile armProfile;
-
     Position targetPosition;
-
     Telemetry telemetry;
 
     public Lift(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -259,5 +226,31 @@ public class Lift implements Mechanism {
         telemetry.addData("[LIFT] left position", leftMotor.getCurrentPosition());
         telemetry.addData("[LIFT] right power", rightMotor.getPower());
         telemetry.addData("[LIFT] right position", rightMotor.getCurrentPosition());
+    }
+
+    public enum Position {
+        INTAKE(0, 0),
+        AUTONOMOUS_BACKSTAGE(-2700, -200),
+        AUTONOMOUS_FRONTSTAGE(-2700, -350),
+        SCORE_LOW(-2700, -350),
+        SCORE_MEDIUM(-2700, -700),
+        SCORE_HIGH(-2700, -1100),
+        HANG_START(0, -1525),
+        HANG_END(0, -900),
+        LAUNCH_DRONE(0, 0);
+
+        private double armPosition;
+        private double liftPosition;
+
+        /**
+         * Creates a new Position for the given arm and servo.
+         *
+         * @param armPosition  the position of the arm.
+         * @param liftPosition the position of the lift.
+         */
+        Position(int armPosition, int liftPosition) {
+            this.armPosition = armPosition;
+            this.liftPosition = liftPosition;
+        }
     }
 }

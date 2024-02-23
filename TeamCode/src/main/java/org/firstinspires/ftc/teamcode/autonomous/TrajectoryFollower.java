@@ -22,6 +22,7 @@ public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 4000;
     public static long COLLECTOR_CLOSED_TIMER = 500;
     public static long PIXEL_BACKDROP_TIMER = 1500;
+    public static long LIFT_EXTRA_WAIT_TIME = 500;
 
     private final Telemetry telemetry;
     private final long delayOpmodeInMillis;
@@ -120,7 +121,6 @@ public class TrajectoryFollower {
         while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
             leftPixelCollector.update();
         }
-        /*
 
         // Drive to the proper location (edge, middle, center) in front of the backdrop at which
         // the arm is rotated
@@ -137,8 +137,12 @@ public class TrajectoryFollower {
         } else {
             lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
         }
-        timer.reset();
         while (!lift.isAtTarget()) {
+            lift.update();
+        }
+        // Stop the lift from banging into the backdrop
+        timer.reset();
+        while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
             lift.update();
         }
 
@@ -167,6 +171,23 @@ public class TrajectoryFollower {
             rightPixelCollector.update();
         }
 
+        // Raise the lift if we are on the backstage, so that the black noodle doesn't descore
+        // the pixel
+        if (startingLocation == StartingLocation.BACKSTAGE) {
+            telemetry.addLine("Raise the lift and arm out of the way");
+            telemetry.update();
+            lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
+            while (!lift.isAtTarget()) {
+                lift.update();
+            }
+            // Stop the lift from banging into the backdrop
+            timer.reset();
+            while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
+                lift.update();
+            }
+        }
+
+        /* TODO: comment back out */
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
         telemetry.addLine("Drive the robot away from the backdrop");
         telemetry.update();
@@ -177,7 +198,6 @@ public class TrajectoryFollower {
         telemetry.addLine("Lower the lift and arm");
         telemetry.update();
         lift.setTarget(Lift.Position.INTAKE);
-        timer.reset();
         while (!lift.isAtTarget()) {
             lift.update();
         }
@@ -197,6 +217,6 @@ public class TrajectoryFollower {
             }
             drive.followTrajectory(toParkingSpot);
         }
-        */
+        /* TODO: end of comment */
     }
 }
