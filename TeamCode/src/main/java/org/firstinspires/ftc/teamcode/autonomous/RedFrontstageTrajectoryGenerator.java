@@ -24,9 +24,9 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d UNDER_STAGE_TARGET_POSITION = new Vector2d(-12, -61);
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(38, -60);
 
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(46, -44.5);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(46, -38);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(46, -32);
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(43.5, -45.5);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(43.5, -39);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(43.5, -36);
     public static double BACKDROP_MIDDLE_ROTATE = 0;
     public static double BACKDROP_CENTER_ROTATE = 0;
     public static double BACKDROP_EDGE_ROTATE = 0;

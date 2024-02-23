@@ -19,9 +19,9 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
  */
 @Config
 public class TrajectoryFollower {
-    public static long PIXEL_SPIKE_MARK_TIMER = 4000;
+    public static long PIXEL_SPIKE_MARK_TIMER = 2500;
     public static long COLLECTOR_CLOSED_TIMER = 500;
-    public static long PIXEL_BACKDROP_TIMER = 1250;
+    public static long PIXEL_BACKDROP_TIMER = 1750;
     public static long LIFT_EXTRA_WAIT_TIME = 500;
 
     private final Telemetry telemetry;
@@ -94,7 +94,7 @@ public class TrajectoryFollower {
         //visionSensor.close();
 
         // Delay the start of the opmode the requested number of milliseconds
-//        sleep(delayOpmodeInMillis);
+        sleep(delayOpmodeInMillis);
 
         // Set the starting pose
         drive.setPoseEstimate(startingPose);
@@ -187,7 +187,6 @@ public class TrajectoryFollower {
             }
         }
 
-        /* TODO: start of comment */
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
         telemetry.addLine("Drive the robot away from the backdrop");
         telemetry.update();
@@ -217,6 +216,5 @@ public class TrajectoryFollower {
             }
             drive.followTrajectory(toParkingSpot);
         }
-        /* TODO: end of comment */
     }
 }
