@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 public class RedBackstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Pose2d STARTING_POSE = new Pose2d(15.25, -63.125, Math.toRadians(90));
 
-    public static final Pose2d INNER_SPIKE_BASE = new Pose2d(15.25, -32, Math.toRadians(180));
+    public static final Pose2d INNER_SPIKE_BASE = new Pose2d(13.25, -34.5, Math.toRadians(180));
     public static final int INNER_SPIKE_BASE_HEADING = 180;
-    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(15.25, -39, Math.toRadians(90));
+    public static final Pose2d MIDDLE_SPIKE_BASE = new Pose2d(13.75, -37.5, Math.toRadians(90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = 90;
     public static final Pose2d OUTER_SPIKE_BASE = new Pose2d(27, -47, Math.toRadians(90));
     public static final int OUTER_SPIKE_BASE_HEADING = 90;

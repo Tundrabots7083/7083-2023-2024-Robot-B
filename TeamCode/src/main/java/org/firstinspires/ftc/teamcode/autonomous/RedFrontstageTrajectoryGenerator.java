@@ -13,10 +13,10 @@ public class RedFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Pose2d STARTING_POSE = new Pose2d(-36, -63.125, Math.toRadians(90));
 
     public static final Vector2d INNER_SPIKE_MARK_INTERMEDIATE_POSITION = new Vector2d(-41.5, -30.5);
-    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-38, -30.5);
-    public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(-37, -38.5, Math.toRadians(90));
+    public static final Vector2d INNER_SPIKE_POSITION = new Vector2d(-35, -30.5);
+    public static final Pose2d MIDDLE_SPIKE_POSITION = new Pose2d(-38, -37.75, Math.toRadians(90));
     public static final int MIDDLE_SPIKE_BASE_HEADING = 90;
-    public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(-46.5, -47, Math.toRadians(90));
+    public static final Pose2d OUTER_SPIKE_POSITION = new Pose2d(-46.25, -45.5, Math.toRadians(90));
     public static final int OUTER_SPIKE_BASE_HEADING = 90;
 
     public static final Vector2d REVERSE_POSITION = new Vector2d(-39, -60);

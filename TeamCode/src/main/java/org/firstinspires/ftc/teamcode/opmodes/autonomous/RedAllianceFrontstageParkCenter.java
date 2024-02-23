@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
 
-@Autonomous(name="Red Alliance Frontstage Park Center", group="Autonomous Red")
+@Autonomous(name="Red Alliance Frontstage Park Center", group="Autonomous Red", preselectTeleOp="Primary TeleOp")
 public class RedAllianceFrontstageParkCenter extends LinearOpMode implements AutonomousOpmode{
 
     @Override

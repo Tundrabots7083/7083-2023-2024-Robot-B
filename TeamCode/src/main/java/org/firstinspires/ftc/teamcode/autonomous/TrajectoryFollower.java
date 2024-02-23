@@ -93,7 +93,7 @@ public class TrajectoryFollower {
         //visionSensor.close();
 
         // Delay the start of the opmode the requested number of milliseconds
-        sleep(delayOpmodeInMillis);
+//        sleep(delayOpmodeInMillis);
 
         // Set the starting pose
         drive.setPoseEstimate(startingPose);
@@ -112,7 +112,6 @@ public class TrajectoryFollower {
         while (timer.milliseconds() < PIXEL_SPIKE_MARK_TIMER) {
             leftPixelCollector.update();
         }
-
         // Turn off the pixel collector
         telemetry.addLine("Turn off the pixel collector");
         telemetry.update();
@@ -121,6 +120,7 @@ public class TrajectoryFollower {
         while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
             leftPixelCollector.update();
         }
+        /*
 
         // Drive to the proper location (edge, middle, center) in front of the backdrop at which
         // the arm is rotated
@@ -197,5 +197,6 @@ public class TrajectoryFollower {
             }
             drive.followTrajectory(toParkingSpot);
         }
+        */
     }
 }

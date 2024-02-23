@@ -17,27 +17,34 @@ import java.util.Collection;
  */
 @Config
 public class PixelCollector implements Mechanism {
-    public static long TOGGLE_DELAY = 500;
     /**
      * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
      */
     public static long SPINNER_DELAY = 250;
-    String deviceName;
-    String description;
-    Telemetry telemetry;
-    CRServo spinner;
-    Servo flap;
-    long lastToggleTime;
-    long spinnerDelayTime;
-    PixelCollectorState state;
-    boolean leftServo;
+    private final String deviceName;
+    private final String description;
+    private final Telemetry telemetry;
+    private final CRServo spinner;
+    private final Servo flap;
+    private long spinnerDelayTime;
+    private PixelCollectorState state;
+
+    /**
+     * Creates an instance of a pixel collector.
+     *
+     * @param deviceName       the device name for the pixel collector.
+     * @param description      the description of the pixel collector.
+     * @param hardwareMap      the mapping of all hardware on the bot.
+     * @param telemetry        the telemetry used to display data on the driver station.
+     * @param reverseFlapServo whether the servo runs forward or reverse.
+     */
     public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean reverseFlapServo) {
+        this.deviceName = deviceName;
+        this.description = description;
 
         this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
         this.flap = hardwareMap.get(Servo.class, deviceName + "Flap");
         this.telemetry = telemetry;
-        this.deviceName = deviceName;
-        this.description = description;
 
         if (reverseFlapServo) {
             this.flap.setDirection(Servo.Direction.REVERSE);
@@ -51,11 +58,19 @@ public class PixelCollector implements Mechanism {
         spinnerDelayTime = System.currentTimeMillis();
     }
 
+    /**
+     * Sets the state for the pixel collector.
+     *
+     * @param state the state for the pixel collector.
+     */
     public void setState(PixelCollectorState state) {
         this.state = state;
         spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
     }
 
+    /**
+     * Update the position of the flap and the power for the spinner for the pixel collector.
+     */
     public void update() {
         long currentTime = System.currentTimeMillis();
         if (state == PixelCollectorState.CLOSED) {
@@ -89,13 +104,25 @@ public class PixelCollector implements Mechanism {
         return null;
     }
 
+    /**
+     * The state for the pixel collector.
+     */
     public enum PixelCollectorState {
+        /**
+         * Collecting pixels from the field
+         */
         COLLECTING(-0.3, 0),
+        /**
+         * Depositing pixels on the field
+         */
         DEPOSITING(0.09, 0),
+        /**
+         * The spinner is off and the flap door is closed
+         */
         CLOSED(0, 0.65);
 
-        double spinnerPower;
-        double flapPosition;
+        public final double spinnerPower;
+        public final double flapPosition;
 
         PixelCollectorState(double spinnerPower, double flapPosition) {
             this.spinnerPower = spinnerPower;
