@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 4000;
     public static long COLLECTOR_CLOSED_TIMER = 500;
-    public static long PIXEL_BACKDROP_TIMER = 1500;
+    public static long PIXEL_BACKDROP_TIMER = 1250;
     public static long LIFT_EXTRA_WAIT_TIME = 500;
 
     private final Telemetry telemetry;
@@ -187,7 +187,7 @@ public class TrajectoryFollower {
             }
         }
 
-        /* TODO: comment back out */
+        /* TODO: start of comment */
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
         telemetry.addLine("Drive the robot away from the backdrop");
         telemetry.update();

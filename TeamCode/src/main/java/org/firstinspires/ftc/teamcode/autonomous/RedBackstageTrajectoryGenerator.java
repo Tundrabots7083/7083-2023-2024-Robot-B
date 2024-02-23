@@ -20,12 +20,12 @@ public class RedBackstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final int OUTER_SPIKE_BASE_HEADING = 90;
 
     public static final Vector2d BACKDROP_INTERMEDIATE_POSITION = new Vector2d(40.5, -43);
-    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(50, -43.5);
-    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(50, -40);
-    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(50, -29);
-    public static double BACKDROP_MIDDLE_ROTATE = 95;
+    public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(49, -44.25);
+    public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(49, -39.5);
+    public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(47, -30);
     public static double BACKDROP_CENTER_ROTATE = 1;
-    public static double BACKDROP_EDGE_ROTATE = 95;
+    public static double BACKDROP_MIDDLE_ROTATE = 95;
+    public static double BACKDROP_EDGE_ROTATE = 91.5;
 
     public static double BACKDROP_FORWARD_DISTANCE = 3;
     public static double BACKDROP_BACKWARD_DISTANCE = 3.5;
