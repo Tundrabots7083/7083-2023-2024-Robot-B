@@ -29,8 +29,9 @@ public class Robot {
 
     /**
      * Creates a new instance of the robot.
-     * @param hardwareMap         hardware map for the robot.
-     * @param telemetry           telemetry class for displaying data.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
      */
     private Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         robot = this;
@@ -49,8 +50,9 @@ public class Robot {
 
     /**
      * Gets the singleton instance of the robot.
-     * @param hardwareMap         hardware map for the robot.
-     * @param telemetry           telemetry class for displaying data.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
      */
     public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry) {
         if (robot == null) {
