@@ -8,8 +8,10 @@ import org.firstinspires.ftc.teamcode.controllers.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.controllers.LiftController;
 import org.firstinspires.ftc.teamcode.controllers.MecanumDriveController;
 import org.firstinspires.ftc.teamcode.controllers.PixelCollectorController;
+import org.firstinspires.ftc.teamcode.sensors.Sensor;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Robot {
@@ -18,7 +20,7 @@ public class Robot {
     //    public final DistanceSensor leftDistanceSensor;
 //    public final DistanceSensor rightDistanceSensor;
 //    public final VisionSensor visionSensor;
-//    public final List<Sensor> sensors;
+    public final List<Sensor> sensors;
     private final Telemetry telemetry;
     public MecanumDriveController mecanumDriveController;
     public LiftController liftController;
@@ -41,6 +43,7 @@ public class Robot {
 //        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor);
 //        visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
 //        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor, visionSensor);
+        sensors = Collections.emptyList();
 
         this.telemetry.addLine("[Robot] initialized");
     }
