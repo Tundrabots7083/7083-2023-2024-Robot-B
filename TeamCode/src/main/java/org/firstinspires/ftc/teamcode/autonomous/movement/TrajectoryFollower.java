@@ -58,7 +58,6 @@ public class TrajectoryFollower {
 
         // Create the vision sensor
         visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
-        visionSensor.initializeVisionPortal();
         while (!visionSensor.webcamInitialized()) {
             // NO-OP
         }
