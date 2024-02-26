@@ -15,6 +15,12 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+/**
+ * VisionProcessor determines the location of the team prop based on color saturation. It looks
+ * at two spike marks, the `left` and `right`, to determine if the team prop is located on one of
+ * those two spike marks. If so, it returns the location. If not, it infers the team prop must be
+ * on the right spike mark and returns that location.
+ */
 @Config
 public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     public static int LEFT_RECTANGLE_X = 0;
@@ -38,14 +44,33 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
 
+    /**
+     * Creates a new vision processor.
+     *
+     * @param telemetry the telemetry to be used for any output to the driver station.
+     */
     public VisionProcessor(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
 
+    /**
+     * Initializes the vision processor. This is a no-op for this class.
+     *
+     * @param width       width of the camera image.
+     * @param height      height of the camera image.
+     * @param calibration camera calibration information
+     */
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
     }
 
+    /**
+     * Processes the frame from the webcam associated with this vision processor.
+     *
+     * @param frame            the frame from the webcam.
+     * @param captureTimeNanos the time it took to capture the frame.
+     * @return the location of the team prop on the frame.
+     */
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
@@ -69,16 +94,37 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         return TeamElementLocation.RIGHT_SPIKE_MARK;
     }
 
+    /**
+     * Determines the percentage difference between the two numbers.
+     *
+     * @param val1 the first number.
+     * @param val2 the second number.
+     * @return the percentage difference between the two numbers.
+     */
     private double getPercentDifference(double val1, double val2) {
         return Math.abs(val1 - val2) / ((val1 + val2) / 2) * 100;
     }
 
+    /**
+     * Gets the average color saturation within the rectangle on the frame.
+     *
+     * @param input the frame from the webcam.
+     * @param rect  the rectangle in which to check the color saturation.
+     * @return the average color saturation within the rectangle.
+     */
     protected double getAvgSaturation(Mat input, Rect rect) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
         return color.val[1];
     }
 
+    /**
+     * Draws the rectangle on the frame on the driver station.
+     *
+     * @param rect                 the rectangle to draw.
+     * @param scaleBmpPxToCanvasPx the scale factor for the pixels.
+     * @return the corresponding rectangle to draw on the driver station.
+     */
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
         int left = Math.round(rect.x * scaleBmpPxToCanvasPx);
         int top = Math.round(rect.y * scaleBmpPxToCanvasPx);
@@ -88,6 +134,18 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         return new android.graphics.Rect(left, top, right, bottom);
     }
 
+    /**
+     * Draws the frames on the android device. If the team prop is located within one of the
+     * rectangles, the color for the rectangle is `red`; if the team prop is not within the
+     * rectangle, the color for the rectangle is `green`.
+     *
+     * @param canvas               the "draw" cells
+     * @param onscreenWidth        the width of the frame
+     * @param onscreenHeight       the height of the frames
+     * @param scaleBmpPxToCanvasPx scale factor for the number of pixels
+     * @param scaleCanvasDensity   the density of the "draw" cells
+     * @param userContext          the spike mark selection
+     */
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
         Paint selectedPaint = new Paint();
@@ -120,6 +178,11 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         }
     }
 
+    /**
+     * Returns the location of the team prop.
+     *
+     * @return the location of the team prop.
+     */
     public TeamElementLocation getSelection() {
         return selection;
     }
