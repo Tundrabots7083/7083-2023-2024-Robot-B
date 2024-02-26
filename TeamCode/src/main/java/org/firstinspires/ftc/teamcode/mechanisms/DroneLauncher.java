@@ -22,12 +22,13 @@ public class DroneLauncher implements Mechanism {
     public static double SERVO_RELEASE_POS = 0.1;
     private final String deviceName;
     private final String description;
-    private Servo releaseServo;
-    private Servo angleServo;
+    private final Servo releaseServo;
+    private final Servo angleServo;
 
     /**
      * Creates the drone launcher
-     * @param deviceName name of the drone launcher device.
+     *
+     * @param deviceName  name of the drone launcher device.
      * @param description description of the drone launcher.
      * @param hardwareMap the hardware map that contains the drone launcher hardware.
      */

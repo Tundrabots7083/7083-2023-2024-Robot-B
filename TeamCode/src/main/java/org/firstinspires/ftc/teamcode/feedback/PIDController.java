@@ -26,8 +26,9 @@ public class PIDController {
 
     /**
      * calculate PID output
+     *
      * @param reference the target position
-     * @param state current system state
+     * @param state     current system state
      * @return PID output
      */
     public double calculate(double reference, double state) {
@@ -37,8 +38,8 @@ public class PIDController {
 
         double dt = getDT();
         double error = calculateError(reference, state);
-        double derivative = calculateDerivative(error,dt);
-        integrate(error,dt);
+        double derivative = calculateDerivative(error, dt);
+        integrate(error, dt);
         previousError = error;
         return error * coefficients.Kp
                 + integralSum * coefficients.Ki
@@ -52,6 +53,7 @@ public class PIDController {
 
     /**
      * get the time constant
+     *
      * @return time constant
      */
     public double getDT() {

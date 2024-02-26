@@ -6,9 +6,9 @@ package org.firstinspires.ftc.teamcode.feedback;
  * profile started.
  */
 public class MotionProfile {
-    private double maxAcceleration;
-    private double maxVelocity;
-    private double startPosition;
+    private final double maxAcceleration;
+    private final double maxVelocity;
+    private final double startPosition;
     private double endPosition;
     private long startTime;
 
@@ -18,9 +18,9 @@ public class MotionProfile {
      * The time unit component of the maximum acceleration and maximum velocity constants must be seconds.
      *
      * @param maxAcceleration The maximum acceleration of the motion profile in units per second squared.
-     * @param maxVelocity The maximum velocity of the motion profile in units per second.
-     * @param startPosition The start position of the motion profile in units.
-     * @param endPosition The end position of the motion profile in units.
+     * @param maxVelocity     The maximum velocity of the motion profile in units per second.
+     * @param startPosition   The start position of the motion profile in units.
+     * @param endPosition     The end position of the motion profile in units.
      */
     public MotionProfile(double maxAcceleration, double maxVelocity, double startPosition, double endPosition) {
         this.maxAcceleration = maxAcceleration;
@@ -34,55 +34,119 @@ public class MotionProfile {
     }
 
     /**
-     * Calculates the current position based on the elapsed time since the motion profile started.
-     * 
-     * @return The current position.
+     * The amount of time spent accelerating.
+     *
+     * @return the amount of time spent accelerating.
      */
-    public double calculatePosition() {
+    private double getAccelerationDt() {
+        return maxVelocity / maxAcceleration;
+    }
 
+    /**
+     * The amount of time spent decelerating.
+     *
+     * @return the amount of time spent decelerating.
+     */
+    private double getDecelerationDt() {
+        return getAccelerationDt();
+    }
+
+    /**
+     * The amount of time spent cruising.
+     *
+     * @return the amount of time spent cruising.
+     */
+    private double getCruiseDt() {
+        double distance = Math.abs(endPosition - startPosition);
+        double accelerationDistance = 0.5 * maxAcceleration * Math.pow(getAccelerationDt(), 2);
+        double cruiseDistance = distance - 2 * accelerationDistance;
+        double localMaxVelocity = maxAcceleration * getAccelerationDt();
+        return cruiseDistance / localMaxVelocity;
+    }
+
+    private double getEntireDt() {
+        return getAccelerationDt() + getDecelerationDt() + getCruiseDt();
+    }
+
+    private double getElapsedTime() {
         if (this.startTime == 0) {
             this.startTime = System.currentTimeMillis();
         }
+        return (System.currentTimeMillis() - this.startTime) / 1000.0; // convert to seconds
+    }
 
-        double elapsedTime = (System.currentTimeMillis() - this.startTime) / 1000.0; // convert to seconds
-        double distance = Math.abs(endPosition - startPosition);
-        double direction = Math.signum(endPosition - startPosition);
-        double accelerationDt = maxVelocity / maxAcceleration;
-        double halfwayDistance = distance / 2;
-        double accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
+    /**
+     * The robot has reached the target position.
+     *
+     * @return <code>true</code> if the robot has reached the target position;
+     * <code>false</code> if it has not yet reached the target position.
+     */
+    public boolean isAtEnd() {
+        return getElapsedTime() > getEntireDt();
+    }
 
-        if (accelerationDistance > halfwayDistance) {
-            accelerationDt = Math.sqrt(halfwayDistance / (0.5 * maxAcceleration));
-        }
+    /**
+     * The robot is accelerating.
+     *
+     * @return <code>true</code> if the robot is accelerating;
+     * <code>false</code> if the robot is not accelerating.
+     */
+    public boolean isAccelerating() {
+        return getElapsedTime() < getAccelerationDt();
+    }
 
-        accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
-        double localMaxVelocity = maxAcceleration * accelerationDt;
-        double decelerationDt = accelerationDt;
-        double cruiseDistance = distance - 2 * accelerationDistance;
-        double cruiseDt = cruiseDistance / localMaxVelocity;
-        double decelerationTime = accelerationDt + cruiseDt;
-        double entireDt = accelerationDt + cruiseDt + decelerationDt;
+    /**
+     * The robot is cruising (at a steady speed).
+     *
+     * @return <code>true</code> if the robot is cruising;
+     * <code>false</code> if the robot is not cruising.
+     */
+    public boolean isCruising() {
+        double decelerationTime = getAccelerationDt() + getCruiseDt();
+        return getElapsedTime() < decelerationTime;
+    }
+
+    /**
+     * The robot is decelerating.
+     *
+     * @return the robot is decelerating.
+     */
+    public boolean isDecelerating() {
+        return !isAtEnd() && !isAccelerating() && !isCruising();
+    }
+
+    /**
+     * Calculates the current position based on the elapsed time since the motion profile started.
+     *
+     * @return The current position.
+     */
+    public double calculatePosition() {
+        double elapsedTime = getElapsedTime();
+
+        double localMaxVelocity = maxAcceleration * getAccelerationDt();
 
         double position;
-        if (elapsedTime > entireDt) {
+        if (isAtEnd()) {
             // We've reached the end of the motion profile
-            position = distance;
-        } else if (elapsedTime < accelerationDt) {
+            position = Math.abs(endPosition - startPosition);
+        } else if (isAccelerating()) {
             // Acceleration Phase
             position = 0.5 * maxAcceleration * Math.pow(elapsedTime, 2);
-        } else if (elapsedTime < decelerationTime) {
+        } else if (isCruising()) {
             // Cruise Phase
-            accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
-            double cruiseCurrentDt = elapsedTime - accelerationDt;
+            double accelerationDistance = 0.5 * maxAcceleration * Math.pow(getAccelerationDt(), 2);
+            double cruiseCurrentDt = elapsedTime - getAccelerationDt();
             position = accelerationDistance + localMaxVelocity * cruiseCurrentDt;
         } else {
             // Deceleration Phase
-            accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
-            cruiseDistance = localMaxVelocity * cruiseDt;
+            double accelerationDistance = 0.5 * maxAcceleration * Math.pow(getAccelerationDt(), 2);
+            double cruiseDistance = localMaxVelocity * getCruiseDt();
+            double decelerationTime = getAccelerationDt() + getCruiseDt();
             double decelerationCurrentTime = elapsedTime - decelerationTime;
             position = accelerationDistance + cruiseDistance + localMaxVelocity * decelerationCurrentTime - 0.5 * maxAcceleration * Math.pow(decelerationCurrentTime, 2);
         }
 
+        double direction = Math.signum(endPosition - startPosition);
         return startPosition + direction * position;
     }
 }

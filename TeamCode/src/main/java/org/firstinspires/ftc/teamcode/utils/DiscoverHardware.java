@@ -8,32 +8,7 @@ import java.util.Collection;
 
 public class DiscoverHardware {
 
-    public static class DeviceInfo {
-        public String deviceName;
-        public String deviceType;
-        public HardwareDevice device;
-
-        public DeviceInfo(HardwareDevice device) {
-            this.deviceName = device.getDeviceName();
-            this.deviceType = device.getClass().getName();
-            this.device = device;
-        }
-    }
-
     private final Collection<DeviceInfo> devices;
-
-    /*
-    private static <DEVICE_TYPE extends HardwareDevice> Collection<DeviceInfo> getDevices(HardwareMap.DeviceMapping<DEVICE_TYPE> deviceMapping) {
-        Collection<DeviceInfo> devices = new ArrayList<>();
-
-        for (Map.Entry<String, DEVICE_TYPE> entry : deviceMapping.entrySet()) {
-            DeviceInfo device = new DeviceInfo(entry.getValue());
-            devices.add(device);
-        }
-
-        return devices;
-    }
-    */
 
     public DiscoverHardware(HardwareMap hwMap) {
         devices = new ArrayList<>();
@@ -72,7 +47,32 @@ public class DiscoverHardware {
          */
     }
 
+    /*
+    private static <DEVICE_TYPE extends HardwareDevice> Collection<DeviceInfo> getDevices(HardwareMap.DeviceMapping<DEVICE_TYPE> deviceMapping) {
+        Collection<DeviceInfo> devices = new ArrayList<>();
+
+        for (Map.Entry<String, DEVICE_TYPE> entry : deviceMapping.entrySet()) {
+            DeviceInfo device = new DeviceInfo(entry.getValue());
+            devices.add(device);
+        }
+
+        return devices;
+    }
+    */
+
     public Collection<DeviceInfo> getDevices() {
         return devices;
+    }
+
+    public static class DeviceInfo {
+        public String deviceName;
+        public String deviceType;
+        public HardwareDevice device;
+
+        public DeviceInfo(HardwareDevice device) {
+            this.deviceName = device.getDeviceName();
+            this.deviceType = device.getClass().getName();
+            this.device = device;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -6,8 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.controls.Controller;
-import org.firstinspires.ftc.teamcode.sensors.Sensor;
+import org.firstinspires.ftc.teamcode.controllers.Controller;
 
 @TeleOp(name = "Primary TeleOp", group = "Active")
 public class PrimaryTeleOp extends OpMode {

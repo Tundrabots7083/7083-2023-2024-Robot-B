@@ -17,7 +17,7 @@ import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.sequencesegment.SequenceSegment;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.sequencesegment.TrajectorySegment;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.sequencesegment.TurnSegment;
@@ -47,22 +47,20 @@ public class TrajectorySequenceRunner {
     private final PIDFController turnController;
 
     private final NanoClock clock;
-
+    private final FtcDashboard dashboard;
+    private final LinkedList<Pose2d> poseHistory = new LinkedList<>();
+    List<TrajectoryMarker> remainingMarkers = new ArrayList<>();
     private TrajectorySequence currentTrajectorySequence;
     private double currentSegmentStartTime;
     private int currentSegmentIndex;
     private int lastSegmentIndex;
-
     private Pose2d lastPoseError = new Pose2d();
+    private final VoltageSensor voltageSensor;
 
-    List<TrajectoryMarker> remainingMarkers = new ArrayList<>();
-
-    private final FtcDashboard dashboard;
-    private final LinkedList<Pose2d> poseHistory = new LinkedList<>();
-
-    private VoltageSensor voltageSensor;
-
-    private List<Integer> lastDriveEncPositions, lastDriveEncVels, lastTrackingEncPositions, lastTrackingEncVels;
+    private final List<Integer> lastDriveEncPositions;
+    private final List<Integer> lastDriveEncVels;
+    private final List<Integer> lastTrackingEncPositions;
+    private final List<Integer> lastTrackingEncVels;
 
     public TrajectorySequenceRunner(
             TrajectoryFollower follower, PIDCoefficients headingPIDCoefficients, VoltageSensor voltageSensor,

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controls;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,6 +16,7 @@ public class LiftController implements Controller {
 
     /**
      * Initializes the arm hardware.
+     *
      * @param hardwareMap the hardware map for the robot.
      */
     public LiftController(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -30,6 +31,7 @@ public class LiftController implements Controller {
 
     /**
      * Sets the position of the arm, and calls the arm to update the position.
+     *
      * @param gamepad1 the gamepad1 controller for the arm.
      * @param gamepad2 the gamepad2 controller for the arm.
      */
@@ -64,15 +66,14 @@ public class LiftController implements Controller {
             if (gamepad1.left_trigger > 0.0) {
                 lift.overrideLiftPower(gamepad1.left_trigger);
                 telemetry.addData("[LIFT] Power", gamepad1.left_trigger);
-            }
-            else if (gamepad1.right_trigger > 0.0) {
+            } else if (gamepad1.right_trigger > 0.0) {
                 lift.overrideLiftPower(-gamepad1.right_trigger);
                 telemetry.addData("[LIFT] Power", -gamepad1.right_trigger);
             } else {
                 lift.overrideLiftPower(0.0);
                 telemetry.addData("[ARM] Power", 0.0);
             }
-            return ;
+            return;
         }
 
         lift.update();

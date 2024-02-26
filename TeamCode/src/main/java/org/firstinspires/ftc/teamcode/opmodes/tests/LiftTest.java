@@ -2,13 +2,12 @@ package org.firstinspires.ftc.teamcode.opmodes.tests;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Lift;
 
-@TeleOp(name="Lift Motor Test", group="test")
+@TeleOp(name = "Lift Motor Test", group = "test")
 public class LiftTest extends OpMode {
     private Lift lift;
 

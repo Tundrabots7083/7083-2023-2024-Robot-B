@@ -22,6 +22,8 @@ public class TestMotor extends Test {
     public void run(Gamepad gamepad1, Telemetry telemetry) {
         if (gamepad1.a) {
             motor.setPower(speed);
+        } else if (gamepad1.b) {
+            motor.setPower(-speed);
         } else {
             motor.setPower(0.0);
         }

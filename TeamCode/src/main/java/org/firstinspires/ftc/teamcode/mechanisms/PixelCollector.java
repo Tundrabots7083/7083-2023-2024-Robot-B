@@ -59,6 +59,16 @@ public class PixelCollector implements Mechanism {
     }
 
     /**
+     * Gets indication as to whether the pixel collector is in a stopped state.
+     *
+     * @return <code>true</code> if the pixel collector is in a stopped state.
+     * <code>false</code> otherwise.
+     */
+    public boolean isStopped() {
+        return (flap.getPosition() == PixelCollectorState.CLOSED.flapPosition && spinner.getPower() == PixelCollectorState.CLOSED.spinnerPower);
+    }
+
+    /**
      * Sets the state for the pixel collector.
      *
      * @param state the state for the pixel collector.

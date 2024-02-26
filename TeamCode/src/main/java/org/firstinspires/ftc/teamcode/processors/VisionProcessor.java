@@ -9,6 +9,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -34,7 +35,7 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
     public Rect rectLeft = new Rect(LEFT_RECTANGLE_X, LEFT_RECTANGLE_Y, LEFT_RECTANGLE_WIDTH, LEFT_RECTANGLE_HEIGHT);
     public Rect rectMiddle = new Rect(MIDDLE_RECTANGLE_X, MIDDLE_RECTANGLE_Y, MIDDLE_RECTANGLE_WIDTH, MIDDLE_RECTANGLE_HEIGHT);
 
-    TeamElementLocation selection = TeamElementLocation.NONE;
+    TeamElementLocation selection = TeamElementLocation.UNKNOWN;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
 
@@ -50,8 +51,8 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double satRectLeft = getAvgSaturation(hsvMat, rectLeft, TeamElementLocation.LEFT);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.MIDDLE);
+        double satRectLeft = getAvgSaturation(hsvMat, rectLeft, TeamElementLocation.LEFT_SPIKE_MARK);
+        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.MIDDLE_SPIKE_MARK);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("[VISION] Left Spike", satRectLeft);
@@ -61,13 +62,13 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         telemetry.addData("[VISION] Percent Difference", percentDifference);
 
         if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
-            return TeamElementLocation.RIGHT;
+            return TeamElementLocation.RIGHT_SPIKE_MARK;
         } else if (satRectLeft > satRectMiddle && satRectLeft > MIN_LEFT_SAT) {
-            return TeamElementLocation.LEFT;
+            return TeamElementLocation.LEFT_SPIKE_MARK;
         } else if (satRectMiddle > satRectLeft && satRectMiddle > MIN_MIDDLE_SAT) {
-            return TeamElementLocation.MIDDLE;
+            return TeamElementLocation.MIDDLE_SPIKE_MARK;
         }
-        return TeamElementLocation.RIGHT;
+        return TeamElementLocation.RIGHT_SPIKE_MARK;
     }
 
     private double getPercentDifference(double val1, double val2) {
@@ -109,19 +110,19 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Selection", selection);
         switch (selection) {
-            case LEFT:
+            case LEFT_SPIKE_MARK:
                 canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;
-            case MIDDLE:
+            case MIDDLE_SPIKE_MARK:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 break;
-            case RIGHT:
+            case RIGHT_SPIKE_MARK:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;
-            case NONE:
+            case UNKNOWN:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 break;

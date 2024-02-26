@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.processors.VisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-@Autonomous (name="First Vision Processor", group="vision")
+@Autonomous(name = "First Vision Processor", group = "vision")
 public class FirstVisionOpMode extends OpMode {
     private VisionProcessor visionProcessor;
     private VisionPortal visionPortal;

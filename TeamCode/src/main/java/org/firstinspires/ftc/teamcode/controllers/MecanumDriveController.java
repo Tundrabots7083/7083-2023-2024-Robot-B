@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controls;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -20,7 +20,8 @@ public class MecanumDriveController implements Controller {
     private double turnGain;
 
     private boolean bumperPressed = false;
-    public MecanumDriveController(HardwareMap hardwareMap, Telemetry telemetry){
+
+    public MecanumDriveController(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
         this.driveGain = MAX_DRIVE_MULT;
         this.turnGain = MAX_TURNING_MULT;
@@ -34,6 +35,7 @@ public class MecanumDriveController implements Controller {
         }
         bumperPressed = gamepad.left_bumper;
     }
+
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         setGain(gamepad1);
 

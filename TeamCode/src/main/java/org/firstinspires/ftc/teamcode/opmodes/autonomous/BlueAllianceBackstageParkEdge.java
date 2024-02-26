@@ -5,14 +5,14 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.autonomous.BlueBackstageTrajectoryGenerator;
-import org.firstinspires.ftc.teamcode.autonomous.ParkingLocation;
-import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
-import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
-import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.movement.TrajectoryFollower;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.BlueBackstageTrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
+import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
 
-@Autonomous(name="Blue Alliance Backstage Park Edge", group="Autonomous Blue", preselectTeleOp="Primary TeleOp")
-public class BlueAllianceBackstageParkEdge extends LinearOpMode implements AutonomousOpmode{
+@Autonomous(name = "Blue Alliance Backstage Park Edge", group = "Autonomous Blue", preselectTeleOp = "Primary TeleOp")
+public class BlueAllianceBackstageParkEdge extends LinearOpMode implements AutonomousOpmode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,6 +26,6 @@ public class BlueAllianceBackstageParkEdge extends LinearOpMode implements Auton
 
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new BlueBackstageTrajectoryGenerator();
-        follower.followTrajectory(trajectoryGenerator, StartingLocation.BACKSTAGE, ParkingLocation.EDGE);
+        follower.followTrajectory(trajectoryGenerator, RobotStartingLocation.BACKSTAGE, RobotParkingLocation.EDGE_OF_FIELD);
     }
 }

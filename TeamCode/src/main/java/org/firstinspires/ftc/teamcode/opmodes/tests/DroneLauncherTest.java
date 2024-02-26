@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
 
-@TeleOp(name="Drone Launcher Test", group="test")
+@TeleOp(name = "Drone Launcher Test", group = "test")
 public class DroneLauncherTest extends LinearOpMode {
     public DroneLauncher droneLauncher;
 

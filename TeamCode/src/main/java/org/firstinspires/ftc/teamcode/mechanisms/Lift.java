@@ -107,7 +107,7 @@ public class Lift implements Mechanism {
      * <code>false</code> if the arm is not.
      */
     public boolean isArmAtTarget() {
-        return armProfile.calculatePosition() == targetPosition.armPosition;
+        return armProfile.isAtEnd();
     }
 
     /**
@@ -117,7 +117,7 @@ public class Lift implements Mechanism {
      * <code>false</code> if the lift is not.
      */
     public boolean isLiftAtTarget() {
-        return liftProfile.calculatePosition() == targetPosition.liftPosition;
+        return liftProfile.isAtEnd();
     }
 
     /**
@@ -230,8 +230,8 @@ public class Lift implements Mechanism {
 
     public enum Position {
         INTAKE(0, 0),
-        AUTONOMOUS_BACKSTAGE(-2700, -215),
-        AUTONOMOUS_FRONTSTAGE(-2700, -350),
+        AUTONOMOUS_BACKSTAGE(-2700, -200),
+        AUTONOMOUS_FRONTSTAGE(-2700, -400),
         SCORE_LOW(-2700, -350),
         SCORE_MEDIUM(-2700, -700),
         SCORE_HIGH(-2700, -1100),
@@ -239,8 +239,8 @@ public class Lift implements Mechanism {
         HANG_END(0, -900),
         LAUNCH_DRONE(0, 0);
 
-        private double armPosition;
-        private double liftPosition;
+        public final int armPosition;
+        public final int liftPosition;
 
         /**
          * Creates a new Position for the given arm and servo.

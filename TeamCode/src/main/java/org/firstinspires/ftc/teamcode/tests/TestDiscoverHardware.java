@@ -15,6 +15,7 @@ public class TestDiscoverHardware extends Test {
 
         this.devices = hardware.getDevices();
     }
+
     @Override
     public void run(Gamepad gamepad1, Telemetry telemetry) {
         for (DiscoverHardware.DeviceInfo device : devices) {

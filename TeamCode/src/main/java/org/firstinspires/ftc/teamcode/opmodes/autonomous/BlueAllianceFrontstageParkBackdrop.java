@@ -5,13 +5,13 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.autonomous.BlueFrontstageTrajectoryGenerator;
-import org.firstinspires.ftc.teamcode.autonomous.ParkingLocation;
-import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
-import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
-import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.movement.TrajectoryFollower;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.BlueFrontstageTrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
+import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
 
-@Autonomous(name="Blue Alliance Frontstage Park Backdrop", group="Autonomous Blue", preselectTeleOp="Primary TeleOp")
+@Autonomous(name = "Blue Alliance Frontstage Park Backdrop", group = "Autonomous Blue", preselectTeleOp = "Primary TeleOp")
 public class BlueAllianceFrontstageParkBackdrop extends LinearOpMode implements AutonomousOpmode {
 
     @Override
@@ -26,6 +26,6 @@ public class BlueAllianceFrontstageParkBackdrop extends LinearOpMode implements 
 
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new BlueFrontstageTrajectoryGenerator();
-        follower.followTrajectory(trajectoryGenerator, StartingLocation.FRONTSTAGE, ParkingLocation.BACKDROP);
+        follower.followTrajectory(trajectoryGenerator, RobotStartingLocation.FRONTSTAGE, RobotParkingLocation.IN_FRONT_OF_BACKDROP);
     }
 }

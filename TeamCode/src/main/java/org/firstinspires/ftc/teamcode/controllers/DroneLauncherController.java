@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controls;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,6 +16,7 @@ public class DroneLauncherController implements Controller {
 
     /**
      * Initializes the drone launcher controller.
+     *
      * @param hardwareMap the hardware map for the robot.
      */
     public DroneLauncherController(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -26,6 +27,7 @@ public class DroneLauncherController implements Controller {
     /**
      * Checks to see if the right bumper is pressed and, if so, positions the arm to the correct
      * angle and then launches the drone.
+     *
      * @param gamepad1 Gamepad 1
      * @param gamepad2 Gamepad 2
      */

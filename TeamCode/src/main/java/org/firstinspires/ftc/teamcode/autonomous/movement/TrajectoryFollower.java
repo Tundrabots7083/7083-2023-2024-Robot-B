@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.autonomous.movement;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -8,10 +8,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
+import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
-import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 
 /**
@@ -20,15 +23,13 @@ import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
 @Config
 public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 2500;
-    public static long COLLECTOR_CLOSED_TIMER = 500;
     public static long PIXEL_BACKDROP_TIMER = 1750;
-    public static long LIFT_EXTRA_WAIT_TIME = 500;
 
     private final Telemetry telemetry;
-    private final long delayOpmodeInMillis;
+    private final long delayOpModeInMillis;
 
-    private final Lift lift;
     private final AutoMecanumDrive drive;
+    private final Lift lift;
     private final PixelCollector rightPixelCollector;
     private final PixelCollector leftPixelCollector;
     private final VisionSensor visionSensor;
@@ -45,7 +46,7 @@ public class TrajectoryFollower {
      */
     public TrajectoryFollower(HardwareMap hardwareMap, Telemetry telemetry, long delayOpmodeInMillis) {
         this.telemetry = telemetry;
-        this.delayOpmodeInMillis = delayOpmodeInMillis;
+        this.delayOpModeInMillis = delayOpmodeInMillis;
 
         // Create the drivetrain and set the initial pose
         drive = new AutoMecanumDrive(hardwareMap, telemetry);
@@ -59,6 +60,7 @@ public class TrajectoryFollower {
         visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
         visionSensor.initializeVisionPortal();
         while (!visionSensor.webcamInitialized()) {
+            // NO-OP
         }
         telemetry.addLine("[VISION] Initialized");
     }
@@ -82,7 +84,7 @@ public class TrajectoryFollower {
      * @param trajectoryGenerator the trajectory generator for the autonomous period.
      * @param parkingLocation     Where to park the robot.
      */
-    public void followTrajectory(TrajectoryGenerator trajectoryGenerator, StartingLocation startingLocation, ParkingLocation parkingLocation) {
+    public void followTrajectory(TrajectoryGenerator trajectoryGenerator, RobotStartingLocation startingLocation, RobotParkingLocation parkingLocation) {
         ElapsedTime timer = new ElapsedTime();
         Pose2d startingPose = trajectoryGenerator.getStartingPose();
 
@@ -94,7 +96,7 @@ public class TrajectoryFollower {
         //visionSensor.close();
 
         // Delay the start of the opmode the requested number of milliseconds
-        sleep(delayOpmodeInMillis);
+        sleep(delayOpModeInMillis);
 
         // Set the starting pose
         drive.setPoseEstimate(startingPose);
@@ -117,8 +119,7 @@ public class TrajectoryFollower {
         telemetry.addLine("Turn off the pixel collector");
         telemetry.update();
         leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
-        timer.reset();
-        while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
+        while (!leftPixelCollector.isStopped()) {
             leftPixelCollector.update();
         }
 
@@ -132,17 +133,12 @@ public class TrajectoryFollower {
         // Move the lift to the scoring position
         telemetry.addLine("Raise the lift and arm");
         telemetry.update();
-        if (startingLocation == StartingLocation.BACKSTAGE) {
+        if (startingLocation == RobotStartingLocation.BACKSTAGE) {
             lift.setTarget(Lift.Position.AUTONOMOUS_BACKSTAGE);
         } else {
             lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
         }
         while (!lift.isAtTarget()) {
-            lift.update();
-        }
-        // Stop the lift from banging into the backdrop
-        timer.reset();
-        while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
             lift.update();
         }
 
@@ -159,30 +155,23 @@ public class TrajectoryFollower {
         timer.reset();
         while (timer.milliseconds() < PIXEL_BACKDROP_TIMER) {
             rightPixelCollector.update();
-            lift.update();
         }
 
         // Turn off the pixel collector
         telemetry.addLine("Turn off the pixel collector");
         telemetry.update();
         rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
-        timer.reset();
-        while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
+        while (!rightPixelCollector.isStopped()) {
             rightPixelCollector.update();
         }
 
         // Raise the lift if we are on the backstage, so that the black noodle doesn't descore
         // the pixel
-        if (startingLocation == StartingLocation.BACKSTAGE) {
+        if (startingLocation == RobotStartingLocation.BACKSTAGE) {
             telemetry.addLine("Raise the lift and arm out of the way");
             telemetry.update();
             lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
             while (!lift.isAtTarget()) {
-                lift.update();
-            }
-            // Stop the lift from banging into the backdrop
-            timer.reset();
-            while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
                 lift.update();
             }
         }
@@ -202,14 +191,14 @@ public class TrajectoryFollower {
         }
 
         // If not parking in front of the backdrop, drive to the parking location
-        if (parkingLocation == ParkingLocation.BACKDROP) {
+        if (parkingLocation == RobotParkingLocation.IN_FRONT_OF_BACKDROP) {
             telemetry.addLine("Park in front of the backdrop");
         } else {
             // Drive to the parking spot
             telemetry.addLine("Drive to the parking spot");
             telemetry.update();
             Trajectory toParkingSpot;
-            if (parkingLocation == ParkingLocation.EDGE) {
+            if (parkingLocation == RobotParkingLocation.EDGE_OF_FIELD) {
                 toParkingSpot = trajectoryGenerator.toParkingSpotEdge(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
             } else {
                 toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);

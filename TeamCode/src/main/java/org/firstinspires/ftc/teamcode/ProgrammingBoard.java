@@ -30,12 +30,12 @@ public class ProgrammingBoard {
     }
 
     public List<Test> getTests() {
-            final double MOTOR_SPEED = 0.5;
+        final double MOTOR_SPEED = 0.5;
 
-            ArrayList<Test> tests = new ArrayList<>();
-            tests.add(new TestMotor(motor, "motor", MOTOR_SPEED));
-            tests.add(new TestDiscoverHardware(hardware));
+        ArrayList<Test> tests = new ArrayList<>();
+        tests.add(new TestMotor(motor, "motor", MOTOR_SPEED));
+        tests.add(new TestDiscoverHardware(hardware));
 
-            return tests;
-        }
+        return tests;
+    }
 }

@@ -3,15 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.controls.Controller;
-import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
-import org.firstinspires.ftc.teamcode.controls.LiftController;
-import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
-import org.firstinspires.ftc.teamcode.controls.PixelCollectorController;
-import org.firstinspires.ftc.teamcode.sensors.DistanceSensor;
-import org.firstinspires.ftc.teamcode.sensors.Sensor;
-import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
+import org.firstinspires.ftc.teamcode.controllers.Controller;
+import org.firstinspires.ftc.teamcode.controllers.DroneLauncherController;
+import org.firstinspires.ftc.teamcode.controllers.LiftController;
+import org.firstinspires.ftc.teamcode.controllers.MecanumDriveController;
+import org.firstinspires.ftc.teamcode.controllers.PixelCollectorController;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +15,7 @@ import java.util.List;
 public class Robot {
     public static Robot robot;
     public final List<Controller> controllers;
-//    public final DistanceSensor leftDistanceSensor;
+    //    public final DistanceSensor leftDistanceSensor;
 //    public final DistanceSensor rightDistanceSensor;
 //    public final VisionSensor visionSensor;
 //    public final List<Sensor> sensors;

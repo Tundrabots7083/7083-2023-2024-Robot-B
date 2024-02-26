@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controls;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,11 +8,9 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 
 public class PixelCollectorController implements Controller {
 
+    private final Telemetry telemetry;
     PixelCollector leftPixelCollector;
     PixelCollector rightPixelCollector;
-
-    private final Telemetry telemetry;
-
     private boolean dpad_down_was_pressed = false;
     private boolean dpad_right_was_pressed = false;
     private boolean gamepad_a_was_pressed = false;

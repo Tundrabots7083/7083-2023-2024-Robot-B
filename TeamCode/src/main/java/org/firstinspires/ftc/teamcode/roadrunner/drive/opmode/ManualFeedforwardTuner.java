@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.roadrunner.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.autonomous.drive.DriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -22,8 +22,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
 
 import java.util.Objects;
 
@@ -47,15 +46,9 @@ import java.util.Objects;
 public class ManualFeedforwardTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
 
-    private FtcDashboard dashboard = FtcDashboard.getInstance();
+    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     private AutoMecanumDrive drive;
-
-    enum Mode {
-        DRIVER_MODE,
-        TUNING_MODE
-    }
-
     private Mode mode;
 
     private static MotionProfile generateProfile(boolean movingForward) {
@@ -149,5 +142,10 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
             telemetry.update();
         }
+    }
+
+    enum Mode {
+        DRIVER_MODE,
+        TUNING_MODE
     }
 }
