@@ -31,6 +31,7 @@ public class PrimaryTeleOp extends OpMode {
     public void start() {
         robot.liftController.start();
         telemetry.addLine("Robot Started");
+        telemetry.update();
     }
 
     @Override
