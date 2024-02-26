@@ -14,21 +14,25 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
+ */
 public class Robot {
-    public static Robot robot;
+    private static Robot robot = null;
     public final List<Controller> controllers;
-    //    public final DistanceSensor leftDistanceSensor;
-//    public final DistanceSensor rightDistanceSensor;
-//    public final VisionSensor visionSensor;
     public final List<Sensor> sensors;
     private final Telemetry telemetry;
     public MecanumDriveController mecanumDriveController;
     public LiftController liftController;
     public PixelCollectorController pixelCollectorController;
     public DroneLauncherController droneLauncherController;
-    public RobotState state;
 
-    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
+    /**
+     * Creates a new instance of the robot.
+     * @param hardwareMap         hardware map for the robot.
+     * @param telemetry           telemetry class for displaying data.
+     */
+    private Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         robot = this;
         this.telemetry = telemetry;
 
@@ -38,17 +42,20 @@ public class Robot {
         droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
         controllers = Arrays.asList(mecanumDriveController, liftController, pixelCollectorController, droneLauncherController);
 
-//        leftDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "leftDistanceSensor");
-//        rightDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "rightDistanceSensor");
-//        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor);
-//        visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
-//        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor, visionSensor);
         sensors = Collections.emptyList();
 
         this.telemetry.addLine("[Robot] initialized");
     }
 
-    public static Robot getRobot() {
+    /**
+     * Gets the singleton instance of the robot.
+     * @param hardwareMap         hardware map for the robot.
+     * @param telemetry           telemetry class for displaying data.
+     */
+    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry) {
+        if (robot == null) {
+            robot = new Robot(hardwareMap, telemetry);
+        }
         return robot;
     }
 }

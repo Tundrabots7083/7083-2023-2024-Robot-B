@@ -5,13 +5,14 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.tests.ProgrammingBoard;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.List;
 
 @TeleOp(name = "Test Programming Board", group = "test")
 public class TestProgrammingBoard extends OpMode {
-    org.firstinspires.ftc.teamcode.ProgrammingBoard board = new org.firstinspires.ftc.teamcode.ProgrammingBoard();
+    ProgrammingBoard board = new ProgrammingBoard();
     List<Test> tests;
     boolean wasDown, wasUp;
     int testNum;

@@ -21,7 +21,7 @@ public class PrimaryTeleOp extends OpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        robot = new Robot(hardwareMap, telemetry);
+        robot = Robot.getInstance(hardwareMap, telemetry);
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();
