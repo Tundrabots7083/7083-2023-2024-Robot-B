@@ -59,7 +59,7 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         double percentDifference = getPercentDifference(satRectLeft, satRectMiddle);
         telemetry.addData("[VISION] Percent Difference", percentDifference);
 
-        if (percentDifference <= MIN_PERCENT_DIFFERENCE) {
+        if (percentDifference < MIN_PERCENT_DIFFERENCE) {
             return TeamElementLocation.RIGHT_SPIKE_MARK;
         } else if (satRectLeft > satRectMiddle && satRectLeft > MIN_LEFT_SAT) {
             return TeamElementLocation.LEFT_SPIKE_MARK;
