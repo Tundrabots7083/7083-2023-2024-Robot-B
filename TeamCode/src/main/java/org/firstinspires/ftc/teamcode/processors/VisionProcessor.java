@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -51,10 +50,9 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double satRectLeft = getAvgSaturation(hsvMat, rectLeft, TeamElementLocation.LEFT_SPIKE_MARK);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle, TeamElementLocation.MIDDLE_SPIKE_MARK);
+        double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
+        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
 
-        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("[VISION] Left Spike", satRectLeft);
         telemetry.addData("[VISION] Middle Spike", satRectMiddle);
 
@@ -75,12 +73,9 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         return Math.abs(val1 - val2) / ((val1 + val2) / 2) * 100;
     }
 
-    protected double getAvgSaturation(Mat input, Rect rect, TeamElementLocation location) {
+    protected double getAvgSaturation(Mat input, Rect rect) {
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
-//        telemetry.addData("[VISION-" + location + "] Hue", color.val[0]);
-//        telemetry.addData("[VISION-" + location + "] Saturation", color.val[1]);
-//        telemetry.addData("[VISION-" + location + "] Value", color.val[2]);
         return color.val[1];
     }
 
@@ -107,7 +102,6 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
         android.graphics.Rect drawRectangleMiddle = makeGraphicsRect(rectMiddle, scaleBmpPxToCanvasPx);
 
         selection = (TeamElementLocation) userContext;
-        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("Selection", selection);
         switch (selection) {
             case LEFT_SPIKE_MARK:
@@ -119,9 +113,6 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 break;
             case RIGHT_SPIKE_MARK:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
-                canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
-                break;
             case UNKNOWN:
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
