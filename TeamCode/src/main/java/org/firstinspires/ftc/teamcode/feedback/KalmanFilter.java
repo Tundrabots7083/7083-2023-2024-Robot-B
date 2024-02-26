@@ -65,24 +65,4 @@ public class KalmanFilter {
         state = predictedState + kalmanGain * (measurement - predictedState);
         errorCovariance = (1 - kalmanGain) * predictedErrorCovariance;
     }
-
-    /*
-    // Example usage
-    public static void main(String[] args) {
-        double initialState = 0.0;
-        double initialErrorCovariance = 1.0;
-        double processNoise = 0.01;
-        double measurementNoise = 0.1;
-
-        KalmanFilter kalmanFilter = new KalmanFilter(initialState, initialErrorCovariance, processNoise, measurementNoise);
-
-        // Simulate measurements
-        double[] measurements = {6.5, 6.1, 5.3, 5.4, 4.9, 4.1, 4.1, 3.8, 3.5, 3.4, 3.5};
-
-        for (double measurement : measurements) {
-            kalmanFilter.update(measurement);
-            System.out.println("Filtered State: " + kalmanFilter.getState());
-        }
-    }
-    */
 }

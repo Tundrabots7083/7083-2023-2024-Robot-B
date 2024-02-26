@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.feedback;
 
+/**
+ * PID Coefficients used by the PIDControllerEx. This includes the standard PID coefficients plus
+ * an extra Kg (gravity) value.
+ */
 public class PIDCoefficientsEx extends PIDCoefficients {
     public final double Kg;
 

@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.feedback;
 
+/**
+ * The PID coefficients used by a PID controller. These are the Kp, Ki and Kd values.
+ */
 public class PIDCoefficients {
 
-    public double Kp;
-    public double Ki;
-    public double Kd;
+    protected double Kp;
+    protected double Ki;
+    protected double Kd;
 
     /**
      * Standard PID coefficients

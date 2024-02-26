@@ -3,6 +3,12 @@ package org.firstinspires.ftc.teamcode.feedback;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+/**
+ * A PID Controller is a control loop mechanism employing feedback by continuously modulating
+ * control. The PID Controller has three values that the programmer tunes. These values are
+ * Kp, Ki, and Kd. These values are multiplied by their corresponding input. Changing these values
+ * changes how the controller behaves.
+ */
 public class PIDController {
 
     public PIDCoefficients coefficients;
@@ -20,12 +26,17 @@ public class PIDController {
     protected double minIntegralBound = -1;
     protected double maxIntegralBound = 1;
 
+    /**
+     * Creates a new PID controller with the given PID coefficients.
+     *
+     * @param coefficients the PID coefificients to be used for the PID controller.
+     */
     public PIDController(PIDCoefficients coefficients) {
         this.coefficients = coefficients;
     }
 
     /**
-     * calculate PID output
+     * Calculate PID output
      *
      * @param reference the target position
      * @param state     current system state
@@ -46,13 +57,19 @@ public class PIDController {
                 + derivative * coefficients.Kd;
     }
 
+    /**
+     * Set the upper and lower integral bounds.
+     *
+     * @param min the lower integral bound.
+     * @param max the upper integral bound.
+     */
     public void setIntegrationBounds(double min, double max) {
         minIntegralBound = min;
         maxIntegralBound = max;
     }
 
     /**
-     * get the time constant
+     * Get the time constant
      *
      * @return time constant
      */
@@ -66,6 +83,9 @@ public class PIDController {
         return dt;
     }
 
+    /**
+     * Resets the PID controller values.
+     */
     public void reset() {
         hasRun = false;
         timer.reset();
