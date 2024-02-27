@@ -85,7 +85,6 @@ public class AutoMecanumDrive extends Drive {
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
-        WebcamName webcam = hardwareMap.get(WebcamName.class, "Webcam Front");
         localizer = new DeadWheelLocalizer(hardwareMap, lastEncPositions, lastTrackingEncVels);
 
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
