@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
-import org.firstinspires.ftc.teamcode.processors.VisionProcessor;
+import org.firstinspires.ftc.teamcode.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 /**
