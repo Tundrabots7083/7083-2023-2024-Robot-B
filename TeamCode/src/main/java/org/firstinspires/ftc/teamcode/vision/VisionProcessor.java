@@ -40,9 +40,9 @@ public class VisionProcessor implements org.firstinspires.ftc.vision.VisionProce
     public Rect rectLeft = new Rect(LEFT_RECTANGLE_X, LEFT_RECTANGLE_Y, LEFT_RECTANGLE_WIDTH, LEFT_RECTANGLE_HEIGHT);
     public Rect rectMiddle = new Rect(MIDDLE_RECTANGLE_X, MIDDLE_RECTANGLE_Y, MIDDLE_RECTANGLE_WIDTH, MIDDLE_RECTANGLE_HEIGHT);
 
-    TeamElementLocation selection = TeamElementLocation.UNKNOWN;
-    Mat submat = new Mat();
-    Mat hsvMat = new Mat();
+    private TeamElementLocation selection = TeamElementLocation.UNKNOWN;
+    private Mat submat = new Mat();
+    private final Mat hsvMat = new Mat();
 
     /**
      * Creates a new vision processor.
