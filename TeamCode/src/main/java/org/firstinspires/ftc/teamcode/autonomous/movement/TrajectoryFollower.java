@@ -140,6 +140,7 @@ public class TrajectoryFollower {
         while (!lift.isAtTarget()) {
             lift.update();
         }
+        lift.update();
 
         // Move to the backdrop
         telemetry.addLine("Drive the robot to the backdrop");
@@ -173,6 +174,7 @@ public class TrajectoryFollower {
             while (!lift.isAtTarget()) {
                 lift.update();
             }
+            lift.update();
         }
 
         // Backup from the backdrop so the arm won't hit the backdrop when being lowered
@@ -188,6 +190,7 @@ public class TrajectoryFollower {
         while (!lift.isAtTarget()) {
             lift.update();
         }
+        lift.update();
 
         // If not parking in front of the backdrop, drive to the parking location
         if (parkingLocation == RobotParkingLocation.IN_FRONT_OF_BACKDROP) {
