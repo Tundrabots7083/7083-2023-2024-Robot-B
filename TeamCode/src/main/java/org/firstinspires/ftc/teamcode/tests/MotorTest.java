@@ -8,18 +8,18 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 /**
  * TestMotor contains a basic test of the motor
  */
-public class TestMotor extends Test {
+public class MotorTest extends Test {
     private final DcMotorEx motor;
     private final double speed;
 
-    public TestMotor(DcMotorEx motor, String description, double speed) {
+    public MotorTest(DcMotorEx motor, String description, double speed) {
         super(description);
         this.speed = speed;
         this.motor = motor;
     }
 
     @Override
-    public void run(Gamepad gamepad1, Telemetry telemetry) {
+    public void run(Gamepad gamepad1, Gamepad gamepad2) {
         if (gamepad1.a) {
             motor.setPower(speed);
         } else if (gamepad1.b) {
@@ -27,6 +27,5 @@ public class TestMotor extends Test {
         } else {
             motor.setPower(0.0);
         }
-        telemetry.addData("Encoder", motor.getCurrentPosition());
     }
 }

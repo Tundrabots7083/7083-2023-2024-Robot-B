@@ -5,16 +5,17 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechanisms.Lift;
+import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.sensors.DistanceSensor;
 
-@TeleOp(name = "Lift Motor Test", group = "test")
-public class LiftTest extends OpMode {
-    private Lift lift;
+@TeleOp(name = "Distance Sensor Test", group = "test")
+public class TestDistanceSensor extends OpMode {
+    private DistanceSensor distanceSensor;
 
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        lift = new Lift(hardwareMap, telemetry);
+        distanceSensor = new DistanceSensor(hardwareMap, telemetry, "leftDistanceSensor");
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();
@@ -22,7 +23,8 @@ public class LiftTest extends OpMode {
 
     @Override
     public void loop() {
-        lift.overrideLiftPower(-Lift.LIFT_KG);
+        double distance = distanceSensor.getDistance();
+        telemetry.addData("Distance", distance);
         telemetry.update();
     }
 }

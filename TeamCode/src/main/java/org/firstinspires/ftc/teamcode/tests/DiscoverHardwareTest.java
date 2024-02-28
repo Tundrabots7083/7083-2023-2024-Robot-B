@@ -7,17 +7,20 @@ import org.firstinspires.ftc.teamcode.utils.DiscoverHardware;
 
 import java.util.Collection;
 
-public class TestDiscoverHardware extends Test {
+public class DiscoverHardwareTest extends Test {
     private final Collection<DiscoverHardware.DeviceInfo> devices;
+    private final Telemetry telemetry;
 
-    public TestDiscoverHardware(DiscoverHardware hardware) {
+    public DiscoverHardwareTest(DiscoverHardware hardware, Telemetry telemetry) {
         super("Hardware Discovery");
+
+        this.telemetry = telemetry;
 
         this.devices = hardware.getDevices();
     }
 
     @Override
-    public void run(Gamepad gamepad1, Telemetry telemetry) {
+    public void run(Gamepad gamepad1, Gamepad gamepad2) {
         for (DiscoverHardware.DeviceInfo device : devices) {
             telemetry.addData("Device Name: ", device.deviceName);
             telemetry.addData("Device Type: ", device.deviceType);

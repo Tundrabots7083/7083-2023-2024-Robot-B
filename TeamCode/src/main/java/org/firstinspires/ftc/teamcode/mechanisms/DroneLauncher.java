@@ -48,10 +48,18 @@ public class DroneLauncher implements Mechanism {
     }
 
     /**
+     * Sets the drone launch arm to the specified angle.
+     * @param angle the angle to set the drone launch arm to.
+     */
+    public void setToAngle(double angle) {
+        angleServo.setPosition(angle);
+    }
+
+    /**
      * Moves the drone launcher into the down position
      */
     public void setToStartAngle() {
-        angleServo.setPosition(SERVO_LAUNCH_START_ANGLE);
+        setToAngle(SERVO_LAUNCH_START_ANGLE);
     }
 
     /**

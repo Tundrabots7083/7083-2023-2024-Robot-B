@@ -22,7 +22,7 @@ public class MecanumDrive implements Mechanism {
     private final Telemetry telemetry;
     private final String deviceName;
     private final String description;
-    private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
+    public final DcMotorEx rightFront, rightRear, leftFront, leftRear;
 
     /**
      * MecanumDrive initializes a new mecanum drive trail.

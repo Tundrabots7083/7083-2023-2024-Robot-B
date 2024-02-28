@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.List;
 
-@TeleOp(name = "Test Programming Board", group = "test")
+@TeleOp(name = "Programming Board Test", group = "test")
 public class TestProgrammingBoard extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
     List<Test> tests;
@@ -20,7 +20,7 @@ public class TestProgrammingBoard extends OpMode {
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        board.init(hardwareMap);
+        board.init(hardwareMap, telemetry);
         tests = board.getTests();
     }
 
@@ -51,6 +51,6 @@ public class TestProgrammingBoard extends OpMode {
         Test currTest = tests.get(testNum);
         telemetry.addData("Test:", currTest.getDescription());
         // run or don’t run based on the gamepad settings
-        currTest.run(gamepad1, telemetry);
+        currTest.run(gamepad1, gamepad2);
     }
 }

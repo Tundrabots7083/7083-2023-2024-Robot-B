@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode.tests;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.tests.Test;
-import org.firstinspires.ftc.teamcode.tests.TestDiscoverHardware;
-import org.firstinspires.ftc.teamcode.tests.TestMotor;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.utils.DiscoverHardware;
 
 import java.util.ArrayList;
@@ -19,12 +17,14 @@ import java.util.List;
 public class ProgrammingBoard {
     private DcMotorEx motor;
     private DiscoverHardware hardware;
+    private Telemetry telemetry;
 
     public ProgrammingBoard() {
         // NO-OP
     }
 
-    public void init(HardwareMap hwMap) {
+    public void init(HardwareMap hwMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
         motor = hwMap.get(DcMotorEx.class, "test_motor");
         hardware = new DiscoverHardware(hwMap);
     }
@@ -33,8 +33,8 @@ public class ProgrammingBoard {
         final double MOTOR_SPEED = 0.5;
 
         ArrayList<Test> tests = new ArrayList<>();
-        tests.add(new TestMotor(motor, "motor", MOTOR_SPEED));
-        tests.add(new TestDiscoverHardware(hardware));
+        tests.add(new MotorTest(motor, "motor", MOTOR_SPEED));
+        tests.add(new DiscoverHardwareTest(hardware, telemetry));
 
         return tests;
     }

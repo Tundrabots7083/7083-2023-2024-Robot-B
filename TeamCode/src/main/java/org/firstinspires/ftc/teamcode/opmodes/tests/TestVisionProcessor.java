@@ -9,32 +9,22 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-@Autonomous(name = "First Vision Processor", group = "vision")
-public class FirstVisionOpMode extends OpMode {
+@Autonomous(name = "VisionProcessor Test", group = "test")
+public class TestVisionProcessor extends OpMode {
     private VisionProcessor visionProcessor;
-    private VisionPortal visionPortal;
 
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         visionProcessor = new VisionProcessor(telemetry);
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
+        VisionPortal visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam Front"), visionProcessor);
         telemetry.addLine("Initialization Complete");
         telemetry.update();
     }
 
     @Override
-    public void init_loop() {
-    }
-
-    @Override
-    public void start() {
-        // visionPortal.stopStreaming ();
-    }
-
-    @Override
     public void loop() {
-        telemetry.addData("Identified", visionProcessor.getSelection()); // TODO: in a real game, do something with the vision data
+        telemetry.addData("Identified", visionProcessor.getSelection());
         telemetry.update();
     }
 }

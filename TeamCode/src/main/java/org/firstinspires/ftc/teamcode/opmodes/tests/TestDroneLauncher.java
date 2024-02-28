@@ -5,24 +5,28 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
+import org.firstinspires.ftc.teamcode.tests.DroneLauncherTest;
 
-@TeleOp(name = "Drone Launcher Test", group = "test")
-public class DroneLauncherTest extends LinearOpMode {
-    public DroneLauncher droneLauncher;
+@TeleOp(name = "DroneLauncher Test", group = "test")
+public class TestDroneLauncher extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        droneLauncher = new DroneLauncher(hardwareMap, telemetry);
+
+        Robot robot = Robot.getInstance(hardwareMap, telemetry);
+        DroneLauncher droneLauncher = robot.droneLauncher;
+        DroneLauncherTest test = new DroneLauncherTest(droneLauncher);
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();
 
         waitForStart();
 
-        droneLauncher.setToLaunchAngle();
-        sleep(250);
-        droneLauncher.launchDrone();
+        while (opModeIsActive()) {
+            test.run(gamepad1, gamepad2);
+        }
     }
 }

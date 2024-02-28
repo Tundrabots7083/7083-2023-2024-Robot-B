@@ -18,5 +18,5 @@ public abstract class Test {
         return description;
     }
 
-    public abstract void run(Gamepad gamepad1, Telemetry telemetry);
+    public abstract void run(Gamepad gamepad1, Gamepad gamepad2);
 }

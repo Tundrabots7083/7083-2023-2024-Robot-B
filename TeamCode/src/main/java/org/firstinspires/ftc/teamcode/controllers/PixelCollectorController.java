@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
@@ -44,28 +43,28 @@ public class PixelCollectorController implements Controller {
         if (!previousGamepad2.dpad_down && gamepad2.dpad_down) {
             telemetry.addLine("[LEFT PC] Set to collecting");
             // Toggle collection on or off
-            leftPixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
+            leftPixelCollector.setState(PixelCollector.State.COLLECTING);
         } else if (!previousGamepad2.dpad_right && gamepad2.dpad_right) {
             telemetry.addLine("[LEFT PC] Set to depositing");
-            leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+            leftPixelCollector.setState(PixelCollector.State.DEPOSITING);
             // Toggle depositing on or off
         } else if (!gamepad2.dpad_down && !gamepad2.dpad_right && (previousGamepad2.dpad_down || previousGamepad2.dpad_right)) {
             telemetry.addLine("[LEFT PC] Set to closed");
-            leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+            leftPixelCollector.setState(PixelCollector.State.CLOSED);
         }
 
         // Right pixel collector
         if (!previousGamepad2.a && gamepad2.a) {
             telemetry.addLine("[RIGHT PC] Set to collecting");
             // Toggle collection on or off
-            rightPixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
+            rightPixelCollector.setState(PixelCollector.State.COLLECTING);
         } else if (!previousGamepad2.b && gamepad2.b) {
             telemetry.addLine("[LEFT PC] Set to depositing");
-            rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+            rightPixelCollector.setState(PixelCollector.State.DEPOSITING);
             // Toggle depositing on or off
         } else if (!gamepad2.a && !gamepad2.b && (previousGamepad2.a || previousGamepad2.b)) {
             telemetry.addLine("[LEFT PC] Set to closed");
-            rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+            rightPixelCollector.setState(PixelCollector.State.CLOSED);
         }
 
         leftPixelCollector.update();

@@ -111,7 +111,7 @@ public class TrajectoryFollower {
         // Drop off the purple pixel at the spike mark
         telemetry.addLine("Drop off the purple pixel");
         telemetry.update();
-        leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+        leftPixelCollector.setState(PixelCollector.State.DEPOSITING);
         timer.reset();
         while (timer.milliseconds() < PIXEL_SPIKE_MARK_TIMER) {
             leftPixelCollector.update();
@@ -119,7 +119,7 @@ public class TrajectoryFollower {
         // Turn off the pixel collector
         telemetry.addLine("Turn off the pixel collector");
         telemetry.update();
-        leftPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+        leftPixelCollector.setState(PixelCollector.State.CLOSED);
         while (!leftPixelCollector.isStopped()) {
             leftPixelCollector.update();
         }
@@ -153,7 +153,7 @@ public class TrajectoryFollower {
         // Score the yellow pixel
         telemetry.addLine("Score the yellow pixel");
         telemetry.update();
-        rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+        rightPixelCollector.setState(PixelCollector.State.DEPOSITING);
         timer.reset();
         while (timer.milliseconds() < PIXEL_BACKDROP_TIMER) {
             rightPixelCollector.update();
@@ -162,7 +162,7 @@ public class TrajectoryFollower {
         // Turn off the pixel collector
         telemetry.addLine("Turn off the pixel collector");
         telemetry.update();
-        rightPixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+        rightPixelCollector.setState(PixelCollector.State.CLOSED);
         while (!rightPixelCollector.isStopped()) {
             rightPixelCollector.update();
         }

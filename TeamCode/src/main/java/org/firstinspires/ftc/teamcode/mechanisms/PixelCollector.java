@@ -6,9 +6,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.tests.Test;
-
-import java.util.Collection;
 
 /**
  * Class for controlling a single pixel collector.
@@ -27,7 +24,7 @@ public class PixelCollector implements Mechanism {
     private final CRServo spinner;
     private final Servo flap;
     private long spinnerDelayTime;
-    private PixelCollectorState state;
+    private State state;
 
     /**
      * Creates an instance of a pixel collector.
@@ -50,7 +47,7 @@ public class PixelCollector implements Mechanism {
             this.spinner.setDirection(CRServo.Direction.REVERSE);
         }
 
-        this.state = PixelCollectorState.CLOSED;
+        this.state = State.CLOSED;
         this.flap.setPosition(this.state.flapPosition);
         this.spinner.setPower(this.state.spinnerPower);
 
@@ -64,7 +61,7 @@ public class PixelCollector implements Mechanism {
      * <code>false</code> otherwise.
      */
     public boolean isStopped() {
-        return (flap.getPosition() == PixelCollectorState.CLOSED.flapPosition && spinner.getPower() == PixelCollectorState.CLOSED.spinnerPower);
+        return (flap.getPosition() == State.CLOSED.flapPosition && spinner.getPower() == State.CLOSED.spinnerPower);
     }
 
     /**
@@ -72,9 +69,17 @@ public class PixelCollector implements Mechanism {
      *
      * @param state the state for the pixel collector.
      */
-    public void setState(PixelCollectorState state) {
+    public void setState(State state) {
         this.state = state;
         spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
+    }
+
+    public void setSpinnerPower(double power) {
+        spinner.setPower(power);
+    }
+
+    public void setFlapPosition(double position) {
+        flap.setPosition(position);
     }
 
     /**
@@ -82,18 +87,18 @@ public class PixelCollector implements Mechanism {
      */
     public void update() {
         long currentTime = System.currentTimeMillis();
-        if (state == PixelCollectorState.CLOSED) {
-            spinner.setPower(state.spinnerPower);
+        if (state == State.CLOSED) {
+            setSpinnerPower(state.spinnerPower);
             if (currentTime > spinnerDelayTime) {
-                flap.setPosition(state.flapPosition);
+                setFlapPosition(state.flapPosition);
             }
         } else {
             // Set the flap servo position to the current target
-            flap.setPosition(state.flapPosition);
+            setFlapPosition(state.flapPosition);
 
             // Check if we can set the spinner position yet
             if (currentTime > spinnerDelayTime) {
-                spinner.setPower(state.spinnerPower);
+                setSpinnerPower(state.spinnerPower);
             }
         }
     }
@@ -111,7 +116,7 @@ public class PixelCollector implements Mechanism {
     /**
      * The state for the pixel collector.
      */
-    public enum PixelCollectorState {
+    public enum State {
         /**
          * Collecting pixels from the field
          */
@@ -128,7 +133,7 @@ public class PixelCollector implements Mechanism {
         public final double spinnerPower;
         public final double flapPosition;
 
-        PixelCollectorState(double spinnerPower, double flapPosition) {
+        State(double spinnerPower, double flapPosition) {
             this.spinnerPower = spinnerPower;
             this.flapPosition = flapPosition;
         }
