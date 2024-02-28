@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
 import org.firstinspires.ftc.teamcode.autonomous.trajectory.TrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
@@ -48,13 +49,14 @@ public class TrajectoryFollower {
         this.telemetry = telemetry;
         this.delayOpModeInMillis = delayOpmodeInMillis;
 
-        // Create the drivetrain and set the initial pose
+        // Create the drivetrain
         drive = new AutoMecanumDrive(hardwareMap, telemetry);
 
-        // Create the lift and pixel collectors
-        lift = new Lift(hardwareMap, telemetry);
-        rightPixelCollector = new PixelCollector(hardwareMap, telemetry,"collectorRight",false);
-        leftPixelCollector = new PixelCollector(hardwareMap, telemetry, "collectorLeft",true);
+        // Get the lift and pixel collectors
+        Robot robot = Robot.getInstance(hardwareMap, telemetry);
+        lift = robot.lift;
+        leftPixelCollector = robot.leftPixelCollector;
+        rightPixelCollector = robot.rightPixelCollector;
 
         // Create the vision sensor
         visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
