@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous.trajectoryfollower;
+package org.firstinspires.ftc.teamcode.autonomous.trajectories;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;

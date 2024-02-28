@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.autonomous.trajectoryfollower.TrajectoryFollower;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.trajectories.BlueBackstageTrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.autonomous.trajectories.TrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
