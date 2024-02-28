@@ -59,8 +59,10 @@ public class PrimaryTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        // Make a copy of the gamepads so all processing of the inputs is consistent
         currentGamepad1.copy(gamepad1);
         currentGamepad2.copy(gamepad2);
+
         // Process controller inputs
         for (Controller controller : controllers) {
             controller.execute(currentGamepad1, currentGamepad2);
