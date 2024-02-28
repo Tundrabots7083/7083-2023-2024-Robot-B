@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous.trajectory.follower;
+package org.firstinspires.ftc.teamcode.autonomous.trajectoryfollower;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.autonomous.trajectory.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.autonomous.trajectories.TrajectoryGenerator;
 import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
 import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
 import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
