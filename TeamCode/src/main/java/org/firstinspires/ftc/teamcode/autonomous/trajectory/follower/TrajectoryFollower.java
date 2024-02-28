@@ -53,8 +53,8 @@ public class TrajectoryFollower {
 
         // Create the lift and pixel collectors
         lift = new Lift(hardwareMap, telemetry);
-        rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
-        leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
+        rightPixelCollector = new PixelCollector(hardwareMap, telemetry,"collectorRight",false);
+        leftPixelCollector = new PixelCollector(hardwareMap, telemetry, "collectorLeft",true);
 
         // Create the vision sensor
         visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);

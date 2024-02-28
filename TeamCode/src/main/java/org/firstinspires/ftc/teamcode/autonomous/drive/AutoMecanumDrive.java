@@ -81,7 +81,7 @@ public class AutoMecanumDrive extends Drive {
         this.wheelBase = DriveConstants.WHEEL_BASE;
         this.lateralMultiplier = DriveConstants.LATERAL_MULTIPLIER;
 
-        drive = new MecanumDrive("drive", "Mecanum Drive", hardwareMap);
+        drive = new MecanumDrive(hardwareMap, telemetry);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

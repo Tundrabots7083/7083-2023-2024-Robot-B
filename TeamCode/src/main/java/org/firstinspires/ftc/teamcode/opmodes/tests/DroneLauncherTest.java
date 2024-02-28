@@ -14,7 +14,7 @@ public class DroneLauncherTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        droneLauncher = new DroneLauncher("droneLauncher", "Drone Launcher", hardwareMap);
+        droneLauncher = new DroneLauncher(hardwareMap, telemetry);
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.tests.Test;
 
 import java.util.Collection;
@@ -20,6 +21,8 @@ public class DroneLauncher implements Mechanism {
     public static double SERVO_LAUNCH_ANGLE_LOW = 0.25;   // 46.5º
     public static boolean SERVO_LAUNCH_ANGLE_USE_HIGH_ANGLE = true;
     public static double SERVO_RELEASE_POS = 0.1;
+
+    private final Telemetry telemetry;
     private final String deviceName;
     private final String description;
     private final Servo releaseServo;
@@ -28,13 +31,13 @@ public class DroneLauncher implements Mechanism {
     /**
      * Creates the drone launcher
      *
-     * @param deviceName  name of the drone launcher device.
-     * @param description description of the drone launcher.
      * @param hardwareMap the hardware map that contains the drone launcher hardware.
+     * @param telemetry   the telemetry used to write data to the drive station.
      */
-    public DroneLauncher(String deviceName, String description, HardwareMap hardwareMap) {
-        this.deviceName = deviceName;
-        this.description = description;
+    public DroneLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+        this.deviceName = "droneLauncher";
+        this.description = "Drone Launcher";
 
         releaseServo = hardwareMap.get(Servo.class, "droneLauncher");
         releaseServo.setDirection(Servo.Direction.FORWARD);
@@ -74,11 +77,6 @@ public class DroneLauncher implements Mechanism {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
     }
 
     @Override

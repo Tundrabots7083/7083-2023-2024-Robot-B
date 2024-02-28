@@ -82,11 +82,6 @@ public class Lift implements Mechanism {
         return "The lift is used to lift the robot off the ground and to score pixels.";
     }
 
-    @Override
-    public Collection<Test> getTests() {
-        return null;
-    }
-
     public void setTarget(Position position) {
         this.targetPosition = position;
 

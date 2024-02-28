@@ -19,6 +19,7 @@ import java.util.Collection;
  */
 @Config
 public class MecanumDrive implements Mechanism {
+    private final Telemetry telemetry;
     private final String deviceName;
     private final String description;
     private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
@@ -26,12 +27,13 @@ public class MecanumDrive implements Mechanism {
     /**
      * MecanumDrive initializes a new mecanum drive trail.
      *
-     * @param deviceName  the name of the mecanum drive.
-     * @param description a description of the mecanum drive.
+     * @param hardwareMap
+     * @param telemetry
      */
-    public MecanumDrive(String deviceName, String description, HardwareMap hardwareMap) {
-        this.deviceName = deviceName;
-        this.description = description;
+    public MecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
+        this.deviceName = "mecanumDrive";
+        this.description = "Mecanum drive train";
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
@@ -157,11 +159,6 @@ public class MecanumDrive implements Mechanism {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
     }
 
     @Override

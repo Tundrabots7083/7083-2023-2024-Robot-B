@@ -32,18 +32,17 @@ public class PixelCollector implements Mechanism {
     /**
      * Creates an instance of a pixel collector.
      *
-     * @param deviceName       the device name for the pixel collector.
-     * @param description      the description of the pixel collector.
      * @param hardwareMap      the mapping of all hardware on the bot.
      * @param telemetry        the telemetry used to display data on the driver station.
+     * @param hardwarePrefix   the prefix for the spinner and flap servos.
      * @param reverseFlapServo whether the servo runs forward or reverse.
      */
-    public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean reverseFlapServo) {
-        this.deviceName = deviceName;
-        this.description = description;
+    public PixelCollector(HardwareMap hardwareMap, Telemetry telemetry, String hardwarePrefix, boolean reverseFlapServo) {
+        this.deviceName = hardwarePrefix;
+        this.description = hardwarePrefix + " pixel collector";
 
-        this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
-        this.flap = hardwareMap.get(Servo.class, deviceName + "Flap");
+        this.spinner = hardwareMap.get(CRServo.class, hardwarePrefix + "Spinner");
+        this.flap = hardwareMap.get(Servo.class, hardwarePrefix + "Flap");
         this.telemetry = telemetry;
 
         if (reverseFlapServo) {
@@ -107,11 +106,6 @@ public class PixelCollector implements Mechanism {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
     }
 
     /**

@@ -120,7 +120,7 @@ public class RobotAutoDriveToAprilTagMecanum extends LinearOpMode {
         initAprilTag();
 
         // Get and initialize the drive chassis
-        this.drive = new MecanumDrive("mecanumDrive", "Mecanum Drive", hardwareMap);
+        this.drive = new MecanumDrive(hardwareMap, telemetry);
 
         if (USE_WEBCAM)
             setManualExposure(6, 250);  // Use low exposure time to reduce motion blur

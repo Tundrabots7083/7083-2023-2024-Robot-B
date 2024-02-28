@@ -23,13 +23,6 @@ public interface Mechanism {
     String getDescription();
 
     /**
-     * getTests returns the list of tests for the Mechanism.
-     *
-     * @return the list of tests for the Mechanism.
-     */
-    Collection<Test> getTests();
-
-    /**
      * string returns a string representation for the Mechanism. By default,
      * this is the simple name for the Mechanism class, along with the device
      * name and description.

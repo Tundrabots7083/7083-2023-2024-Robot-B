@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.DroneLauncher;
@@ -17,10 +16,11 @@ public class DroneLauncherController implements Controller {
     /**
      * Initializes the drone launcher controller.
      *
-     * @param hardwareMap the hardware map for the robot.
+     * @param droneLauncher the drone launcher being controlled.
+     * @param telemetry     the telemetry used to write data to the drive station.
      */
-    public DroneLauncherController(HardwareMap hardwareMap, Telemetry telemetry) {
-        droneLauncher = new DroneLauncher("droneLauncher", "Drone Launcher", hardwareMap);
+    public DroneLauncherController(DroneLauncher droneLauncher, Telemetry telemetry) {
+        this.droneLauncher = droneLauncher;
         this.telemetry = telemetry;
     }
 

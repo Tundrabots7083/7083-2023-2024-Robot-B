@@ -21,11 +21,11 @@ public class MecanumDriveController implements Controller {
 
     private boolean bumperPressed = false;
 
-    public MecanumDriveController(HardwareMap hardwareMap, Telemetry telemetry) {
+    public MecanumDriveController(MecanumDrive mecanumDrive, Telemetry telemetry) {
         this.telemetry = telemetry;
+        this.mecanumDrive = mecanumDrive;
         this.driveGain = MAX_DRIVE_MULT;
         this.turnGain = MAX_TURNING_MULT;
-        mecanumDrive = new MecanumDrive("driveTrain", "Drive Train", hardwareMap);
     }
 
     private void setGain(Gamepad gamepad) {

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.controllers;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.Lift;
@@ -15,15 +14,19 @@ public class LiftController implements Controller {
     private boolean manualOverride = false;
 
     /**
-     * Initializes the arm hardware.
+     * Initializes the lift controller.
      *
-     * @param hardwareMap the hardware map for the robot.
+     * @param lift      the lift being controlled.
+     * @param telemetry the telemetry used to write data to the drive station.
      */
-    public LiftController(HardwareMap hardwareMap, Telemetry telemetry) {
+    public LiftController(Lift lift, Telemetry telemetry) {
+        this.lift = lift;
         this.telemetry = telemetry;
-        lift = new Lift(hardwareMap, telemetry);
     }
 
+    /**
+     * Initializes the lift to the starting position.
+     */
     public void start() {
         lift.setTarget(Lift.Position.INTAKE);
         lift.update();
