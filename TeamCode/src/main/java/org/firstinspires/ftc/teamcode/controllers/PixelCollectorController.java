@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.mechanisms.PixelCollector;
 public class PixelCollectorController implements Controller {
 
     private final Telemetry telemetry;
-    PixelCollector leftPixelCollector;
-    PixelCollector rightPixelCollector;
-    private Gamepad previousGamepad2 = new Gamepad();
+    private final PixelCollector leftPixelCollector;
+    private final PixelCollector rightPixelCollector;
+    private final Gamepad previousGamepad2 = new Gamepad();
 
     /**
      * Creates a new pixel collector controller.
