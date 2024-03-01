@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamServer;
 import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -27,6 +28,7 @@ public class VisionSensor implements Sensor {
         visionProcessor = new VisionProcessor(telemetry);
         webcamPortal = VisionPortal.easyCreateWithDefaults(webcamName, visionProcessor);
         FtcDashboard.getInstance().startCameraStream(webcamPortal, 0);
+        CameraStreamServer.getInstance().setSource(webcamPortal);
     }
 
     @Override
@@ -63,6 +65,7 @@ public class VisionSensor implements Sensor {
     public void close() {
         if (webcamPortal != null && webcamPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_CLOSED) {
             FtcDashboard.getInstance().stopCameraStream();
+            webcamPortal.stopStreaming();
             webcamPortal.close();
             webcamPortal = null;
         }
