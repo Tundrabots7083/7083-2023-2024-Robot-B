@@ -44,9 +44,7 @@ public class VisionSensor implements Sensor {
      * <code>false</code> if it is not.
      */
     public boolean webcamInitialized() {
-        return webcamPortal != null
-                && (webcamPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_READY
-                || webcamPortal.getCameraState() == VisionPortal.CameraState.STREAMING);
+        return webcamPortal != null && webcamPortal.getCameraState() == VisionPortal.CameraState.STREAMING;
     }
 
     /**
@@ -65,7 +63,6 @@ public class VisionSensor implements Sensor {
     public void close() {
         if (webcamPortal != null && webcamPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_CLOSED) {
             FtcDashboard.getInstance().stopCameraStream();
-            webcamPortal.stopStreaming();
             webcamPortal.close();
             webcamPortal = null;
         }
