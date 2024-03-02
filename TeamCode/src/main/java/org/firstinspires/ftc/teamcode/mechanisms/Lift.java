@@ -68,27 +68,24 @@ public class Lift implements Mechanism {
         armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.INTAKE.armPosition);
     }
 
-    @Override
-    public String getDeviceName() {
-        return "Lift";
-    }
-
-    @Override
-    public String getDescription() {
-        return "The lift is used to lift the robot off the ground and to score pixels.";
-    }
-
+    /**
+     * Set a new target position for the lift.
+     *
+     * @param position the target position for the lift.
+     */
     public void setTarget(Position position) {
-        this.targetPosition = position;
+        if (targetPosition != position) {
+            targetPosition = position;
 
-        // Build the motion profile to move the lift to the target position
-        liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
-        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, armMotor.getCurrentPosition(), position.armPosition);
+            // Build the motion profile to move the lift to the target position
+            liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
+            armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, armMotor.getCurrentPosition(), position.armPosition);
 
-        // Reset the PID controllers
-        leftController.reset();
-        rightController.reset();
-        armController.reset();
+            // Reset the PID controllers
+            leftController.reset();
+            rightController.reset();
+            armController.reset();
+        }
     }
 
     /**
@@ -121,6 +118,9 @@ public class Lift implements Mechanism {
         return isLiftAtTarget() && isArmAtTarget();
     }
 
+    /**
+     * Updates the power levels for the arm and the lift.
+     */
     public void update() {
         // Update the power level for the arm motor
         setArmPower();
@@ -128,6 +128,9 @@ public class Lift implements Mechanism {
         setLiftPower();
     }
 
+    /**
+     * Sets the lift power using the motion profiler and PID controllers.
+     */
     private void setLiftPower() {
         // Read the current position of each motor
         double leftPosition = leftMotor.getCurrentPosition();
@@ -161,6 +164,9 @@ public class Lift implements Mechanism {
         telemetry.addData("[LIFT] right power", rightPower);
     }
 
+    /**
+     * Sets the arm power using the motion profile and PID controller.
+     */
     private void setArmPower() {
         // Read the current position of the arm motor
         int armPosition = armMotor.getCurrentPosition();
@@ -187,6 +193,13 @@ public class Lift implements Mechanism {
         telemetry.addData("[ARM] position", armPosition);
     }
 
+    /**
+     * Adjusts the motor power so that `minPower < power <= 1`.
+     *
+     * @param power    the power to adjust.
+     * @param minPower the minimum power for the motor.
+     * @return the adjusted motor power.
+     */
     private double modifyMotorPower(double power, double minPower) {
         // Cap the motor power at 1 and -1
         power = Math.max(-1, Math.min(1, power));
@@ -197,26 +210,53 @@ public class Lift implements Mechanism {
         return power;
     }
 
+    /**
+     * Manually sets the power levels for the arm motor.
+     *
+     * @param power the power level to which to set the arm motor.
+     */
     public void overrideArmPower(double power) {
         armMotor.setPower(power);
         setArmTelemetry();
     }
 
+    /**
+     * Manually sets the power levels for the left and right lift motors.
+     *
+     * @param power the power level to which to set the left and right motors.
+     */
     public void overrideLiftPower(double power) {
         leftMotor.setPower(power);
         rightMotor.setPower(power);
         setLiftTelemetry();
     }
 
+    /**
+     * Writes telemetry data for the arm motor.
+     */
     private void setArmTelemetry() {
+        telemetry.addData("[ARM]  power", armMotor.getPower());
         telemetry.addData("[ARM] position", armMotor.getCurrentPosition());
     }
 
+    /**
+     * Writes telemetry data for the left and right lift motors.
+     */
     private void setLiftTelemetry() {
         telemetry.addData("[LIFT] left power", leftMotor.getPower());
         telemetry.addData("[LIFT] left position", leftMotor.getCurrentPosition());
         telemetry.addData("[LIFT] right power", rightMotor.getPower());
         telemetry.addData("[LIFT] right position", rightMotor.getCurrentPosition());
+    }
+
+    @Override
+    public String getDeviceName() {
+        return "Lift";
+    }
+
+    @Override
+    public String getDescription() {
+        return "The lift is used to lift the robot off the ground and to score pixels.";
     }
 
     public enum Position {
