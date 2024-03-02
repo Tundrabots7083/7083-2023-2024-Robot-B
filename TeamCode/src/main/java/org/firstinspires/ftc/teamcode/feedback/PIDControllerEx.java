@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.feedback;
 
 /**
- * A PID controller that includes a kF feed forward component This is useful when there
+ * A PID controller that includes a Kf feed forward component This is useful when there
  * is a heavy component being controlled by the PID controller.
  */
 public class PIDControllerEx extends PIDController {

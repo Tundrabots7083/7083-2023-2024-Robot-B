@@ -95,7 +95,6 @@ public class PIDController {
     public void reset() {
         hasRun = false;
         timer.reset();
-
     }
 
     protected double calculateError(double reference, double state) {
@@ -116,5 +115,4 @@ public class PIDController {
 
         return derivative;
     }
-
 }
