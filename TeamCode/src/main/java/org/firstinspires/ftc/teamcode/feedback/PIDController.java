@@ -14,21 +14,14 @@ public class PIDController {
     private final double Kp; // Proportional term, multiplied directly by the state error
     private final double Ki; // Integral term, multiplied directly by the state error integral
     private final double Kd; // Derivative term, multiplied directly by the state error rate of change
+    private final ElapsedTime timer = new ElapsedTime();
+    private double lastReference = 0;
+    private boolean hasRun = false;
+    private double previousError = 0;
+    private double integralSum = 0;
 
-    protected boolean hasRun = false;
-
-    protected ElapsedTime timer = new ElapsedTime();
-
-    protected double previousError = 0;
-
-    protected double integralSum = 0;
-
-    protected double derivative = 0;
-
-    protected double minIntegralBound = -1;
-    protected double maxIntegralBound = 1;
-
-    public double lastReference = 0;
+    private double minIntegralBound = -1;
+    private double maxIntegralBound = 1;
 
     /**
      * Creates a new PID controller with the given PID coefficients.
@@ -60,11 +53,7 @@ public class PIDController {
         double dt = getDT();
         double error = calculateError(reference, state);
         double derivative = calculateDerivative(error, dt);
-        if (reference == lastReference) {
-            integrate(error, dt);
-        } else {
-            integralSum = 0;
-        }
+        integralSum = reference == lastReference ? integrate(error, dt) : 0;
 
         // Save the error and target
         previousError = error;
@@ -109,17 +98,38 @@ public class PIDController {
         timer.reset();
     }
 
-    protected double calculateError(double reference, double state) {
+    /**
+     * Returns the error between the target position and the current position.
+     *
+     * @param reference the target position.
+     * @param state     the current position.
+     * @return the error between the target position and the current position.
+     */
+    private double calculateError(double reference, double state) {
         return reference - state;
     }
 
-    protected void integrate(double error, double dt) {
-        integralSum += error * dt;
-        integralSum = Range.clip(integralSum, minIntegralBound, maxIntegralBound);
+    /**
+     * Calculates the integral sum for the PID controller.
+     *
+     * @param error the error between the target position and the current position.
+     * @param dt    the time since the PID controller output was last calculated.
+     * @return the integral sum for the PID controller.
+     */
+    private double integrate(double error, double dt) {
+        double integralSum = this.integralSum + error * dt;
+        return Range.clip(integralSum, minIntegralBound, maxIntegralBound);
     }
 
-    protected double calculateDerivative(double error, double dt) {
-        derivative = (error - previousError) / dt;
+    /**
+     * Calculates the derivative for the PID controller.
+     *
+     * @param error the error between the target position and the current position.
+     * @param dt    the time since the PID controller output was last calculated.
+     * @return the derivative for the PID controller.
+     */
+    private double calculateDerivative(double error, double dt) {
+        double derivative = (error - previousError) / dt;
 
         if (Double.isNaN(derivative)) {
             derivative = 0;
