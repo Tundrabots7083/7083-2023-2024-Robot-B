@@ -49,7 +49,7 @@ public class PIDController {
             return 0;
         }
 
-        // Calculate the PID values. If the target has changed, reset the integral sum
+        // Calculate the PID values. If the target has changed, reset the integral sum.
         double dt = getDT();
         double error = calculateError(reference, state);
         double derivative = calculateDerivative(error, dt);
