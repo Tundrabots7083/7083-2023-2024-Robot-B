@@ -28,6 +28,8 @@ public class PIDController {
     protected double minIntegralBound = -1;
     protected double maxIntegralBound = 1;
 
+    public double lastReference = 0;
+
     /**
      * Creates a new PID controller with the given PID coefficients.
      *
@@ -49,15 +51,25 @@ public class PIDController {
      * @return PID output
      */
     public double calculate(double reference, double state) {
+        // Make sure reference is a valid number
         if (Double.isNaN(reference)) {
             return 0;
         }
 
+        // Calculate the PID values. If the target has changed, reset the integral sum
         double dt = getDT();
         double error = calculateError(reference, state);
         double derivative = calculateDerivative(error, dt);
-        integrate(error, dt);
+        if (reference == lastReference) {
+            integrate(error, dt);
+        } else {
+            integralSum = 0;
+        }
+
+        // Save the error and target
         previousError = error;
+        lastReference = reference;
+
         return error * Kp
                 + integralSum * Ki
                 + derivative * Kd;
@@ -94,6 +106,11 @@ public class PIDController {
      */
     public void reset() {
         hasRun = false;
+
+        integralSum = 0;
+        previousError = 0;
+        derivative = 0;
+
         timer.reset();
     }
 
