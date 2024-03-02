@@ -102,7 +102,7 @@ public class PIDController {
     }
 
     protected void integrate(double error, double dt) {
-        integralSum += ((error + previousError) / 2) * dt;
+        integralSum += error * dt;
         integralSum = Range.clip(integralSum, minIntegralBound, maxIntegralBound);
     }
 
