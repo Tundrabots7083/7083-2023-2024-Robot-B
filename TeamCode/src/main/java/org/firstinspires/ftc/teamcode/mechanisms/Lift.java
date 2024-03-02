@@ -7,13 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
-import org.firstinspires.ftc.teamcode.feedback.PIDCoefficients;
-import org.firstinspires.ftc.teamcode.feedback.PIDCoefficientsEx;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
-import org.firstinspires.ftc.teamcode.tests.Test;
-
-import java.util.Collection;
 
 /**
  * Arm is the arm and pixel container that are used for pixel intake and pixel scoring.
@@ -23,8 +18,8 @@ public class Lift implements Mechanism {
     public static double LIFT_KP = 0.009;
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
-    public static double LIFT_KG = 0.1;
-    public static double INTEGRAL_LIMIT = 1;
+    public static double LIFT_KF = 0.1;
+    public static double INTEGRAL_LIMIT = 0.25;
     public static double LIFT_MAX_ACCELERATION = 3000;
     public static double LIFT_MAX_VELOCITY = 8000;
     public static double MINIMUM_LIFT_POWER = 0.1;
@@ -61,9 +56,9 @@ public class Lift implements Mechanism {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        leftController = new PIDControllerEx(new PIDCoefficientsEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KG));
-        rightController = new PIDControllerEx(new PIDCoefficientsEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KG));
-        armController = new PIDController(new PIDCoefficients(ARM_KP, ARM_KI, ARM_KD));
+        leftController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KF);
+        rightController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KF);
+        armController = new PIDController(ARM_KP, ARM_KI, ARM_KD);
 
         leftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
         rightController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);

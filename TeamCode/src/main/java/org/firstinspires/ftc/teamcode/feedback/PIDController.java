@@ -11,7 +11,9 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class PIDController {
 
-    public PIDCoefficients coefficients;
+    private final double Kp; // Proportional term, multiplied directly by the state error
+    private final double Ki; // Integral term, multiplied directly by the state error integral
+    private final double Kd; // Derivative term, multiplied directly by the state error rate of change
 
     protected boolean hasRun = false;
 
@@ -29,10 +31,14 @@ public class PIDController {
     /**
      * Creates a new PID controller with the given PID coefficients.
      *
-     * @param coefficients the PID coefificients to be used for the PID controller.
+     * @param Kp proportional term, multiplied directly by the state error
+     * @param Ki integral term, multiplied directly by the state error integral
+     * @param Kd derivative term, multiplied directly by the state error rate of change.
      */
-    public PIDController(PIDCoefficients coefficients) {
-        this.coefficients = coefficients;
+    public PIDController(double Kp, double Ki, double Kd) {
+        this.Kp = Kp;
+        this.Ki = Ki;
+        this.Kd = Kd;
     }
 
     /**
@@ -52,9 +58,9 @@ public class PIDController {
         double derivative = calculateDerivative(error, dt);
         integrate(error, dt);
         previousError = error;
-        return error * coefficients.Kp
-                + integralSum * coefficients.Ki
-                + derivative * coefficients.Kd;
+        return error * Kp
+                + integralSum * Ki
+                + derivative * Kd;
     }
 
     /**

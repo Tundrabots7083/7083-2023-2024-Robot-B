@@ -1,18 +1,24 @@
 package org.firstinspires.ftc.teamcode.feedback;
 
 /**
- * A PID controller that includes a Kg value to compensate for gravity. This is useful when there
+ * A PID controller that includes a kF feed forward component This is useful when there
  * is a heavy component being controlled by the PID controller.
  */
 public class PIDControllerEx extends PIDController {
+    private final double Kf; // Feed forward term, added to the output of the PID calculation
 
     /**
      * Creates a new PID controller.
      *
-     * @param coefficients the extended PID coefficients for the PID controller.
+     * @param Kp proportional term, multiplied directly by the state error
+     * @param Ki integral term, multiplied directly by the state error integral
+     * @param Kd derivative term, multiplied directly by the state error rate of change
+     * @param Kf feed forward term, added to the output of the PID calculation
      */
-    public PIDControllerEx(PIDCoefficientsEx coefficients) {
-        super(coefficients);
+    public PIDControllerEx(double Kp, double Ki, double Kd, double Kf) {
+        super(Kp, Ki, Kd);
+
+        this.Kf = Kf;
     }
 
     /**
@@ -20,11 +26,10 @@ public class PIDControllerEx extends PIDController {
      *
      * @param reference the target position
      * @param state     current system state
-     * @return
+     * @return PID output
      */
     public double calculate(double reference, double state) {
         double power = super.calculate(reference, state);
-        PIDCoefficientsEx pidCoefficientsEx = (PIDCoefficientsEx) coefficients;
-        return power + pidCoefficientsEx.Kg;
+        return power + Kf;
     }
 }
