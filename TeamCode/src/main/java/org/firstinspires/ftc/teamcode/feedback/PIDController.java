@@ -108,8 +108,9 @@ public class PIDController {
         hasRun = false;
 
         integralSum = 0;
-        previousError = 0;
         derivative = 0;
+        previousError = 0;
+        lastReference = 0;
 
         timer.reset();
     }
