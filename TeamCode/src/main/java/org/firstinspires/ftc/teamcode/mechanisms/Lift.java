@@ -19,7 +19,6 @@ public class Lift implements Mechanism {
     public static double LIFT_KI = 0.0;
     public static double LIFT_KD = 0.0;
     public static double LIFT_KF = 0.1;
-    public static double INTEGRAL_LIMIT = 0.25;
     public static double LIFT_MAX_ACCELERATION = 3000;
     public static double LIFT_MAX_VELOCITY = 8000;
     public static double MINIMUM_LIFT_POWER = 0.1;
@@ -29,6 +28,7 @@ public class Lift implements Mechanism {
     public static double ARM_MAX_ACCELERATION = 3000;
     public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.16;
+    public static double INTEGRAL_LIMIT = 0.25;
     DcMotorEx leftMotor;
     DcMotorEx rightMotor;
     DcMotorEx armMotor;
@@ -62,6 +62,7 @@ public class Lift implements Mechanism {
 
         leftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
         rightController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
+        armController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);
 
         liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, 0, Position.INTAKE.liftPosition);
         armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.INTAKE.armPosition);
