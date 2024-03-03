@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -46,15 +47,16 @@ public class Lift implements Mechanism {
         this.leftMotor = hardwareMap.get(DcMotorEx.class, "leftLift");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
 
         this.rightMotor = hardwareMap.get(DcMotorEx.class, "rightLift");
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         this.armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KF);
         rightController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KF);
@@ -261,13 +263,13 @@ public class Lift implements Mechanism {
 
     public enum Position {
         INTAKE(0, 0),
-        AUTONOMOUS_BACKSTAGE(-2700, -200),
-        AUTONOMOUS_FRONTSTAGE(-2700, -400),
-        SCORE_LOW(-2700, -350),
-        SCORE_MEDIUM(-2700, -700),
-        SCORE_HIGH(-2700, -1100),
-        HANG_START(0, -1525),
-        HANG_END(0, -900),
+        AUTONOMOUS_BACKSTAGE(2700, 200),
+        AUTONOMOUS_FRONTSTAGE(2700, 400),
+        SCORE_LOW(2700, 350),
+        SCORE_MEDIUM(2700, 700),
+        SCORE_HIGH(2700, 1100),
+        HANG_START(0, 1525),
+        HANG_END(0, 900),
         LAUNCH_DRONE(0, 0);
 
         public final int armPosition;
