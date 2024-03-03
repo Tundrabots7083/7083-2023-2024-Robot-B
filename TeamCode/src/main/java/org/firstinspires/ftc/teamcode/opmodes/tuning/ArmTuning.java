@@ -13,7 +13,8 @@ import org.firstinspires.ftc.teamcode.feedback.PIDController;
 @Config
 @TeleOp(name = "Arm PID Tuning", group = "tuning")
 public class ArmTuning extends LinearOpMode {
-    private final static double TICKS_IN_DEGREES = 700 / 180.0;
+    private final static double TICKS_PER_REV = 383.6; // GoBilda 5203 Yellow Jacket Motor (13.7:1 Ratio)
+    private final static double TICKS_IN_DEGREES = TICKS_PER_REV / 360.0;
     public static double Kp = 0;
     public static double Ki = 0;
     public static double Kd = 0;
