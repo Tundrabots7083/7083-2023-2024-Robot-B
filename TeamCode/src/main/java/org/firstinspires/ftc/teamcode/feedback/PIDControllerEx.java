@@ -13,12 +13,12 @@ public class PIDControllerEx extends PIDController {
      * @param Kp proportional term, multiplied directly by the state error
      * @param Ki integral term, multiplied directly by the state error integral
      * @param Kd derivative term, multiplied directly by the state error rate of change
-     * @param Kf constant feed forward term, added to the output of the PID calculation
+     * @param Kg constant feed forward gravity term, added to the output of the PID calculation
      */
-    public PIDControllerEx(double Kp, double Ki, double Kd, double Kf) {
+    public PIDControllerEx(double Kp, double Ki, double Kd, double Kg) {
         super(Kp, Ki, Kd);
 
-        ff = p->Kf;
+        ff = p->Kg;
     }
 
     /**
@@ -67,11 +67,11 @@ public class PIDControllerEx extends PIDController {
      * @param Kp proportional term, multiplied directly by the state error
      * @param Ki integral term, multiplied directly by the state error integral
      * @param Kd derivative term, multiplied directly by the state error rate of change.
-     * @param Kf constant feed forward term, added to the output of the PID calculation
+     * @param Kg constant feed forward gravity term, added to the output of the PID calculation
      */
-    public void setPID(double Kp, double Ki, double Kd, double Kf) {
+    public void setPID(double Kp, double Ki, double Kd, double Kg) {
         super.setPID(Kp, Ki, Kd);
 
-        ff = p->Kf;
+        ff = p->Kg;
     }
 }
