@@ -5,7 +5,7 @@ package org.firstinspires.ftc.teamcode.feedback;
  * is a heavy component being controlled by the PID controller.
  */
 public class PIDControllerEx extends PIDController {
-    private FeedForwardFun ff; // Feed forward term, added to the output of the PID calculation
+    private FeedForward ff; // Feed forward term, added to the output of the PID calculation
 
     /**
      * Creates a new PID controller.
@@ -29,7 +29,7 @@ public class PIDControllerEx extends PIDController {
      * @param Kd derivative term, multiplied directly by the state error rate of change
      * @param ff feed forward term, added to the output of the PID calculation
      */
-    public PIDControllerEx(double Kp, double Ki, double Kd, FeedForwardFun ff) {
+    public PIDControllerEx(double Kp, double Ki, double Kd, FeedForward ff) {
         super(Kp, Ki, Kd);
 
         this.ff = ff;
@@ -45,7 +45,7 @@ public class PIDControllerEx extends PIDController {
     @Override
     public double calculate(double reference, double state) {
         double power = super.calculate(reference, state);
-        return power + ff.ff(reference);
+        return power + ff.calculate(reference);
     }
 
     /**
@@ -56,7 +56,7 @@ public class PIDControllerEx extends PIDController {
      * @param Kd derivative term, multiplied directly by the state error rate of change.
      * @param ff feed forward term, added to the output of the PID calculation
      */
-    public void setPID(double Kp, double Ki, double Kd, FeedForwardFun ff) {
+    public void setPID(double Kp, double Ki, double Kd, FeedForward ff) {
         super.setPID(Kp, Ki, Kd);
         this.ff = ff;
     }

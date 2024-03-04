@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.feedback.FeedForwardFun;
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
