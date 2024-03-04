@@ -8,8 +8,8 @@ public interface FeedForwardFun {
     /**
      * Calculate the feed forward value.
      *
-     * @param Kf custom, position-dependent feedforward (e.g., a gravity term for arms)
+     * @param target The target position trying to be reached.
      * @return the feed forward value for the PIDF controller.
      */
-    double ff(double Kf);
+    double ff(double target);
 }
