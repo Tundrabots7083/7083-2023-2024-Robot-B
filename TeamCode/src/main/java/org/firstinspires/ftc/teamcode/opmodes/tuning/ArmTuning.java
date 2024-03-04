@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.feedback.PIDController;
+import org.firstinspires.ftc.teamcode.feedback.FeedForwardFun;
+import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
 
 @Config
 @TeleOp(name = "Arm PID Tuning", group = "tuning")
@@ -29,7 +30,8 @@ public class ArmTuning extends LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        PIDController controller = new PIDController(Kp, Ki, Kd);
+        FeedForwardFun ff = p -> Math.cos(Math.toRadians(p / TICKS_IN_DEGREES)) * Kf;
+        PIDControllerEx controller = new PIDControllerEx(Kp, Ki, Kd, ff);
 
         telemetry.addLine("Initialization Complete");
 
@@ -37,14 +39,13 @@ public class ArmTuning extends LinearOpMode {
 
         while (opModeIsActive()) {
             // Reset the PID values
-            controller.setPID(Kp, Ki, Kd);
+            ff = p -> Math.cos(Math.toRadians(p / TICKS_IN_DEGREES)) * Kf;
+            controller.setPID(Kp, Ki, Kd, ff);
 
             // Get the arm PID and add in the feed-forward values
             int pos = armMotor.getCurrentPosition();
             double pid = controller.calculate(pos, target);
-            double ff = Math.cos(Math.toRadians(target / TICKS_IN_DEGREES)) * Kf;
-            double power = pid + ff;
-            armMotor.setPower(power);
+            armMotor.setPower(pid);
 
             telemetry.addData("pos", pos);
             telemetry.addData("target", target);

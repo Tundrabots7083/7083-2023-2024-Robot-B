@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.feedback.FeedForwardFun;
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
@@ -58,8 +59,8 @@ public class Lift implements Mechanism {
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        leftController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KF);
-        rightController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, -LIFT_KF);
+        leftController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
+        rightController = new PIDControllerEx(LIFT_KP, LIFT_KI, LIFT_KD, LIFT_KF);
         armController = new PIDController(ARM_KP, ARM_KI, ARM_KD);
 
         leftController.setIntegrationBounds(-INTEGRAL_LIMIT, INTEGRAL_LIMIT);

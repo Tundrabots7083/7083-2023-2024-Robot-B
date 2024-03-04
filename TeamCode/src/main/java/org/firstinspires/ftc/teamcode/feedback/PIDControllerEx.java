@@ -5,7 +5,7 @@ package org.firstinspires.ftc.teamcode.feedback;
  * is a heavy component being controlled by the PID controller.
  */
 public class PIDControllerEx extends PIDController {
-    private double Kf; // Feed forward term, added to the output of the PID calculation
+    private FeedForwardFun ff; // Feed forward term, added to the output of the PID calculation
 
     /**
      * Creates a new PID controller.
@@ -13,12 +13,26 @@ public class PIDControllerEx extends PIDController {
      * @param Kp proportional term, multiplied directly by the state error
      * @param Ki integral term, multiplied directly by the state error integral
      * @param Kd derivative term, multiplied directly by the state error rate of change
-     * @param Kf feed forward term, added to the output of the PID calculation
+     * @param Kf constant feed forward term, added to the output of the PID calculation
      */
     public PIDControllerEx(double Kp, double Ki, double Kd, double Kf) {
         super(Kp, Ki, Kd);
 
-        this.Kf = Kf;
+        ff = p->Kf;
+    }
+
+    /**
+     * Creates a new PID controller.
+     *
+     * @param Kp proportional term, multiplied directly by the state error
+     * @param Ki integral term, multiplied directly by the state error integral
+     * @param Kd derivative term, multiplied directly by the state error rate of change
+     * @param ff feed forward term, added to the output of the PID calculation
+     */
+    public PIDControllerEx(double Kp, double Ki, double Kd, FeedForwardFun ff) {
+        super(Kp, Ki, Kd);
+
+        this.ff = ff;
     }
 
     /**
@@ -31,7 +45,7 @@ public class PIDControllerEx extends PIDController {
     @Override
     public double calculate(double reference, double state) {
         double power = super.calculate(reference, state);
-        return power + Kf;
+        return power + ff.ff(reference);
     }
 
     /**
@@ -40,10 +54,24 @@ public class PIDControllerEx extends PIDController {
      * @param Kp proportional term, multiplied directly by the state error
      * @param Ki integral term, multiplied directly by the state error integral
      * @param Kd derivative term, multiplied directly by the state error rate of change.
-     * @param Kf feed forward term, added to the output of the PID calculation
+     * @param ff feed forward term, added to the output of the PID calculation
+     */
+    public void setPID(double Kp, double Ki, double Kd, FeedForwardFun ff) {
+        super.setPID(Kp, Ki, Kd);
+        this.ff = ff;
+    }
+
+    /**
+     * Sets the PID coefficients for the PID controller.
+     *
+     * @param Kp proportional term, multiplied directly by the state error
+     * @param Ki integral term, multiplied directly by the state error integral
+     * @param Kd derivative term, multiplied directly by the state error rate of change.
+     * @param Kf constant feed forward term, added to the output of the PID calculation
      */
     public void setPID(double Kp, double Ki, double Kd, double Kf) {
         super.setPID(Kp, Ki, Kd);
-        this.Kf = Kf;
+
+        ff = p->Kf;
     }
 }
