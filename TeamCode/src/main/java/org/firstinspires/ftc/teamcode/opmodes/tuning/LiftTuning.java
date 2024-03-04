@@ -26,11 +26,11 @@ public class LiftTuning extends LinearOpMode {
         DcMotorEx leftMotor = hardwareMap.get(DcMotorEx.class, "leftLift");
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
 
         DcMotorEx rightMotor = hardwareMap.get(DcMotorEx.class, "rightLift");
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         PIDControllerEx leftLiftController = new PIDControllerEx(Kp, Ki, Kd, Kf);
         PIDControllerEx rightLiftController = new PIDControllerEx(Kp, Ki, Kd, Kf);
