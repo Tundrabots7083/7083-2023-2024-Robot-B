@@ -16,8 +16,8 @@ import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
 @TeleOp(name = "Arm PID Tuning", group = "tuning")
 public class ArmTuning extends LinearOpMode {
     public static double TICKS_PER_REV = 383.6; // GoBilda 5203 Yellow Jacket Motor (13.7:1 Ratio)
-    public static double ARM_ANGLE_OFFSET = 45; // Degrees offset from arm being parallel to the ground
     private final static double TICKS_IN_DEGREES = TICKS_PER_REV / 360.0;
+    public static double ARM_ANGLE_OFFSET = 45; // Degrees offset from arm being parallel to the ground
     public static double Kp = 0;
     public static double Ki = 0;
     public static double Kd = 0;
