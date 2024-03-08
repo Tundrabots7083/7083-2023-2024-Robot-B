@@ -16,7 +16,7 @@ public class LiftTuning extends LinearOpMode {
     public static double Kp = 0;
     public static double Ki = 0;
     public static double Kd = 0;
-    public static double Kf = 0;
+    public static double Kf = 0.1;
     public static int target = 0;
 
     @Override
