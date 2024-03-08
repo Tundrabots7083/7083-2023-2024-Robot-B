@@ -39,15 +39,16 @@ public class PixelCollectorController implements Controller {
      * @param previousScore   the <i>score</i> button was pressed on the previous loop
      */
     private void update(PixelCollector collector, boolean collect, boolean previousCollect, boolean score, boolean previousScore) {
+        String c = collector == leftPixelCollector ? "[PC Left] " : "[PC Right] ";
         if (!previousCollect && collect) {
             collector.setState(PixelCollector.State.COLLECTING);
-            telemetry.addLine("[PC] Set State to Collecting");
+            telemetry.addLine(c + "Set State to Collecting");
         } else if (!previousScore && score) {
             collector.setState(PixelCollector.State.DEPOSITING);
-            telemetry.addLine("[PC] Set State to Depositing");
+            telemetry.addLine(c + "Set State to Depositing");
         } else if (!collect && !score && (previousCollect || previousScore)) {
             leftPixelCollector.setState(PixelCollector.State.CLOSED);
-            telemetry.addLine("[PC] Set State to Closed");
+            telemetry.addLine(c + "Set State to Closed");
         }
     }
 
