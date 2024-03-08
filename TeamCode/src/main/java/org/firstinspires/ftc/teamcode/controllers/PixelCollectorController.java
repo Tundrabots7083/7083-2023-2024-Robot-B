@@ -17,9 +17,10 @@ public class PixelCollectorController implements Controller {
 
     /**
      * Creates a new pixel collector controller.
-     * @param leftPixelCollector the left pixel collector.
+     *
+     * @param leftPixelCollector  the left pixel collector.
      * @param rightPixelCollector the right pixel collector.
-     * @param telemetry the telemetry used to display output on the driver station.
+     * @param telemetry           the telemetry used to display output on the driver station.
      */
     public PixelCollectorController(PixelCollector leftPixelCollector, PixelCollector rightPixelCollector, Telemetry telemetry) {
         this.rightPixelCollector = leftPixelCollector;
@@ -29,7 +30,30 @@ public class PixelCollectorController implements Controller {
     }
 
     /**
+     * Updates the pixel collector state based on the Gamepad buttons pressed.
+     *
+     * @param collector       PixelCollector being updated
+     * @param collect         the <i>collect</i> button is pressed
+     * @param previousCollect the <i>collect</i> button was pressed on the previous loop
+     * @param score           the <i>score</i> button is pressed
+     * @param previousScore   the <i>score</i> button was pressed on the previous loop
+     */
+    private void update(PixelCollector collector, boolean collect, boolean previousCollect, boolean score, boolean previousScore) {
+        if (!previousCollect && collect) {
+            collector.setState(PixelCollector.State.COLLECTING);
+            telemetry.addLine("[PC] Set State to Collecting");
+        } else if (!previousScore && score) {
+            collector.setState(PixelCollector.State.DEPOSITING);
+            telemetry.addLine("[PC] Set State to Depositing");
+        } else if (!collect && !score && (previousCollect || previousScore)) {
+            leftPixelCollector.setState(PixelCollector.State.CLOSED);
+            telemetry.addLine("[PC] Set State to Closed");
+        }
+    }
+
+    /**
      * Process input to the pixel collector controller each loop through the opmode.
+     *
      * @param gamepad1 Gamepad 1
      * @param gamepad2 Gamepad 2
      */
@@ -38,34 +62,8 @@ public class PixelCollectorController implements Controller {
         // Gamepad 2 will control both pixel collectors
         // dpad down and dpad right will control the left pixel collector's state
         // a and b will be used for the right pixel collector's state
-
-        // Left pixel collector
-        if (!previousGamepad2.dpad_down && gamepad2.dpad_down) {
-            telemetry.addLine("[LEFT PC] Set to collecting");
-            // Toggle collection on or off
-            leftPixelCollector.setState(PixelCollector.State.COLLECTING);
-        } else if (!previousGamepad2.dpad_right && gamepad2.dpad_right) {
-            telemetry.addLine("[LEFT PC] Set to depositing");
-            leftPixelCollector.setState(PixelCollector.State.DEPOSITING);
-            // Toggle depositing on or off
-        } else if (!gamepad2.dpad_down && !gamepad2.dpad_right && (previousGamepad2.dpad_down || previousGamepad2.dpad_right)) {
-            telemetry.addLine("[LEFT PC] Set to closed");
-            leftPixelCollector.setState(PixelCollector.State.CLOSED);
-        }
-
-        // Right pixel collector
-        if (!previousGamepad2.a && gamepad2.a) {
-            telemetry.addLine("[RIGHT PC] Set to collecting");
-            // Toggle collection on or off
-            rightPixelCollector.setState(PixelCollector.State.COLLECTING);
-        } else if (!previousGamepad2.b && gamepad2.b) {
-            telemetry.addLine("[LEFT PC] Set to depositing");
-            rightPixelCollector.setState(PixelCollector.State.DEPOSITING);
-            // Toggle depositing on or off
-        } else if (!gamepad2.a && !gamepad2.b && (previousGamepad2.a || previousGamepad2.b)) {
-            telemetry.addLine("[LEFT PC] Set to closed");
-            rightPixelCollector.setState(PixelCollector.State.CLOSED);
-        }
+        update(leftPixelCollector, gamepad2.dpad_down, previousGamepad2.dpad_down, gamepad2.dpad_right, previousGamepad2.dpad_right);
+        update(rightPixelCollector, gamepad2.a, previousGamepad2.a, gamepad2.b, previousGamepad2.b);
 
         leftPixelCollector.update();
         rightPixelCollector.update();
