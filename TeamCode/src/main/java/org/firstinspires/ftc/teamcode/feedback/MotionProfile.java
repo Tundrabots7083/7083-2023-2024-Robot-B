@@ -6,9 +6,9 @@ package org.firstinspires.ftc.teamcode.feedback;
  * profile started.
  */
 public class MotionProfile {
-    private final double maxAcceleration;
-    private final double maxVelocity;
-    private final double startPosition;
+    private double maxAcceleration;
+    private double maxVelocity;
+    private double startPosition;
     private double endPosition;
     private long startTime;
 
@@ -18,9 +18,9 @@ public class MotionProfile {
      * The time unit component of the maximum acceleration and maximum velocity constants must be seconds.
      *
      * @param maxAcceleration The maximum acceleration of the motion profile in units per second squared.
-     * @param maxVelocity     The maximum velocity of the motion profile in units per second.
-     * @param startPosition   The start position of the motion profile in units.
-     * @param endPosition     The end position of the motion profile in units.
+     * @param maxVelocity The maximum velocity of the motion profile in units per second.
+     * @param startPosition The start position of the motion profile in units.
+     * @param endPosition The end position of the motion profile in units.
      */
     public MotionProfile(double maxAcceleration, double maxVelocity, double startPosition, double endPosition) {
         this.maxAcceleration = maxAcceleration;
@@ -34,12 +34,37 @@ public class MotionProfile {
     }
 
     /**
+     * Returns indication as to whether the motion profile has reached it's end.
+     *
+     * @return <code>true</code> if the motion profile has reached it's end;
+     *         <code>false</code> if there is still some motion required to reach the end.
+     */
+    public boolean isAtEnd() {
+        double elapsedTime = (System.currentTimeMillis() - this.startTime) / 1000.0; // convert to seconds
+        double distance = Math.abs(endPosition - startPosition);
+        double accelerationDt = maxVelocity / maxAcceleration;
+        double halfwayDistance = distance / 2;
+        double accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
+
+        if (accelerationDistance > halfwayDistance) {
+            accelerationDt = Math.sqrt(halfwayDistance / (0.5 * maxAcceleration));
+        }
+
+        double localMaxVelocity = maxAcceleration * accelerationDt;
+        double decelerationDt = accelerationDt;
+        double cruiseDistance = distance - 2 * accelerationDistance;
+        double cruiseDt = cruiseDistance / localMaxVelocity;
+        double entireDt = accelerationDt + cruiseDt + decelerationDt;
+
+        return elapsedTime > entireDt;
+    }
+
+    /**
      * Calculates the current position based on the elapsed time since the motion profile started.
      *
      * @return The current position.
      */
     public double calculatePosition() {
-
         if (this.startTime == 0) {
             this.startTime = System.currentTimeMillis();
         }

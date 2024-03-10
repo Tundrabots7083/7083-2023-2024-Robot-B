@@ -112,7 +112,7 @@ public class Lift implements Mechanism {
      * <code>false</code> if the arm is not.
      */
     public boolean isArmAtTarget() {
-        return armProfile.calculatePosition() == targetPosition.armPosition;
+        return armProfile.isAtEnd();
     }
 
     /**
@@ -122,7 +122,7 @@ public class Lift implements Mechanism {
      * <code>false</code> if the lift is not.
      */
     public boolean isLiftAtTarget() {
-        return liftProfile.calculatePosition() == targetPosition.liftPosition;
+        return liftProfile.isAtEnd();
     }
 
     /**
