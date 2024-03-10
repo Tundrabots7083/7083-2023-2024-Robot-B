@@ -5,11 +5,11 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.autonomous.ParkingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.RedFrontstageTrajectoryGenerator;
-import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
+import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
 
 @Autonomous(name = "Red Alliance Frontstage Park Center", group = "Autonomous Red", preselectTeleOp = "Primary TeleOp")
 public class RedAllianceFrontstageParkCenter extends LinearOpMode implements AutonomousOpmode {
@@ -26,6 +26,6 @@ public class RedAllianceFrontstageParkCenter extends LinearOpMode implements Aut
 
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new RedFrontstageTrajectoryGenerator();
-        follower.followTrajectory(trajectoryGenerator, StartingLocation.FRONTSTAGE, ParkingLocation.CENTER);
+        follower.followTrajectory(trajectoryGenerator, RobotStartingLocation.FRONTSTAGE, RobotParkingLocation.CENTER_OF_FIELD);
     }
 }

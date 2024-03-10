@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.autonomous.BlueFrontstageTrajectoryGenerator;
-import org.firstinspires.ftc.teamcode.autonomous.ParkingLocation;
-import org.firstinspires.ftc.teamcode.autonomous.StartingLocation;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.autonomous.TrajectoryGenerator;
+import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
+import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
 
 @Autonomous(name = "Blue Alliance Frontstage Park Center", group = "Autonomous Blue", preselectTeleOp = "Primary TeleOp")
 public class BlueAllianceFrontstageParkCenter extends LinearOpMode implements AutonomousOpmode {
@@ -26,6 +26,6 @@ public class BlueAllianceFrontstageParkCenter extends LinearOpMode implements Au
 
         // Follow the trajectory
         TrajectoryGenerator trajectoryGenerator = new BlueFrontstageTrajectoryGenerator();
-        follower.followTrajectory(trajectoryGenerator, StartingLocation.FRONTSTAGE, ParkingLocation.CENTER);
+        follower.followTrajectory(trajectoryGenerator, RobotStartingLocation.FRONTSTAGE, RobotParkingLocation.CENTER_OF_FIELD);
     }
 }
