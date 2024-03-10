@@ -6,8 +6,8 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -16,7 +16,8 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 public class SplineTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry);
+        Robot robot = Robot.getInstance(hardwareMap, telemetry);
+        AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry, robot.mecanumDrive);
 
         waitForStart();
 

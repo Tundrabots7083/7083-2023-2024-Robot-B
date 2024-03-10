@@ -34,12 +34,37 @@ public class MotionProfile {
     }
 
     /**
+     * Returns indication as to whether the motion profile has reached it's end.
+     *
+     * @return <code>true</code> if the motion profile has reached it's end;
+     *         <code>false</code> if there is still some motion required to reach the end.
+     */
+    public boolean isAtEnd() {
+        double elapsedTime = (System.currentTimeMillis() - this.startTime) / 1000.0; // convert to seconds
+        double distance = Math.abs(endPosition - startPosition);
+        double accelerationDt = maxVelocity / maxAcceleration;
+        double halfwayDistance = distance / 2;
+        double accelerationDistance = 0.5 * maxAcceleration * Math.pow(accelerationDt, 2);
+
+        if (accelerationDistance > halfwayDistance) {
+            accelerationDt = Math.sqrt(halfwayDistance / (0.5 * maxAcceleration));
+        }
+
+        double localMaxVelocity = maxAcceleration * accelerationDt;
+        double decelerationDt = accelerationDt;
+        double cruiseDistance = distance - 2 * accelerationDistance;
+        double cruiseDt = cruiseDistance / localMaxVelocity;
+        double entireDt = accelerationDt + cruiseDt + decelerationDt;
+
+        return elapsedTime > entireDt;
+    }
+
+    /**
      * Calculates the current position based on the elapsed time since the motion profile started.
-     * 
+     *
      * @return The current position.
      */
     public double calculatePosition() {
-
         if (this.startTime == 0) {
             this.startTime = System.currentTimeMillis();
         }

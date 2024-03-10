@@ -4,52 +4,80 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.controls.Controller;
-import org.firstinspires.ftc.teamcode.controls.DroneLauncherController;
-import org.firstinspires.ftc.teamcode.controls.LiftController;
-import org.firstinspires.ftc.teamcode.controls.MecanumDriveController;
-import org.firstinspires.ftc.teamcode.controls.PixelCollectorController;
-import org.firstinspires.ftc.teamcode.sensors.DistanceSensor;
-import org.firstinspires.ftc.teamcode.sensors.Sensor;
-import org.firstinspires.ftc.teamcode.sensors.VisionSensor;
+import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
+import org.firstinspires.ftc.teamcode.mechanism.Lift;
+import org.firstinspires.ftc.teamcode.mechanism.MecanumDrive;
+import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
+import org.firstinspires.ftc.teamcode.sensor.VisionSensor;
 
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
+ */
 public class Robot {
-    public static Robot robot;
-    public final List<Controller> controllers;
-//    public final DistanceSensor leftDistanceSensor;
-//    public final DistanceSensor rightDistanceSensor;
-//    public final VisionSensor visionSensor;
-//    public final List<Sensor> sensors;
-    private final Telemetry telemetry;
-    public MecanumDriveController mecanumDriveController;
-    public LiftController liftController;
-    public PixelCollectorController pixelCollectorController;
-    public DroneLauncherController droneLauncherController;
-    public RobotState state;
+    private static Robot robot = null;
 
-    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
+    public final Telemetry telemetry;
+
+    // Mechanisms
+    public final MecanumDrive mecanumDrive;
+    public final DroneLauncher droneLauncher;
+    public final Lift lift;
+    public final PixelCollector leftPixelCollector, rightPixelCollector;
+    public final VisionSensor visionSensor;
+
+    /**
+     * Creates a new instance of the robot.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
+     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
+     *                           <code>false</code> otherwise.
+     */
+    private Robot(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
         robot = this;
         this.telemetry = telemetry;
 
-        mecanumDriveController = new MecanumDriveController(hardwareMap, telemetry);
-        liftController = new LiftController(hardwareMap, telemetry);
-        pixelCollectorController = new PixelCollectorController(hardwareMap, telemetry);
-        droneLauncherController = new DroneLauncherController(hardwareMap, telemetry);
-        controllers = Arrays.asList(mecanumDriveController, liftController, pixelCollectorController, droneLauncherController);
+        // Instantiate all the hardware on the robot
+        mecanumDrive = new MecanumDrive(hardwareMap, telemetry);
+        lift = new Lift(hardwareMap, telemetry);
+        droneLauncher = new DroneLauncher(hardwareMap, telemetry);
 
-//        leftDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "leftDistanceSensor");
-//        rightDistanceSensor = new DistanceSensor(hardwareMap, telemetry, "rightDistanceSensor");
-//        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor);
-//        visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
-//        sensors = Arrays.asList(leftDistanceSensor, rightDistanceSensor, visionSensor);
+        leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
+        rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
+
+        if (createVisionSensor) {
+            // Create the vision sensor
+            visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
+        } else {
+            visionSensor = null;
+        }
 
         this.telemetry.addLine("[Robot] initialized");
     }
 
-    public static Robot getRobot() {
+    /**
+     * Gets the singleton instance of the robot. The vision sensor is not created when calling
+     * this method.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
+     */
+    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry) {
+        return getInstance(hardwareMap, telemetry, false);
+    }
+
+    /**
+     * Gets the singleton instance of the robot.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
+     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
+     *                           <code>false</code> otherwise.
+     */
+    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
+        if (robot == null) {
+            robot = new Robot(hardwareMap, telemetry, createVisionSensor);
+        }
         return robot;
     }
 }

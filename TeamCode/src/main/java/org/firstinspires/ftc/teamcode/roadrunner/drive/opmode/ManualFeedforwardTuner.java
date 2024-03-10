@@ -22,8 +22,8 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 import java.util.Objects;
 
@@ -47,15 +47,9 @@ import java.util.Objects;
 public class ManualFeedforwardTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
 
-    private FtcDashboard dashboard = FtcDashboard.getInstance();
+    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     private AutoMecanumDrive drive;
-
-    enum Mode {
-        DRIVER_MODE,
-        TUNING_MODE
-    }
-
     private Mode mode;
 
     private static MotionProfile generateProfile(boolean movingForward) {
@@ -73,7 +67,8 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
-        drive = new AutoMecanumDrive(hardwareMap, telemetry);
+        Robot robot = Robot.getInstance(hardwareMap, telemetry);
+        AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry, robot.mecanumDrive);
 
         final VoltageSensor voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
@@ -149,5 +144,10 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
             telemetry.update();
         }
+    }
+
+    enum Mode {
+        DRIVER_MODE,
+        TUNING_MODE
     }
 }
