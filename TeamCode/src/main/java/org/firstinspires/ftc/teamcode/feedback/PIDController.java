@@ -3,25 +3,35 @@ package org.firstinspires.ftc.teamcode.feedback;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+/**
+ * A PID controller to calculate the output given the target state and current state.
+ */
 public class PIDController {
 
-   private final double Kp;
-   private final double Ki;
-   private final double Kd;
+    private final double Kp;
+    private final double Ki;
+    private final double Kd;
 
-    protected boolean hasRun = false;
+    private boolean hasRun = false;
 
-    protected ElapsedTime timer = new ElapsedTime();
+    private ElapsedTime timer = new ElapsedTime();
 
-    protected double previousError = 0;
+    private double previousError = 0;
 
-    protected double integralSum = 0;
+    private double integralSum = 0;
 
-    protected double derivative = 0;
+    private double derivative = 0;
 
-    protected double minIntegralBound = -1;
-    protected double maxIntegralBound = 1;
+    private double minIntegralBound = -1;
+    private double maxIntegralBound = 1;
 
+    /**
+     * Creates a new PID controller.
+     *
+     * @param Kp proportional term, multiplied directly by the state error
+     * @param Ki integral term, multiplied directly by the state error integral
+     * @param Kd derivative term, multiplied directly by the state error rate of change
+     */
     public PIDController(double Kp, double Ki, double Kd) {
         this.Kp = Kp;
         this.Ki = Ki;
@@ -29,7 +39,7 @@ public class PIDController {
     }
 
     /**
-     * calculate PID output
+     * Calculates the PID output.
      *
      * @param reference the target position
      * @param state     current system state
@@ -56,7 +66,7 @@ public class PIDController {
     }
 
     /**
-     * get the time constant
+     * Gets the time constant
      *
      * @return time constant
      */
@@ -70,22 +80,45 @@ public class PIDController {
         return dt;
     }
 
+    /**
+     * Resets the PID controller so that it behaves as though it hasn't previously run.
+     */
     public void reset() {
         hasRun = false;
         timer.reset();
 
     }
 
-    protected double calculateError(double reference, double state) {
+    /**
+     * Calculates the error between the target and the current states.
+     *
+     * @param reference the target state.
+     * @param state     the current state.
+     * @return the difference between the target state and the current state.
+     */
+    private double calculateError(double reference, double state) {
         return reference - state;
     }
 
-    protected void integrate(double error, double dt) {
+    /**
+     * Adds the current error to the integral sum.
+     *
+     * @param error the current error
+     * @param dt    the time since the PID controller last updated.
+     */
+    private void integrate(double error, double dt) {
         integralSum += ((error + previousError) / 2) * dt;
         integralSum = Range.clip(integralSum, minIntegralBound, maxIntegralBound);
     }
 
-    protected double calculateDerivative(double error, double dt) {
+    /**
+     * Calculates the derivative.
+     *
+     * @param error the current error
+     * @param dt    the time since the PID controller last updated.
+     * @return the derrivative.
+     */
+    private double calculateDerivative(double error, double dt) {
         derivative = (error - previousError) / dt;
 
         if (Double.isNaN(derivative)) {
@@ -94,5 +127,4 @@ public class PIDController {
 
         return derivative;
     }
-
 }
