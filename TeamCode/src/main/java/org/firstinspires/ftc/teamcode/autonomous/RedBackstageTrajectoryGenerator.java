@@ -43,10 +43,10 @@ public class RedBackstageTrajectoryGenerator implements TrajectoryGenerator {
     public Trajectory toSpikeMark(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         // The first step is to drive the robot from the starting position to the correct spike mark.
         switch (teamElementLocation) {
-            case LEFT:
+            case LEFT_SPIKE_MARK:
                 builder.splineToLinearHeading(INNER_SPIKE_BASE, Math.toRadians(INNER_SPIKE_BASE_HEADING));
                 break;
-            case MIDDLE:
+            case MIDDLE_SPIKE_MARK:
                 builder.splineToLinearHeading(MIDDLE_SPIKE_BASE, Math.toRadians(MIDDLE_SPIKE_BASE_HEADING));
                 break;
             default:
@@ -58,10 +58,10 @@ public class RedBackstageTrajectoryGenerator implements TrajectoryGenerator {
     @Override
     public Trajectory toArmLiftPosition(TrajectoryBuilder builder, TeamElementLocation teamElementLocation) {
         switch (teamElementLocation) {
-            case LEFT:
+            case LEFT_SPIKE_MARK:
                 builder.splineToConstantHeading(BACKDROP_CENTER_POSITION, Math.toRadians(BACKDROP_CENTER_ROTATE));
                 break;
-            case MIDDLE:
+            case MIDDLE_SPIKE_MARK:
                 builder.splineToConstantHeading(REVERSE_POSITION, Math.toRadians(0))
                         .splineTo(BACKDROP_INTERMEDIATE_POSITION, Math.toRadians(BACKDROP_MIDDLE_ROTATE))
                         .splineToConstantHeading(BACKDROP_MIDDLE_POSITION, Math.toRadians(0));
