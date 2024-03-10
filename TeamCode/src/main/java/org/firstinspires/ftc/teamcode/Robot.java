@@ -48,7 +48,6 @@ public class Robot {
         if (createVisionSensor) {
             // Create the vision sensor
             visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
-            visionSensor.initializeVisionPortal();
         } else {
             visionSensor = null;
         }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.processor;
+package org.firstinspires.ftc.teamcode.vision;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;

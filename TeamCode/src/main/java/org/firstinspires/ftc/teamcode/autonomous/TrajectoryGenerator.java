@@ -4,7 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 
-import org.firstinspires.ftc.teamcode.processor.TeamElementLocation;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 
 /**
  * Generates a Roadrunner trajectory to score a pixel on the spike mark, on the backdrop, and

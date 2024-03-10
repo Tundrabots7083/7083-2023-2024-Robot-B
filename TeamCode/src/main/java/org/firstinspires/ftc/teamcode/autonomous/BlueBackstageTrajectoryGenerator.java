@@ -6,7 +6,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 
-import org.firstinspires.ftc.teamcode.processor.TeamElementLocation;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 
 @Config
 public class BlueBackstageTrajectoryGenerator implements TrajectoryGenerator {

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanism.Lift;
 import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
-import org.firstinspires.ftc.teamcode.processor.TeamElementLocation;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 
 /**
  * Generic code to follow a Roadrunner autonomous trajectory.
