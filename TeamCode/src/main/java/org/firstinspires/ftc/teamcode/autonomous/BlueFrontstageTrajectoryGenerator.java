@@ -6,7 +6,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 
-import org.firstinspires.ftc.teamcode.processors.TeamElementLocation;
+import org.firstinspires.ftc.teamcode.processor.TeamElementLocation;
 
 @Config
 public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
@@ -27,17 +27,15 @@ public class BlueFrontstageTrajectoryGenerator implements TrajectoryGenerator {
     public static final Vector2d BACKDROP_EDGE_POSITION = new Vector2d(42, 41);
     public static final Vector2d BACKDROP_MIDDLE_POSITION = new Vector2d(42, 33);
     public static final Vector2d BACKDROP_CENTER_POSITION = new Vector2d(42, 31);
-    public static double BACKDROP_MIDDLE_ROTATE = 0;
-    public static double BACKDROP_CENTER_ROTATE = 0;
-    public static double BACKDROP_EDGE_ROTATE = 0;
-
-    public static double BACKDROP_FORWARD_DISTANCE = 3.0;
-    public static double BACKDROP_BACKWARD_DISTANCE = 3.0;
-
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_CENTER = new Vector2d(45, 16);
     public static final Vector2d PARKING_POSITION_CENTER = new Vector2d(59, 13);
     public static final Vector2d INTERMEDIATE_PARKING_POSITION_EDGE = new Vector2d(45, 59);
     public static final Vector2d PARKING_POSITION_EDGE = new Vector2d(59, 60);
+    public static double BACKDROP_MIDDLE_ROTATE = 0;
+    public static double BACKDROP_CENTER_ROTATE = 0;
+    public static double BACKDROP_EDGE_ROTATE = 0;
+    public static double BACKDROP_FORWARD_DISTANCE = 3.0;
+    public static double BACKDROP_BACKWARD_DISTANCE = 3.0;
 
     @Override
     public Pose2d getStartingPose() {

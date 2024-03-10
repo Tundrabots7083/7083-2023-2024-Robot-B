@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.util.Range;
 
 public class PIDController {
 
-    public PIDCoefficients coefficients;
+   private final double Kp;
+   private final double Ki;
+   private final double Kd;
 
     protected boolean hasRun = false;
 
@@ -20,14 +22,17 @@ public class PIDController {
     protected double minIntegralBound = -1;
     protected double maxIntegralBound = 1;
 
-    public PIDController(PIDCoefficients coefficients) {
-        this.coefficients = coefficients;
+    public PIDController(double Kp, double Ki, double Kd) {
+        this.Kp = Kp;
+        this.Ki = Ki;
+        this.Kd = Kd;
     }
 
     /**
      * calculate PID output
+     *
      * @param reference the target position
-     * @param state current system state
+     * @param state     current system state
      * @return PID output
      */
     public double calculate(double reference, double state) {
@@ -37,12 +42,12 @@ public class PIDController {
 
         double dt = getDT();
         double error = calculateError(reference, state);
-        double derivative = calculateDerivative(error,dt);
-        integrate(error,dt);
+        double derivative = calculateDerivative(error, dt);
+        integrate(error, dt);
         previousError = error;
-        return error * coefficients.Kp
-                + integralSum * coefficients.Ki
-                + derivative * coefficients.Kd;
+        return error * Kp
+                + integralSum * Ki
+                + derivative * Kd;
     }
 
     public void setIntegrationBounds(double min, double max) {
@@ -52,6 +57,7 @@ public class PIDController {
 
     /**
      * get the time constant
+     *
      * @return time constant
      */
     public double getDT() {
