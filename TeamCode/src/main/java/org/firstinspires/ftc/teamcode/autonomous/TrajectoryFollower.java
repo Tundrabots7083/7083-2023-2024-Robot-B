@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
+import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
 import org.firstinspires.ftc.teamcode.mechanism.Lift;
 import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
 import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
@@ -73,7 +75,7 @@ public class TrajectoryFollower {
      * @param trajectoryGenerator the trajectory generator for the autonomous period.
      * @param parkingLocation     Where to park the robot.
      */
-    public void followTrajectory(TrajectoryGenerator trajectoryGenerator, StartingLocation startingLocation, ParkingLocation parkingLocation) {
+    public void followTrajectory(TrajectoryGenerator trajectoryGenerator, RobotStartingLocation startingLocation, RobotParkingLocation parkingLocation) {
         ElapsedTime timer = new ElapsedTime();
         Pose2d startingPose = trajectoryGenerator.getStartingPose();
 
@@ -123,7 +125,7 @@ public class TrajectoryFollower {
         // Move the lift to the scoring position
         telemetry.addLine("Raise the lift and arm");
         telemetry.update();
-        if (startingLocation == StartingLocation.BACKSTAGE) {
+        if (startingLocation == RobotStartingLocation.BACKSTAGE) {
             robot.lift.setTarget(Lift.Position.AUTONOMOUS_BACKSTAGE);
         } else {
             robot.lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
@@ -164,7 +166,7 @@ public class TrajectoryFollower {
 
         // Raise the lift if we are on the backstage, so that the black noodle doesn't de-score
         // the pixel
-        if (startingLocation == StartingLocation.BACKSTAGE) {
+        if (startingLocation == RobotStartingLocation.BACKSTAGE) {
             telemetry.addLine("Raise the lift and arm out of the way");
             telemetry.update();
             robot.lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
@@ -193,14 +195,14 @@ public class TrajectoryFollower {
         }
 
         // If not parking in front of the backdrop, drive to the parking location
-        if (parkingLocation == ParkingLocation.BACKDROP) {
+        if (parkingLocation == RobotParkingLocation.IN_FRONT_OF_BACKDROP) {
             telemetry.addLine("Park in front of the backdrop");
         } else {
             // Drive to the parking spot
             telemetry.addLine("Drive to the parking spot");
             telemetry.update();
             Trajectory toParkingSpot;
-            if (parkingLocation == ParkingLocation.EDGE) {
+            if (parkingLocation == RobotParkingLocation.EDGE_OF_FIELD) {
                 toParkingSpot = trajectoryGenerator.toParkingSpotEdge(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
             } else {
                 toParkingSpot = trajectoryGenerator.toParkingSpotCenter(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
