@@ -46,6 +46,7 @@ public class TrajectoryFollower {
         this.telemetry = telemetry;
         this.delayOpModeInMillis = delayOpModeInMillis;
 
+        Robot.init(hardwareMap, telemetry);
         robot = Robot.getInstance(hardwareMap, telemetry, true);
 
         // Create the drivetrain and set the initial pose

@@ -32,6 +32,7 @@ public class PrimaryTeleOp extends OpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
+        Robot.init(hardwareMap, telemetry);
         robot = Robot.getInstance(hardwareMap, telemetry);
 
         droneLauncherController = new DroneLauncherController(robot.droneLauncher, telemetry);

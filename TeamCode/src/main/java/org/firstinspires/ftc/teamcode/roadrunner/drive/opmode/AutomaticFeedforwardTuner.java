@@ -48,6 +48,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
 
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        Robot.init(hardwareMap, telemetry);
         Robot robot = Robot.getInstance(hardwareMap, telemetry);
         AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry, robot.mecanumDrive);
 

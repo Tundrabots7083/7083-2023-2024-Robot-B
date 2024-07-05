@@ -32,6 +32,7 @@ public class MaxAngularVeloTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        Robot.init(hardwareMap, telemetry);
         Robot robot = Robot.getInstance(hardwareMap, telemetry);
         AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry, robot.mecanumDrive);
 
