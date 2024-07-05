@@ -23,6 +23,7 @@ public class LocalizationTest extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
+        Robot.init(hardwareMap, telemetry);
         Robot robot = Robot.getInstance(hardwareMap, telemetry);
         AutoMecanumDrive drive = new AutoMecanumDrive(hardwareMap, telemetry, robot.mecanumDrive);
 

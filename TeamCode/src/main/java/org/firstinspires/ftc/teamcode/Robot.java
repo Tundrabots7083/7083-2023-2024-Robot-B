@@ -56,6 +56,35 @@ public class Robot {
     }
 
     /**
+     * Initializes the hardware mechanisms for the robot. This creates the singleton that is retrieved
+     * using the <code>getInstance</code> method.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
+     *
+     * @return the robot instance
+     */
+    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry) {
+        return init(hardwareMap, telemetry, false);
+    }
+
+    /**
+     * Initializes the hardware mechanisms for the robot. This creates the singleton that is retrieved
+     * using the <code>getInstance</code> method.
+     *
+     * @param hardwareMap hardware map for the robot.
+     * @param telemetry   telemetry class for displaying data.
+     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
+     *                           <code>false</code> otherwise.
+     *
+     * @return the robot instance
+     */
+    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
+        robot = new Robot(hardwareMap, telemetry, createVisionSensor);
+        return robot;
+    }
+
+    /**
      * Gets the singleton instance of the robot. The vision sensor is not created when calling
      * this method.
      *
@@ -73,10 +102,12 @@ public class Robot {
      * @param telemetry   telemetry class for displaying data.
      * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
      *                           <code>false</code> otherwise.
+     *
+     * @return the robot instance
      */
     public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
         if (robot == null) {
-            robot = new Robot(hardwareMap, telemetry, createVisionSensor);
+            robot = Robot.init(hardwareMap, telemetry, createVisionSensor);
         }
         return robot;
     }
