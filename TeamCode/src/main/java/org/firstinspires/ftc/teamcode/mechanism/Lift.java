@@ -32,16 +32,20 @@ public class Lift implements Mechanism {
     public static double ARM_MAX_ACCELERATION = 3000;
     public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.16;
-    DcMotorEx leftMotor;
-    DcMotorEx rightMotor;
-    DcMotorEx armMotor;
-    PIDController leftController;
-    PIDController rightController;
-    PIDController armController;
-    MotionProfile liftProfile;
-    MotionProfile armProfile;
-    Position targetPosition;
-    Telemetry telemetry;
+    public static double ARM_INTAKE_POSITION_ERROR = 25;
+    public static double LIFT_INTAKE_POSITION_ERROR = 10;
+
+    private final DcMotorEx leftMotor;
+    private final DcMotorEx rightMotor;
+    private final DcMotorEx armMotor;
+    private final PIDController leftController;
+    private final PIDController rightController;
+    private final PIDController armController;
+    private MotionProfile liftProfile;
+    private MotionProfile armProfile;
+    private final Telemetry telemetry;
+
+    private Position targetPosition = Position.INTAKE;
 
     /**
      * Creates a new Lift hardware mechanism that controls both the two lift motors and the arm
@@ -93,7 +97,9 @@ public class Lift implements Mechanism {
     }
 
     public void setTarget(Position position) {
-        this.targetPosition = position;
+        targetPosition = position;
+        telemetry.addData("[LIFT] Set Position", targetPosition.liftPosition);
+        telemetry.addData("[ARM] Set Position", targetPosition.armPosition);
 
         // Build the motion profile to move the lift to the target position
         liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
@@ -150,8 +156,12 @@ public class Lift implements Mechanism {
         // Get the target position from our motion profile
         double targetPosition = liftProfile.calculatePosition();
 
+        // Get the error between the two positions
+        double error = Math.abs(leftPosition - targetPosition);
+
+        // TODO: this is wrong. It needs to be "close" to the intake position and then cut off power
         double leftPower, rightPower;
-        if (targetPosition == Position.INTAKE.liftPosition) {
+        if (this.targetPosition == Position.INTAKE && error < LIFT_INTAKE_POSITION_ERROR) {
             leftPower = 0;
             rightPower = 0;
         } else {
@@ -182,8 +192,11 @@ public class Lift implements Mechanism {
         // Get the target position from our motion profile
         double targetPosition = armProfile.calculatePosition();
 
+        // Get the error between the two positions
+        double error = Math.abs(armPosition - targetPosition);
+
         double armPower;
-        if (targetPosition == Position.INTAKE.armPosition) {
+        if (this.targetPosition == Position.INTAKE && error < ARM_INTAKE_POSITION_ERROR) {
             armPower = 0;
         } else {
             // Calculate the power for the arm motor using the PID controller
