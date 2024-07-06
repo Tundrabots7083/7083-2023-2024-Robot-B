@@ -32,7 +32,7 @@ public class Lift implements Mechanism {
     public static double ARM_MAX_ACCELERATION = 3000;
     public static double ARM_MAX_VELOCITY = 5000;
     public static double MINIMUM_ARM_POWER = 0.16;
-    public static double ARM_INTAKE_POSITION_ERROR = 25;
+    public static double ARM_INTAKE_POSITION_ERROR = 10;
     public static double LIFT_INTAKE_POSITION_ERROR = 10;
 
     private final DcMotorEx leftMotor;
