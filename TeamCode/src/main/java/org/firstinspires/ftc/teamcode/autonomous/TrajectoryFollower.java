@@ -11,9 +11,9 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.AutoMecanumDrive;
 import org.firstinspires.ftc.teamcode.field.RobotParkingLocation;
 import org.firstinspires.ftc.teamcode.field.RobotStartingLocation;
+import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.mechanism.Lift;
 import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
-import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 
 /**
  * Generic code to follow a Roadrunner autonomous trajectory.
@@ -23,7 +23,7 @@ public class TrajectoryFollower {
     public static long PIXEL_SPIKE_MARK_TIMER = 2500;
     public static long COLLECTOR_CLOSED_TIMER = 500;
     public static long PIXEL_BACKDROP_TIMER = 1750;
-    public static long LIFT_EXTRA_WAIT_TIME = 500;
+    public static long LIFT_EXTRA_WAIT_TIME = 1000;
 
     private final Telemetry telemetry;
     private final long delayOpModeInMillis;
@@ -46,7 +46,7 @@ public class TrajectoryFollower {
         this.telemetry = telemetry;
         this.delayOpModeInMillis = delayOpModeInMillis;
 
-        Robot.init(hardwareMap, telemetry);
+        Robot.init(hardwareMap, telemetry, true);
         robot = Robot.getInstance(hardwareMap, telemetry, true);
 
         // Create the drivetrain and set the initial pose
@@ -85,7 +85,7 @@ public class TrajectoryFollower {
         TeamElementLocation element = robot.visionSensor.getTeamElementLocation();
         telemetry.addData("Element", element);
         telemetry.update();
-        //visionSensor.close();
+//        visionSensor.close(); // Can't call the close method due to a bug in the FTC SDK
 
         // Delay the start of the OpMode the requested number of milliseconds
         sleep(delayOpModeInMillis);
@@ -133,11 +133,14 @@ public class TrajectoryFollower {
         }
         while (!robot.lift.isAtTarget()) {
             robot.lift.update();
+            telemetry.update();
         }
-        // Stop the lift from banging into the backdrop
+        // Wait for the lift to reach the scoring position. This accounts for some "oddities"
+        // in the motion profiler used for the lift and arm
         timer.reset();
         while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
             robot.lift.update();
+            telemetry.update();
         }
 
         // Move to the backdrop
@@ -145,6 +148,7 @@ public class TrajectoryFollower {
         telemetry.update();
         Trajectory toBackdropPosition = trajectoryGenerator.toBackdropPosition(drive.trajectoryBuilder(drive.getPoseEstimate(), true), element);
         drive.followTrajectory(toBackdropPosition);
+        robot.lift.update();
 
         // Score the yellow pixel
         telemetry.addLine("Score the yellow pixel");
@@ -163,21 +167,25 @@ public class TrajectoryFollower {
         timer.reset();
         while (timer.milliseconds() < COLLECTOR_CLOSED_TIMER) {
             robot.rightPixelCollector.update();
+            robot.lift.update();
         }
 
         // Raise the lift if we are on the backstage, so that the black noodle doesn't de-score
         // the pixel
         if (startingLocation == RobotStartingLocation.BACKSTAGE) {
             telemetry.addLine("Raise the lift and arm out of the way");
-            telemetry.update();
             robot.lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
+            telemetry.update();
             while (!robot.lift.isAtTarget()) {
                 robot.lift.update();
+                telemetry.update();
             }
-            // Stop the lift from banging into the backdrop
+            // Wait for the lift to be raised. This accounts for some "oddities"
+            // in the motion profiler used for the lift and arm
             timer.reset();
             while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
                 robot.lift.update();
+                telemetry.update();
             }
         }
 
@@ -189,10 +197,18 @@ public class TrajectoryFollower {
 
         // Lower the lift and arm to the pixel intake position
         telemetry.addLine("Lower the lift and arm");
-        telemetry.update();
         robot.lift.setTarget(Lift.Position.INTAKE);
+        telemetry.update();
         while (!robot.lift.isAtTarget()) {
             robot.lift.update();
+            telemetry.update();
+        }
+        // Wait for the lift to lower. This accounts for some "oddities" in the motion profiler
+        // used for the lift and arm
+        timer.reset();
+        while (timer.milliseconds() < LIFT_EXTRA_WAIT_TIME) {
+            robot.lift.update();
+            telemetry.update();
         }
 
         // If not parking in front of the backdrop, drive to the parking location
@@ -210,5 +226,9 @@ public class TrajectoryFollower {
             }
             drive.followTrajectory(toParkingSpot);
         }
+
+        telemetry.addLine("Autonomous Completed");
+        telemetry.update();
     }
 }
+
