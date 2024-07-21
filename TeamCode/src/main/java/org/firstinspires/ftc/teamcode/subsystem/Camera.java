@@ -7,13 +7,23 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.field.TeamElementLocation;
 import org.firstinspires.ftc.teamcode.sensor.VisionSensor;
 
+/**
+ * WebCam attached to the robot
+ */
 public class Camera extends Subsystem {
     private final VisionSensor visionSensor;
 
-    public Camera(HardwareMap hardwareMap, Telemetry telemetry) {
+    /**
+     * Creates a new camera.
+     *
+     * @param deviceName  name of the camera device
+     * @param hardwareMap mapping of the hardware on the robot
+     * @param telemetry   telemetry to be used for outputing data.
+     */
+    public Camera(String deviceName, HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
 
-        this.visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
+        this.visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, deviceName), telemetry);
     }
 
     /**

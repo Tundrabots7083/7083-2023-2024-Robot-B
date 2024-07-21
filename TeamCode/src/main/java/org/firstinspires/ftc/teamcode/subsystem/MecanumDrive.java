@@ -11,9 +11,18 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Drive subsytem for the robot
+ */
 public class MecanumDrive extends Subsystem {
     private final MotorEx rightFront, rightRear, leftFront, leftRear;
 
+    /**
+     * Instantiates a new drive subystem for the robot
+     *
+     * @param hardwareMap the hardware mapping for the robot
+     * @param telemetry   the telemetry used for outputing data
+     */
     public MecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
 

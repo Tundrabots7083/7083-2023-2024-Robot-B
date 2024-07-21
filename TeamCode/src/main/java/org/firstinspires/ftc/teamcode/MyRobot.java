@@ -19,12 +19,15 @@ public class MyRobot {
 
     public final Telemetry telemetry;
 
-    // Mechanisms
+    // Subsystems
     public final MecanumDrive mecanumDrive;
+    public final Arm arm;
+    public final Lift lift;
     public final DroneLauncher droneLauncher;
-    public final ScoringSubsystem scoringSubsystem;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
     public final Camera webCam;
+
+    public final ScoringSubsystem scoringSubsystem;
 
     /**
      * Creates a new instance of the robot.
@@ -39,15 +42,14 @@ public class MyRobot {
 
         // Instantiate all the hardware on the robot
         mecanumDrive = new MecanumDrive(hardwareMap, telemetry);
-        Lift lift = new Lift(hardwareMap, telemetry);
-        Arm arm = new Arm(hardwareMap, telemetry);
-        scoringSubsystem = new ScoringSubsystem(lift, arm, telemetry);
-        droneLauncher = new DroneLauncher(hardwareMap, telemetry);
-
+        arm = new Arm(hardwareMap, telemetry);
+        lift = new Lift(hardwareMap, telemetry);
         leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
         rightPixelCollector = new PixelCollector(PixelCollector.Location.RIGHT, hardwareMap, telemetry);
+        droneLauncher = new DroneLauncher(hardwareMap, telemetry);
+        webCam = opModeType == OpModeType.AUTO ? new Camera("Webcam Front", hardwareMap, telemetry) : null;
 
-        webCam = opModeType == OpModeType.AUTO ? new Camera(hardwareMap, telemetry) : null;
+        scoringSubsystem = new ScoringSubsystem(hardwareMap, telemetry);
 
         this.telemetry.addLine("[Robot] initialized");
     }

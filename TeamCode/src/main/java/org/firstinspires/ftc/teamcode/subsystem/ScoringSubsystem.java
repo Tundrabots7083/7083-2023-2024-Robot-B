@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -15,15 +16,14 @@ public class ScoringSubsystem extends Subsystem {
     /**
      * Creates a new subsystem that uses the supplied telemetry for displaying output.
      *
-     * @param lift lift to move the pixel collector up and down
-     * @param arm  arm to flip the pixel collector to the scoring position or to the intake position
+     * @param hardwareMap the mapping of hardware for the robot
      * @param telemetry the telemetry to use for output.
      */
-    public ScoringSubsystem(Lift lift, Arm arm, Telemetry telemetry) {
+    public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
 
-        this.lift = lift;
-        this.arm = arm;
+        this.lift = new Lift(hardwareMap, telemetry);
+        this.arm = new Arm(hardwareMap, telemetry);
     }
 
     /**
