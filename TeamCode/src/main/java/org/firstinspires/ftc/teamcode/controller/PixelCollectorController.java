@@ -1,59 +1,93 @@
 package org.firstinspires.ftc.teamcode.controller;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
+import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
+/**
+ * Controller for a pixel collector. This class takes input from the gamepads and translates
+ * them to behavior for the managed pixel controller.
+ */
+@Config
 public class PixelCollectorController implements Controller {
+    public static long FLAP_DELAY = 250;
+    public static long SPINNER_DELAY = 250;
 
-    private final Telemetry telemetry;
-    private final Gamepad previousGamepad2 = new Gamepad();
-    PixelCollector leftPixelCollector;
-    PixelCollector rightPixelCollector;
+    private final PixelCollector pixelCollector;
+    private long flapTime;
+    private long spinnerTime;
 
     /**
      * Creates a new controller to manage the left and right pixel collectors.
      *
-     * @param leftPixelCollector  the left pixel collector
-     * @param rightPixelCollector the right pixel collector
-     * @param telemetry           the telemetry used to display data on the driver station
+     * @param pixelCollector the pixel collector to control.
      */
-    public PixelCollectorController(PixelCollector leftPixelCollector, PixelCollector rightPixelCollector, Telemetry telemetry) {
-        this.telemetry = telemetry;
-        this.leftPixelCollector = leftPixelCollector;
-        this.rightPixelCollector = rightPixelCollector;
+    public PixelCollectorController(PixelCollector pixelCollector) {
+        this.pixelCollector = pixelCollector;
     }
 
-    private void setState(PixelCollector pixelCollector, boolean intakePressed, boolean previousIntakePressed, boolean depositingPressed, boolean previousDepositingPressed) {
-        String collectorName = pixelCollector == leftPixelCollector ? "[LEFT PC] " : "[RIGHT PC] ";
+    /**
+     * Updates the flap position and spinner speed based on the buttons pressed on the gamepad.
+     *
+     * @param intakePressed     the intake button is pressed
+     * @param depositingPressed the depositing button is pressed
+     */
+    private void setState(boolean intakePressed, boolean depositingPressed) {
+        Telemetry telemetry = MyRobot.getInstance().telemetry;
+        String collectorName = "[PC " + pixelCollector.getLocation() + "]";
 
-        if (!previousIntakePressed && intakePressed) {
-            telemetry.addLine(collectorName + "Set to collecting");
-            // Toggle collection on or off
-            pixelCollector.setState(PixelCollector.PixelCollectorState.COLLECTING);
-        } else if (!previousDepositingPressed && depositingPressed) {
-            telemetry.addLine(collectorName + "Set to depositing");
-            pixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
-            // Toggle depositing on or off
-        } else if (!intakePressed && !depositingPressed && (previousIntakePressed || previousDepositingPressed)) {
-            telemetry.addLine(collectorName + "Set to closed");
-            pixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+        if (intakePressed) {
+            // If the flap is not opened, and then star the spinner. If opening the flap, wait
+            // before starting the spinner to ensure there is enough time for the flap to open
+            // before starting the spinner.
+            if (pixelCollector.getFlapPosition() != PixelCollector.FLAP_OPENED_POSITION) {
+                pixelCollector.setFlapPosition(PixelCollector.FLAP_OPENED_POSITION);
+                flapTime = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - flapTime > FLAP_DELAY) {
+                pixelCollector.setSpinnerPower(PixelCollector.SPINNER_COLLECTING_POWER);
+            }
+        } else if (depositingPressed) {
+            // If the flap is not opened, and then star the spinner. If opening the flap, wait
+            // before starting the spinner to ensure there is enough time for the flap to open
+            // before starting the spinner.
+            if (pixelCollector.getFlapPosition() != PixelCollector.FLAP_OPENED_POSITION) {
+                pixelCollector.setFlapPosition(PixelCollector.FLAP_OPENED_POSITION);
+                flapTime = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - flapTime > FLAP_DELAY) {
+                pixelCollector.setSpinnerPower(PixelCollector.SPINNER_DEPOSITING_POWER);
+            }
+        } else {
+            // Turn off the spinner and close the flap. Ensure the spinner is stopped before
+            // closing the flap.
+            if (pixelCollector.getSpinnerPower() != PixelCollector.SPINNER_OFF_POWER) {
+                pixelCollector.setSpinnerPower(PixelCollector.SPINNER_OFF_POWER);
+                spinnerTime = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - spinnerTime > SPINNER_DELAY &&
+                    pixelCollector.getFlapPosition() != PixelCollector.FLAP_CLOSED_POSITION) {
+                pixelCollector.setFlapPosition(PixelCollector.FLAP_CLOSED_POSITION);
+                flapTime = System.currentTimeMillis();
+            }
         }
     }
 
+    /**
+     * Update the state of the pixel collector.
+     *
+     * @param gamepad1 Gamepad1
+     * @param gamepad2 Gamepad2
+     */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
-        // Gamepad 2 will control both pixel collectors
-        // dpad down and dpad right will control the left pixel collector's state
-        // a and b will be used for the right pixel collector's state
-
-        setState(leftPixelCollector, gamepad2.dpad_down, previousGamepad2.dpad_down, gamepad2.dpad_right, previousGamepad2.dpad_right);
-        setState(rightPixelCollector, gamepad2.a, previousGamepad2.a, gamepad2.b, previousGamepad2.b);
-
-        leftPixelCollector.execute();
-        rightPixelCollector.execute();
-
-        previousGamepad2.copy(gamepad2);
+        switch (pixelCollector.getLocation()) {
+            case LEFT:
+                setState(gamepad2.dpad_down, gamepad2.dpad_right);
+                break;
+            case RIGHT:
+                setState(gamepad2.a, gamepad2.b);
+                break;
+        }
     }
 }

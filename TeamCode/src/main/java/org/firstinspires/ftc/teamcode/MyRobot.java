@@ -3,12 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
-import org.firstinspires.ftc.teamcode.mechanism.Lift;
-import org.firstinspires.ftc.teamcode.mechanism.MecanumDrive;
-import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
-import org.firstinspires.ftc.teamcode.sensor.VisionSensor;
+import org.firstinspires.ftc.teamcode.subsystem.Arm;
+import org.firstinspires.ftc.teamcode.subsystem.Camera;
+import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystem.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
@@ -22,35 +22,31 @@ public class MyRobot {
     public final MecanumDrive mecanumDrive;
     public final DroneLauncher droneLauncher;
     public final Lift lift;
+    public final Arm arm;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
-    public final VisionSensor visionSensor;
+    public final Camera webCam;
 
     /**
      * Creates a new instance of the robot.
      *
      * @param hardwareMap hardware map for the robot.
      * @param telemetry   telemetry class for displaying data.
-     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
-     *                           <code>false</code> otherwise.
+     * @param opModeType  Autonomous or TeleOp OpMode
      */
-    private MyRobot(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
+    private MyRobot(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opModeType) {
         robot = this;
         this.telemetry = telemetry;
 
         // Instantiate all the hardware on the robot
         mecanumDrive = new MecanumDrive(hardwareMap, telemetry);
         lift = new Lift(hardwareMap, telemetry);
+        arm = new Arm(hardwareMap, telemetry);
         droneLauncher = new DroneLauncher(hardwareMap, telemetry);
 
-        leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
-        rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
+        leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
+        rightPixelCollector = new PixelCollector(PixelCollector.Location.RIGHT, hardwareMap, telemetry);
 
-        if (createVisionSensor) {
-            // Create the vision sensor
-            visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
-        } else {
-            visionSensor = null;
-        }
+        webCam = opModeType == OpModeType.AUTO ? new Camera(hardwareMap, telemetry) : null;
 
         this.telemetry.addLine("[Robot] initialized");
     }
@@ -61,11 +57,10 @@ public class MyRobot {
      *
      * @param hardwareMap hardware map for the robot.
      * @param telemetry   telemetry class for displaying data.
-     *
      * @return the robot instance
      */
     public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry) {
-        return init(hardwareMap, telemetry, false);
+        return init(hardwareMap, telemetry, OpModeType.TELEOP);
     }
 
     /**
@@ -74,20 +69,29 @@ public class MyRobot {
      *
      * @param hardwareMap hardware map for the robot.
      * @param telemetry   telemetry class for displaying data.
-     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
-     *                           <code>false</code> otherwise.
-     *
+     * @param opmodeType  Autonomous or TeleOp OpMode.
      * @return the robot instance
      */
-    public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
-        robot = new MyRobot(hardwareMap, telemetry, createVisionSensor);
+    public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opmodeType) {
+        robot = new MyRobot(hardwareMap, telemetry, opmodeType);
+        return robot;
+    }
+
+
+    /**
+     * Gets the singleton instance of the robot.
+     *
+     * @return the robot instance.
+     */
+    public static MyRobot getInstance() {
         return robot;
     }
 
     /**
-     * Gets the singleton instance of the robot.
+     * Type of OpMode the robot is being instantiated for.
      */
-    public static MyRobot getInstance() {
-        return robot;
+    public enum OpModeType {
+        AUTO,
+        TELEOP
     }
 }

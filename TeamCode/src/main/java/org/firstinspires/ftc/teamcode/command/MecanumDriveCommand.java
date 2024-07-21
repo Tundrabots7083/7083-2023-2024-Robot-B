@@ -1,37 +1,31 @@
-package org.firstinspires.ftc.teamcode.controller;
+package org.firstinspires.ftc.teamcode.command;
 
-import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MyRobot;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 
-/**
- * A controller for a mecanum drive chassis.
- */
-@Config
-public class MecanumDriveController implements Controller {
-
+public class MecanumDriveCommand extends CommandBase {
     public static double MAX_TURNING_MULT = 0.75; //Max turning speed multiplier
     public static double MAX_DRIVE_MULT = 1; //Max drive speed multiplier
     public static double SLOW_TURNING_MULT = 0.6; //Slow turning speed multiplier
     public static double SLOW_DRIVE_MULT = 0.75; //Slow drive speed multiplier
+
     private final MecanumDrive mecanumDrive;
-    private double driveGain;
-    private double turnGain;
+    private final Gamepad gamepad1;
+
+    private double driveGain = MAX_DRIVE_MULT;
+    private double turnGain = MAX_TURNING_MULT;
 
     private boolean bumperPressed = false;
 
-    /**
-     * Creates a controller for a mecanum drive chassis.
-     *
-     * @param mecanumDrive the mecanum drive to control.
-     */
-    public MecanumDriveController(MecanumDrive mecanumDrive) {
+    public MecanumDriveCommand(MecanumDrive mecanumDrive, Gamepad gamepad1, Gamepad gamepad2) {
         this.mecanumDrive = mecanumDrive;
-        this.driveGain = MAX_DRIVE_MULT;
-        this.turnGain = MAX_TURNING_MULT;
+        this.gamepad1 = gamepad1;
+
+        addRequirements(mecanumDrive);
     }
 
     private void setGain(Gamepad gamepad) {
@@ -42,18 +36,20 @@ public class MecanumDriveController implements Controller {
         bumperPressed = gamepad.left_bumper;
     }
 
-    public void execute(Gamepad gamepad1, Gamepad gamepad2) {
+    @Override
+    public void execute() {
         Telemetry telemetry = MyRobot.getInstance().telemetry;
 
         setGain(gamepad1);
 
-        double x = gamepad1.left_stick_x * driveGain;
-        double y = -gamepad1.left_stick_y * driveGain;
-        double turn = -gamepad1.right_stick_x * turnGain;
-        telemetry.addData("[DRIVE] X", x);
-        telemetry.addData("[DRIVE] Y", y);
-        telemetry.addData("[DRIVE] Turn", turn);
+        double xValue = gamepad1.left_stick_x * driveGain;
+        double yValue = -gamepad1.left_stick_y * driveGain;
+        double turnValue = -gamepad1.right_stick_x * turnGain;
 
-        mecanumDrive.drive(x, y, turn);
+        mecanumDrive.drive(xValue, yValue, turnValue);
+
+        telemetry.addData("[DRIVE] X", xValue);
+        telemetry.addData("[DRIVE] Y", yValue);
+        telemetry.addData("[DRIVE] Turn", turnValue);
     }
 }

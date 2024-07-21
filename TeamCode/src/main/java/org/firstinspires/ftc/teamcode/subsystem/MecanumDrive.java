@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.mechanism;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -12,38 +11,23 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * MecanumDrive implements the drive chassis for the robot.
- */
-@Config
-public class MecanumDrive implements Mechanism {
-    private final Telemetry telemetry;
-    private final String deviceName;
-    private final String description;
-    private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
+public class MecanumDrive extends Subsystem {
+    private final MotorEx rightFront, rightRear, leftFront, leftRear;
 
-    /**
-     * MecanumDrive initializes a new mecanum drive train.
-     *
-     * @param hardwareMap the hardware map that contains the drone launcher hardware.
-     * @param telemetry   the telemetry used to display data on the driver station.
-     */
     public MecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
-        this.telemetry = telemetry;
-        this.deviceName = "driveTrain";
-        this.description = "Mecanum Drive Train";
+        super(telemetry);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+        leftFront = new MotorEx(hardwareMap, "leftFront");
+        leftRear = new MotorEx(hardwareMap, "leftRear");
+        rightFront = new MotorEx(hardwareMap, "rightFront");
+        rightRear = new MotorEx(hardwareMap, "rightRear");
 
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setInverted(true);
+        leftRear.setInverted(true);
 
-        Collection<DcMotorEx> motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
+        Collection<MotorEx> motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 
-        for (DcMotorEx motor : motors) {
+        for (MotorEx motor : motors) {
             initMotor(motor);
         }
     }
@@ -53,11 +37,12 @@ public class MecanumDrive implements Mechanism {
      *
      * @param motor the motor to be initialized.
      */
-    private void initMotor(DcMotorEx motor) {
-        MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
+    private void initMotor(MotorEx motor) {
+        DcMotorEx dcMotorEx = motor.motorEx;
+        MotorConfigurationType motorConfigurationType = dcMotorEx.getMotorType().clone();
         motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
-        motor.setMotorType(motorConfigurationType);
-        motor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        dcMotorEx.setMotorType(motorConfigurationType);
+        motor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
     }
 
     /**
@@ -137,10 +122,10 @@ public class MecanumDrive implements Mechanism {
         rightRearPower /= maxPower;
 
         // Now that the power have been normalized, go ahead and set power for the motors.
-        leftFront.setPower(leftFrontPower);
-        leftRear.setPower(leftRearPower);
-        rightFront.setPower(rightFrontPower);
-        rightRear.setPower(rightRearPower);
+        leftFront.set(leftFrontPower);
+        leftRear.set(leftRearPower);
+        rightFront.set(rightFrontPower);
+        rightRear.set(rightRearPower);
 
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         telemetry.addData("[DRIVE] Left Front Power", leftFrontPower);

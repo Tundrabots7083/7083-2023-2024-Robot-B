@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechanism.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.Lift;
 
 @TeleOp(name = "Lift Motor Test", group = "test")
 public class LiftTest extends OpMode {
@@ -22,7 +22,7 @@ public class LiftTest extends OpMode {
 
     @Override
     public void loop() {
-        lift.overrideLiftPower(-Lift.LIFT_KG);
+        lift.setPower(-Lift.KG, -Lift.KG);
         telemetry.update();
     }
 }

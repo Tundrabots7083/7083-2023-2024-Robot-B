@@ -60,6 +60,12 @@ public class PIDController {
                 + derivative * Kd;
     }
 
+    /**
+     * Sets the maximum and minimum values for the integration bounds.
+     *
+     * @param min the minimum value for the integration component.
+     * @param max the maximum value for the integration component.
+     */
     public void setIntegrationBounds(double min, double max) {
         minIntegralBound = min;
         maxIntegralBound = max;

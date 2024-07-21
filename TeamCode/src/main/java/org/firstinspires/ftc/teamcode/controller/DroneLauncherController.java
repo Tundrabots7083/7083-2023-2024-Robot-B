@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.controller;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
+import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 
 /**
  * DroneLauncherController processes the input to tell when to position the arm to the correct
@@ -11,17 +12,14 @@ import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
  */
 public class DroneLauncherController implements Controller {
     private final DroneLauncher droneLauncher;
-    private final Telemetry telemetry;
 
     /**
      * Initializes the drone launcher controller.
      *
      * @param droneLauncher the drone launcher to be controlled.
-     * @param telemetry     the telemetry used to display data on the driver station.
      */
-    public DroneLauncherController(DroneLauncher droneLauncher, Telemetry telemetry) {
+    public DroneLauncherController(DroneLauncher droneLauncher) {
         this.droneLauncher = droneLauncher;
-        this.telemetry = telemetry;
     }
 
     /**
@@ -33,6 +31,8 @@ public class DroneLauncherController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
+        Telemetry telemetry = MyRobot.getInstance().telemetry;
+
         if (gamepad2.x) {
             droneLauncher.setToLaunchAngle();
             telemetry.addLine("[Drone] Set to Launch Angle");

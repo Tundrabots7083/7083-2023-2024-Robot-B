@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.MyRobot;
 import org.firstinspires.ftc.teamcode.controller.Controller;
 import org.firstinspires.ftc.teamcode.controller.DroneLauncherController;
-import org.firstinspires.ftc.teamcode.controller.LiftController;
+import org.firstinspires.ftc.teamcode.controller.ScoreSubsystemController;
 import org.firstinspires.ftc.teamcode.controller.MecanumDriveController;
 import org.firstinspires.ftc.teamcode.controller.PixelCollectorController;
 
@@ -22,9 +22,10 @@ public class PrimaryTeleOp extends OpMode {
     private final Gamepad currentGamepad2 = new Gamepad();
     private MyRobot robot;
     private DroneLauncherController droneLauncherController;
-    private LiftController liftController;
+    private ScoreSubsystemController liftController;
     private MecanumDriveController mecanumDriveController;
-    private PixelCollectorController pixelCollectorController;
+    private PixelCollectorController leftPixelCollectorController;
+    private PixelCollectorController rightPixelCollectorController;
     private Collection<Controller> controllers;
 
     @Override
@@ -34,12 +35,18 @@ public class PrimaryTeleOp extends OpMode {
 
         robot = MyRobot.init(hardwareMap, telemetry);
 
-        droneLauncherController = new DroneLauncherController(robot.droneLauncher, telemetry);
-        liftController = new LiftController(robot.lift, telemetry);
-        mecanumDriveController = new MecanumDriveController(robot.mecanumDrive, telemetry);
-        pixelCollectorController = new PixelCollectorController(robot.leftPixelCollector, robot.rightPixelCollector, telemetry);
-        controllers = Arrays.asList(droneLauncherController, liftController, mecanumDriveController, pixelCollectorController);
-
+        droneLauncherController = new DroneLauncherController(robot.droneLauncher);
+        liftController = new ScoreSubsystemController(robot.lift, robot.arm);
+        mecanumDriveController = new MecanumDriveController(robot.mecanumDrive);
+        leftPixelCollectorController = new PixelCollectorController(robot.leftPixelCollector);
+        rightPixelCollectorController = new PixelCollectorController(robot.rightPixelCollector);
+        controllers = Arrays.asList(
+                droneLauncherController,
+                liftController,
+                mecanumDriveController,
+                leftPixelCollectorController,
+                rightPixelCollectorController
+        );
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();

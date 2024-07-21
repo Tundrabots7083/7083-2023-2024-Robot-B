@@ -84,7 +84,7 @@ public final class AutoMecanumDrive {
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(Params.minProfileAccel, Params.maxProfileAccel);
 
-    public final org.firstinspires.ftc.teamcode.mechanism.MecanumDrive drive;
+    public final org.firstinspires.ftc.teamcode.subsystem.MecanumDrive drive;
 
     public final VoltageSensor voltageSensor;
 
