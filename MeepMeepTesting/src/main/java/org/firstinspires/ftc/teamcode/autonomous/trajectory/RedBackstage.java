@@ -8,7 +8,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.MyRobot;
 import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.mechanism.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
 
 /**
  * Red Alliance backstage trajectories
@@ -64,7 +64,7 @@ public class RedBackstage extends RedAutonomous {
         Action outerMoveToScore = mecanumDrive.actionBuilder(new Pose2d(EDGE_BACKDROP_APPROACH_X, EDGE_BACKDROP_APPROACH_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
                 .strafeTo(new Vector2d(EDGE_BACKDROP_SCORE_X, EDGE_BACKDROP_SCORE_Y))
                 .build();
-        Action outerMoveToLowerLift = mecanumDrive.actionBuilder(new Pose2d(EDGE_BACKDROP_SCORE_X, EDGE_BACKDROP_SCORE_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
+        Action outerMoveToLowerScoringSubsystem = mecanumDrive.actionBuilder(new Pose2d(EDGE_BACKDROP_SCORE_X, EDGE_BACKDROP_SCORE_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
                 .strafeTo(new Vector2d(EDGE_BACKDROP_APPROACH_X, EDGE_BACKDROP_APPROACH_Y))
                 .build();
         Action outerParkCenter = mecanumDrive.actionBuilder(new Pose2d(EDGE_BACKDROP_APPROACH_X, EDGE_BACKDROP_APPROACH_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
@@ -91,7 +91,7 @@ public class RedBackstage extends RedAutonomous {
         Action middleMoveToScore = mecanumDrive.actionBuilder(new Pose2d(MIDDLE_BACKDROP_APPROACH_X, MIDDLE_BACKDROP_APPROACH_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
                 .strafeTo(new Vector2d(MIDDLE_BACKDROP_SCORE_X, MIDDLE_BACKDROP_SCORE_Y))
                 .build();
-        Action middleMoveToLowerLift = mecanumDrive.actionBuilder(new Pose2d(MIDDLE_BACKDROP_SCORE_X, MIDDLE_BACKDROP_SCORE_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
+        Action middleMoveToLowerScoringSubsystem = mecanumDrive.actionBuilder(new Pose2d(MIDDLE_BACKDROP_SCORE_X, MIDDLE_BACKDROP_SCORE_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
                 .strafeTo(new Vector2d(MIDDLE_BACKDROP_APPROACH_X, MIDDLE_BACKDROP_APPROACH_Y))
                 .build();
         Action middleParkCenter = mecanumDrive.actionBuilder(new Pose2d(MIDDLE_BACKDROP_APPROACH_X, MIDDLE_BACKDROP_APPROACH_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
@@ -117,7 +117,7 @@ public class RedBackstage extends RedAutonomous {
         Action innerMoveToScore = mecanumDrive.actionBuilder(new Pose2d(CENTER_BACKDROP_APPROACH_X, CENTER_BACKDROP_APPROACH_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
                 .strafeTo(new Vector2d(CENTER_BACKDROP_SCORE_X, CENTER_BACKDROP_SCORE_Y))
                 .build();
-        Action innerMoveToLowerLift = mecanumDrive.actionBuilder(new Pose2d(CENTER_BACKDROP_SCORE_X, CENTER_BACKDROP_SCORE_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
+        Action innerMoveToLowerScoringSubsystem = mecanumDrive.actionBuilder(new Pose2d(CENTER_BACKDROP_SCORE_X, CENTER_BACKDROP_SCORE_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
                 .strafeTo(new Vector2d(CENTER_BACKDROP_APPROACH_X, CENTER_BACKDROP_APPROACH_Y))
                 .build();
         Action innerParkCenter = mecanumDrive.actionBuilder(new Pose2d(CENTER_BACKDROP_APPROACH_X, CENTER_BACKDROP_APPROACH_Y, Math.toRadians(SPLINE_CONSTANT_HEADING_ANGLE)))
@@ -137,33 +137,33 @@ public class RedBackstage extends RedAutonomous {
                 innerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 innerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 innerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                innerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                innerMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 innerParkCenter
         );
         innerSpikeMarkParkBackdrop = new SequentialAction(
                 innerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 innerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 innerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                innerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                innerMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 innerParkBackdrop
         );
         innerSpikeMarkParkEdge = new SequentialAction(
                 innerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 innerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 innerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                innerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                innerMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 innerParkEdge
         );
 
@@ -171,33 +171,33 @@ public class RedBackstage extends RedAutonomous {
                 outerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 outerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 outerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                outerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                outerMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 outerParkCenter
         );
         outerSpikeMarkParkBackdrop = new SequentialAction(
                 outerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 outerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 outerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                outerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                outerMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 outerParkBackdrop
         );
         outerSpikeMarkParkEdge = new SequentialAction(
                 outerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 outerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 outerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                outerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                outerMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 outerParkEdge
         );
 
@@ -205,33 +205,33 @@ public class RedBackstage extends RedAutonomous {
                 middleMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 middleMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 middleMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                middleMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                middleMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 middleParkCenter
         );
         middleSpikeMarkParkBackdrop = new SequentialAction(
                 middleMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 middleMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 middleMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                middleMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                middleMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 middleParkBackdrop
         );
         middleSpikeMarkParkEdge = new SequentialAction(
                 middleMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 middleMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 middleMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                middleMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                middleMoveToLowerScoringSubsystem,
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 middleParkEdge
         );
     }

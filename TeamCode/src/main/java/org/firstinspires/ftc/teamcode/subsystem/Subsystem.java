@@ -18,6 +18,7 @@ public abstract class Subsystem extends SubsystemBase {
     public Subsystem(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
+
     /**
      * Make sure the power exceeds a minimum threshold value or is otherwise it set to zero.
      * @param power the power to check.

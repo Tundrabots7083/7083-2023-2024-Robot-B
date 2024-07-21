@@ -8,7 +8,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.MyRobot;
 import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
-import org.firstinspires.ftc.teamcode.mechanism.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
 
 /**
  * Blue Alliance frontstage trajectories. These are a "mirror" representation of the Red Alliance
@@ -147,36 +147,36 @@ public class BlueFrontstage extends BlueAutonomous {
                 innerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 innerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 innerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 innerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 innerParkCenter
         );
         innerSpikeMarkParkBackdrop = new SequentialAction(
                 innerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 innerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 innerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 innerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 innerParkBackdrop
         );
         innerSpikeMarkParkEdge = new SequentialAction(
                 innerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 innerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 innerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 innerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 innerParkEdge
         );
 
@@ -184,36 +184,36 @@ public class BlueFrontstage extends BlueAutonomous {
                 outerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 outerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 outerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 outerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 outerParkCenter
         );
         outerSpikeMarkParkBackdrop = new SequentialAction(
                 outerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 outerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 outerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 outerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 outerParkBackdrop
         );
         outerSpikeMarkParkEdge = new SequentialAction(
                 outerMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 outerMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 outerMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 outerMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 outerParkEdge
         );
 
@@ -221,36 +221,36 @@ public class BlueFrontstage extends BlueAutonomous {
                 middleMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 middleMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 middleMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 middleMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 middleParkCenter
         );
         middleSpikeMarkParkBackdrop = new SequentialAction(
                 middleMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 middleMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 middleMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 middleMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 middleParkBackdrop
         );
         middleSpikeMarkParkEdge = new SequentialAction(
                 middleMoveToSpikeMark,
                 robot.leftPixelCollector.depositPixel(),
                 middleMoveToBackdropApproach,
-                robot.lift.setLiftTo(Lift.Position.SCORE_LOW),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_LOW),
                 middleMoveToScore,
                 robot.rightPixelCollector.depositPixel(),
-                robot.lift.setLiftTo(Lift.Position.SCORE_MEDIUM),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.SCORE_MEDIUM),
                 middleMoveToLowerLift,
-                robot.lift.setLiftTo(Lift.Position.INTAKE),
+                robot.scoringSubsystem.setTo(ScoringSubsystem.Position.INTAKE),
                 middleParkEdge
         );
     }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanism;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -6,10 +6,11 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import org.firstinspires.ftc.teamcode.action.DisplayAction;
 import org.firstinspires.ftc.teamcode.action.SleepAction;
 
-public class Lift {
-    public Action setLiftTo(Position position) {
+public class ScoringSubsystem {
+
+    public Action setTo(Position position) {
         return new SequentialAction(
-                new DisplayAction("Set Lift to " + position),
+                new DisplayAction("Set Scoring to " + position),
                 new SleepAction(1.5)
         );
     }
