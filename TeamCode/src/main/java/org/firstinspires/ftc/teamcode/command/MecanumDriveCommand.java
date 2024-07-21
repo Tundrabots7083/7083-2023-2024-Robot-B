@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MyRobot;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 
-public class MecanumDriveCommand extends CommandBase {
+public class MecanumDriveCommand extends CommandBaseEx {
     public static double MAX_TURNING_MULT = 0.75; //Max turning speed multiplier
     public static double MAX_DRIVE_MULT = 1; //Max drive speed multiplier
     public static double SLOW_TURNING_MULT = 0.6; //Slow turning speed multiplier

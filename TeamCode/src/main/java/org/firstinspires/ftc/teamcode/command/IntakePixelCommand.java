@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
-public class IntakePixelCommand extends CommandBase {
+public class IntakePixelCommand extends CommandBaseEx {
     public static double FLAP_DELAY = 250;
     private final PixelCollector pixelCollector;
     private final ElapsedTime timer = new ElapsedTime();

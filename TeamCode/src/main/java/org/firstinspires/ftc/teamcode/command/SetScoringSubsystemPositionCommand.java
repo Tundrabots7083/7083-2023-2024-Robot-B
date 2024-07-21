@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 
 import org.firstinspires.ftc.teamcode.subsystem.Arm;
 import org.firstinspires.ftc.teamcode.subsystem.Lift;
 
-public class SetScoringSubsystemPositionCommand extends CommandBase {
+public class SetScoringSubsystemPositionCommand extends CommandBaseEx {
     private final ParallelCommandGroup moveCommand;
 
     public SetScoringSubsystemPositionCommand(Lift lift, Arm arm, Position position) {

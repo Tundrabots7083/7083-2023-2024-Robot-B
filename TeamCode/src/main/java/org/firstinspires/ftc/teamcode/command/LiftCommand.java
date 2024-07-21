@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -10,7 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Lift;
 /**
  * Command to control the lift behavior.
  */
-public class LiftCommand extends CommandBase {
+public class LiftCommand extends CommandBaseEx {
     private final Lift lift;
     private final Gamepad gamepad1;
     private final Gamepad gamepad2;

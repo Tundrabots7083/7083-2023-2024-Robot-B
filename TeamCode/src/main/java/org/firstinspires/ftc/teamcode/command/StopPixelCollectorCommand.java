@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
-public class StopPixelCollectorCommand extends CommandBase {
+public class StopPixelCollectorCommand extends CommandBaseEx {
     public static double SPINNER_DELAY = 250;
     private final PixelCollector pixelCollector;
     private final ElapsedTime timer = new ElapsedTime();

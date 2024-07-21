@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.command;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
  * collector objects created for the robot.
  */
 @Config
-public class PixelCollectorCommand extends CommandBase {
+public class PixelCollectorCommand extends CommandBaseEx {
     public static long SPINNER_DELAY = 250;
     public static long FLAP_DELAY = 250;
 

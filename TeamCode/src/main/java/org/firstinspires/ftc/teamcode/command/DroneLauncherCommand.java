@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -11,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
  * Command to control the drone launcher. The command can raise and lower the drone launcher as
  * well as launch the drone.
  */
-public class DroneLauncherCommand extends CommandBase {
+public class DroneLauncherCommand extends CommandBaseEx {
     private final DroneLauncher droneLauncher;
     private final Gamepad gamepad1;
     private final Gamepad gamepad2;
