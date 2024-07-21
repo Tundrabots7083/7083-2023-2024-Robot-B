@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.sensor.VisionSensor;
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
  */
-public class Robot {
-    private static Robot robot = null;
+public class MyRobot {
+    private static MyRobot robot = null;
 
     public final Telemetry telemetry;
 
@@ -33,7 +33,7 @@ public class Robot {
      * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
      *                           <code>false</code> otherwise.
      */
-    private Robot(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
+    private MyRobot(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
         robot = this;
         this.telemetry = telemetry;
 
@@ -64,7 +64,7 @@ public class Robot {
      *
      * @return the robot instance
      */
-    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry) {
+    public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry) {
         return init(hardwareMap, telemetry, false);
     }
 
@@ -79,36 +79,15 @@ public class Robot {
      *
      * @return the robot instance
      */
-    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
-        robot = new Robot(hardwareMap, telemetry, createVisionSensor);
+    public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
+        robot = new MyRobot(hardwareMap, telemetry, createVisionSensor);
         return robot;
     }
 
     /**
-     * Gets the singleton instance of the robot. The vision sensor is not created when calling
-     * this method.
-     *
-     * @param hardwareMap hardware map for the robot.
-     * @param telemetry   telemetry class for displaying data.
-     */
-    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry) {
-        return getInstance(hardwareMap, telemetry, false);
-    }
-
-    /**
      * Gets the singleton instance of the robot.
-     *
-     * @param hardwareMap hardware map for the robot.
-     * @param telemetry   telemetry class for displaying data.
-     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
-     *                           <code>false</code> otherwise.
-     *
-     * @return the robot instance
      */
-    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
-        if (robot == null) {
-            robot = Robot.init(hardwareMap, telemetry, createVisionSensor);
-        }
+    public static MyRobot getInstance() {
         return robot;
     }
 }

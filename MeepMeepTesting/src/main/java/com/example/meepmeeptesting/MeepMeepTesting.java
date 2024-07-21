@@ -1,79 +1,70 @@
 package com.example.meepmeeptesting;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.noahbres.meepmeep.MeepMeep;
-import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeRedDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+import org.firstinspires.ftc.teamcode.autonomous.drive.AutoMecanumDrive;
+import org.firstinspires.ftc.teamcode.autonomous.trajectory.BlueBackstage;
+
 public class MeepMeepTesting {
-
-
-    public static final Pose2d BACK_STAGE_START_POSITION = new Pose2d(12, 63.5, Math.toRadians(-90));
-
-    public static final Pose2d BACK_STAGE_INNER_SPIKE_BASE = new Pose2d(12, 40, Math.toRadians(-135));
-    public static final Pose2d BACK_STAGE_MIDDLE_SPIKE_BASE = new Pose2d(12, 40, Math.toRadians(-90));
-    public static final Pose2d BACK_STAGE_OUTER_SPIKE_BASE = new Pose2d(23, 40, Math.toRadians(-90));
-
-    public static final int INNER_SPIKE_BASE_HEADING = 180;
-
-    public static final int MIDDLE_SPIKE_BASE_HEADING = -90;
-
-    public static final int OUTER_SPIKE_BASE_HEADING = -90;
-
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-//        RoadRunnerBotEntity redAllianceLeft = new DefaultBotBuilder(meepMeep)
-//                // We set this bot to be blue
-//                .setColorScheme(new ColorSchemeBlueDark())
-//                .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 14)
-//                .followTrajectorySequence(drive ->
-//                        drive.trajectorySequenceBuilder(new Pose2d(-35, -61, Math.toRadians(90)))
-//                                .splineToLinearHeading(new Pose2d(-36, -34), Math.toRadians(0))
-//                                .addDisplacementMarker(() -> System.out.println("Drop purple pixel"))
-//                                .setTangent(Math.toRadians(-90))
-//                                .splineToLinearHeading(new Pose2d(-35, -58, Math.toRadians(180)), Math.toRadians(0))
-//                                .setTangent(Math.toRadians(0))
-//                                .splineToLinearHeading(new Pose2d(35, -58, Math.toRadians(180)), Math.toRadians(0))
-//                                .splineToConstantHeading(new Vector2d(49, -36), Math.toRadians(0))
-//                                .build()
-//                );
-//
-//        RoadRunnerBotEntity redAllianceRight = new DefaultBotBuilder(meepMeep)
-//                .setColorScheme(new ColorSchemeRedDark())
-//                .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 14)
-//                .followTrajectorySequence(drive ->
-//                        drive.trajectorySequenceBuilder(new Pose2d(12, -63.5, Math.toRadians(90)))
-//                                .lineTo(new Vector2d(12, -43.5))
-//                                .addDisplacementMarker(() -> System.out.println("Drop purple pixel"))
-//                                .lineTo(new Vector2d(12, -48.5))
-//                                .lineTo(new Vector2d(24, -48.5))
-//                                .splineTo(new Vector2d(48, -35), Math.toRadians(90))
-//                                .addDisplacementMarker(() -> System.out.println("Score yellow pixel"))
-//                                .lineTo(new Vector2d(48, -59))
-//                                .lineTo(new Vector2d(58, -59))
-//                                .addDisplacementMarker(() -> System.out.println("Park robot\n"))
-//                                .back(1) // Unnecessary, but makes the display look better
-//                                .build()
-//                );
+        RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 16)
+                .build();
+        AutoMecanumDrive myDrive = new AutoMecanumDrive(myBot);
 
-        AutonomousTrajectoryBuilder trajectoryBuilder = new BlueFrontstageTrajectoryBuilder();
-//        AutonomousTrajectoryBuilder trajectoryBuilder = new BlueBackstageTrajectoryBuilder();
+//        RedFrontstage trajectoryBuilder = new RedFrontstage(myDrive);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkEdge);
 
-        RoadRunnerBotEntity redAllianceRight = new DefaultBotBuilder(meepMeep)
-            .setColorScheme(new ColorSchemeRedDark())
-            .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 14)
-            .followTrajectorySequence(drive ->
-                    trajectoryBuilder.getTrajectory(TeamElementLocation.OUTER, drive)
-            );
+//        RedBackstage trajectoryBuilder = new RedBackstage(myDrive);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkEdge);
+
+//        BlueFrontstage trajectoryBuilder = new BlueFrontstage(myDrive);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkEdge);
+
+        BlueBackstage trajectoryBuilder = new BlueBackstage(myDrive);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.outerSpikeMarkParkEdge);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.middleSpikeMarkParkEdge);
+        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkCenter);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkBackdrop);
+//        myBot.runAction(trajectoryBuilder.innerSpikeMarkParkEdge);
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                // Add both of our declared bot entities
-//                .addEntity(redAllianceLeft)
-                .addEntity(redAllianceRight)
+                .addEntity(myBot)
                 .start();
     }
 }

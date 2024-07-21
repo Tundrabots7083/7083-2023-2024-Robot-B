@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.mechanism;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,9 +13,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
-import org.firstinspires.ftc.teamcode.test.Test;
-
-import java.util.Collection;
 
 /**
  * Arm is the arm and pixel container that are used for pixel intake and pixel scoring.
@@ -41,10 +42,9 @@ public class Lift implements Mechanism {
     private final PIDController leftController;
     private final PIDController rightController;
     private final PIDController armController;
+    private final Telemetry telemetry;
     private MotionProfile liftProfile;
     private MotionProfile armProfile;
-    private final Telemetry telemetry;
-
     private Position targetPosition = Position.INTAKE;
 
     /**
@@ -81,34 +81,21 @@ public class Lift implements Mechanism {
         armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, 0, Position.INTAKE.armPosition);
     }
 
-    @Override
-    public String getDeviceName() {
-        return "Lift";
-    }
-
-    @Override
-    public String getDescription() {
-        return "The lift is used to lift the robot off the ground and to score pixels.";
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
-    }
-
     public void setTarget(Position position) {
-        targetPosition = position;
-        telemetry.addData("[LIFT] Set Position", targetPosition.liftPosition);
-        telemetry.addData("[ARM] Set Position", targetPosition.armPosition);
+        if (targetPosition != position) {
+            targetPosition = position;
+            telemetry.addData("[LIFT] Set Position", targetPosition.liftPosition);
+            telemetry.addData("[ARM] Set Position", targetPosition.armPosition);
 
-        // Build the motion profile to move the lift to the target position
-        liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
-        armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, armMotor.getCurrentPosition(), position.armPosition);
+            // Build the motion profile to move the lift to the target position
+            liftProfile = new MotionProfile(LIFT_MAX_ACCELERATION, LIFT_MAX_VELOCITY, leftMotor.getCurrentPosition(), position.liftPosition);
+            armProfile = new MotionProfile(ARM_MAX_ACCELERATION, ARM_MAX_VELOCITY, armMotor.getCurrentPosition(), position.armPosition);
 
-        // Reset the PID controllers
-        leftController.reset();
-        rightController.reset();
-        armController.reset();
+            // Reset the PID controllers
+            leftController.reset();
+            rightController.reset();
+            armController.reset();
+        }
     }
 
     /**
@@ -141,7 +128,8 @@ public class Lift implements Mechanism {
         return isLiftAtTarget() && isArmAtTarget();
     }
 
-    public void update() {
+    @Override
+    public void execute() {
         // Update the power level for the arm motor
         setArmPower();
         // Update power level for the lift motors
@@ -246,6 +234,10 @@ public class Lift implements Mechanism {
         telemetry.addData("[LIFT] right position", rightMotor.getCurrentPosition());
     }
 
+    public Action setLiftTo(Position position) {
+        return new SetLiftPositionAction(this, position);
+    }
+
     public enum Position {
         INTAKE(0, 0),
         AUTONOMOUS_BACKSTAGE(-2700, -215),
@@ -269,6 +261,41 @@ public class Lift implements Mechanism {
         Position(int armPosition, int liftPosition) {
             this.armPosition = armPosition;
             this.liftPosition = liftPosition;
+        }
+    }
+
+    /**
+     * Sets the lift to the requested position
+     */
+    private static class SetLiftPositionAction implements Action {
+
+        private final Lift lift;
+        private final Position position;
+
+        /**
+         * Creates a new action to set the lift to the requested position.
+         *
+         * @param lift     the lift to move to the requested position
+         * @param position the position to which to move the lift
+         */
+        public SetLiftPositionAction(Lift lift, Position position) {
+            this.lift = lift;
+            this.position = position;
+        }
+
+        /**
+         * Moves the lift to the target position. Continues to be called until the lift has
+         * reached the target position.
+         *
+         * @param telemetryPacket telemetry for the action.
+         * @return <code>true</code> if the lift has not reached the target position;
+         * <cocde>false</cocde> if the lift is at the target position.
+         */
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            lift.setTarget(position);
+            lift.execute();
+            return !lift.isAtTarget();
         }
     }
 }

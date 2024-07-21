@@ -7,9 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.test.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -149,26 +147,5 @@ public class MecanumDrive implements Mechanism {
         telemetry.addData("[DRIVE] Left Rear Power", leftRearPower);
         telemetry.addData("[DRIVE] Right Front Power", rightFrontPower);
         telemetry.addData("[DRIVE] Right Rear Power", rightRearPower);
-    }
-
-    @Override
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
-    }
-
-    @Override
-    @NonNull
-    public String toString() {
-        return string();
     }
 }

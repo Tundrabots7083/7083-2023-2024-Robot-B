@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.MyRobot;
 import org.firstinspires.ftc.teamcode.controller.Controller;
 import org.firstinspires.ftc.teamcode.controller.DroneLauncherController;
 import org.firstinspires.ftc.teamcode.controller.LiftController;
@@ -20,7 +20,7 @@ import java.util.Collection;
 public class PrimaryTeleOp extends OpMode {
     private final Gamepad currentGamepad1 = new Gamepad();
     private final Gamepad currentGamepad2 = new Gamepad();
-    private Robot robot;
+    private MyRobot robot;
     private DroneLauncherController droneLauncherController;
     private LiftController liftController;
     private MecanumDriveController mecanumDriveController;
@@ -32,8 +32,7 @@ public class PrimaryTeleOp extends OpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        Robot.init(hardwareMap, telemetry);
-        robot = Robot.getInstance(hardwareMap, telemetry);
+        robot = MyRobot.init(hardwareMap, telemetry);
 
         droneLauncherController = new DroneLauncherController(robot.droneLauncher, telemetry);
         liftController = new LiftController(robot.lift, telemetry);

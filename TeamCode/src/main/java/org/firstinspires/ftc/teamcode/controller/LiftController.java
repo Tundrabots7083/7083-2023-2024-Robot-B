@@ -26,7 +26,7 @@ public class LiftController implements Controller {
 
     public void start() {
         lift.setTarget(Lift.Position.INTAKE);
-        lift.update();
+        lift.execute();
     }
 
     /**
@@ -76,6 +76,6 @@ public class LiftController implements Controller {
             return;
         }
 
-        lift.update();
+        lift.execute();
     }
 }

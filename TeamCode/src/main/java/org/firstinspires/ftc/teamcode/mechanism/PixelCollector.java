@@ -1,14 +1,16 @@
 package org.firstinspires.ftc.teamcode.mechanism;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.test.Test;
-
-import java.util.Collection;
 
 /**
  * Class for controlling a single pixel collector.
@@ -21,6 +23,8 @@ public class PixelCollector implements Mechanism {
      * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
      */
     public static long SPINNER_DELAY = 250;
+    public static long FLAP_DELAY = 250;
+    public static long DEPOSIT_PIXEL_TIME = 1750;
     private final String deviceName;
     private final String description;
     private final Telemetry telemetry;
@@ -71,7 +75,8 @@ public class PixelCollector implements Mechanism {
     /**
      * Update the position of the flap and the power for the spinner for the pixel collector.
      */
-    public void update() {
+    @Override
+    public void execute() {
         long currentTime = System.currentTimeMillis();
         if (state == PixelCollectorState.CLOSED) {
             spinner.setPower(state.spinnerPower);
@@ -89,19 +94,13 @@ public class PixelCollector implements Mechanism {
         }
     }
 
-    @Override
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
+    /**
+     * Gets an action to deposit a pixel from the pixel collector.
+     *
+     * @return the action to deposit a pixel from the pixel collector.
+     */
+    public Action depositPixel() {
+        return new DepositPixelAction(this);
     }
 
     /**
@@ -127,6 +126,67 @@ public class PixelCollector implements Mechanism {
         PixelCollectorState(double spinnerPower, double flapPosition) {
             this.spinnerPower = spinnerPower;
             this.flapPosition = flapPosition;
+        }
+    }
+
+    /**
+     * Action to deposit a pixel from the given collector. This will open the flap door, turn
+     * on the spinner, wait for the pixel to be deposited, turn off the spinner, and then close
+     * the flap door.
+     */
+    private static class DepositPixelAction implements Action {
+        private final PixelCollector pixelCollector;
+        private final ElapsedTime timer = new ElapsedTime();
+        private boolean isInitialized = false;
+
+        /**
+         * Instantiates an action to deposit a pixel.
+         *
+         * @param pixelCollector the pixel collector from which to deposit a pixel.
+         */
+        public DepositPixelAction(PixelCollector pixelCollector) {
+            this.pixelCollector = pixelCollector;
+            pixelCollector.setState(PixelCollectorState.DEPOSITING);
+        }
+
+        /**
+         * Initialize the action
+         */
+        private void initialize() {
+            pixelCollector.setState(PixelCollectorState.DEPOSITING);
+            timer.reset();
+        }
+
+        /**
+         * Deposits a pixel from the collector and then turns closes the pixel collector.
+         *
+         * @param telemetryPacket
+         * @return
+         */
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if (!isInitialized) {
+                initialize();
+                isInitialized = true;
+            }
+
+            final boolean isFinished;
+            switch (pixelCollector.state) {
+                case DEPOSITING:
+                    if (timer.milliseconds() > DEPOSIT_PIXEL_TIME) {
+                        pixelCollector.setState(PixelCollectorState.CLOSED);
+                        timer.reset();
+                    }
+                    isFinished = false;
+                    break;
+                case CLOSED:
+                    isFinished = timer.milliseconds() > SPINNER_DELAY;
+                    break;
+                default:
+                    isFinished = true;
+            }
+
+            return !isFinished;
         }
     }
 }

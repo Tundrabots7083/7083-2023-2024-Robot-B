@@ -51,8 +51,8 @@ public class PixelCollectorController implements Controller {
         setState(leftPixelCollector, gamepad2.dpad_down, previousGamepad2.dpad_down, gamepad2.dpad_right, previousGamepad2.dpad_right);
         setState(rightPixelCollector, gamepad2.a, previousGamepad2.a, gamepad2.b, previousGamepad2.b);
 
-        leftPixelCollector.update();
-        rightPixelCollector.update();
+        leftPixelCollector.execute();
+        rightPixelCollector.execute();
 
         previousGamepad2.copy(gamepad2);
     }

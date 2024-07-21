@@ -4,11 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.test.Test;
-
-import java.util.Collection;
 
 /**
  * DroneLauncher manages the launching of the drone (paper airplane)
@@ -67,26 +63,5 @@ public class DroneLauncher implements Mechanism {
      */
     public void launchDrone() {
         releaseServo.setPosition(SERVO_RELEASE_POS);
-    }
-
-    @Override
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Collection<Test> getTests() {
-        return null;
-    }
-
-    @Override
-    @NonNull
-    public String toString() {
-        return string();
     }
 }
