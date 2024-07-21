@@ -36,7 +36,7 @@ public class PrimaryTeleOp extends OpMode {
         robot = MyRobot.init(hardwareMap, telemetry);
 
         droneLauncherController = new DroneLauncherController(robot.droneLauncher);
-        liftController = new ScoreSubsystemController(robot.lift, robot.arm);
+        liftController = new ScoreSubsystemController(robot.scoringSubsystem);
         mecanumDriveController = new MecanumDriveController(robot.mecanumDrive);
         leftPixelCollectorController = new PixelCollectorController(robot.leftPixelCollector);
         rightPixelCollectorController = new PixelCollectorController(robot.rightPixelCollector);
@@ -50,12 +50,6 @@ public class PrimaryTeleOp extends OpMode {
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();
-    }
-
-    @Override
-    public void start() {
-        liftController.start();
-        telemetry.addLine("Robot Started");
     }
 
     @Override

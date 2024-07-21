@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 import org.firstinspires.ftc.teamcode.subsystem.Lift;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
+import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
 
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
@@ -21,8 +22,7 @@ public class MyRobot {
     // Mechanisms
     public final MecanumDrive mecanumDrive;
     public final DroneLauncher droneLauncher;
-    public final Lift lift;
-    public final Arm arm;
+    public final ScoringSubsystem scoringSubsystem;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
     public final Camera webCam;
 
@@ -39,8 +39,9 @@ public class MyRobot {
 
         // Instantiate all the hardware on the robot
         mecanumDrive = new MecanumDrive(hardwareMap, telemetry);
-        lift = new Lift(hardwareMap, telemetry);
-        arm = new Arm(hardwareMap, telemetry);
+        Lift lift = new Lift(hardwareMap, telemetry);
+        Arm arm = new Arm(hardwareMap, telemetry);
+        scoringSubsystem = new ScoringSubsystem(lift, arm, telemetry);
         droneLauncher = new DroneLauncher(hardwareMap, telemetry);
 
         leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
