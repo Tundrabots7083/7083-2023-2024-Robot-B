@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanism;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * DroneLauncher manages the launching of the drone (paper airplane)
  */
 @Config
-public class DroneLauncher implements Mechanism {
+public class DroneLauncher extends SubsystemBaseEx {
 
     public static double SERVO_LAUNCH_START_ANGLE = 0.0;
     public static double SERVO_LAUNCH_ANGLE_HIGH = 0.25500334; // 0.28; // 52.5º // 0.27166667; // 49º

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.controller;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
+import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
 public class PixelCollectorController implements Controller {
 

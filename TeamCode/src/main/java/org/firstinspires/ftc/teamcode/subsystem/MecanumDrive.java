@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanism;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -16,7 +16,7 @@ import java.util.Collection;
  * MecanumDrive implements the drive chassis for the robot.
  */
 @Config
-public class MecanumDrive implements Mechanism {
+public class MecanumDrive extends SubsystemBaseEx {
     private final Telemetry telemetry;
     private final String deviceName;
     private final String description;

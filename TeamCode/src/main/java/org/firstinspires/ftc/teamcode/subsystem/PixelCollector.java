@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mechanism;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import androidx.annotation.NonNull;
 
@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Robot B has two pixel collectors
  */
 @Config
-public class PixelCollector implements Mechanism {
+public class PixelCollector extends SubsystemBaseEx {
     /**
      * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
      */

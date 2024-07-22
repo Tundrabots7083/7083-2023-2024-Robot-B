@@ -34,7 +34,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.roadrunner.Drawing;
 import org.firstinspires.ftc.teamcode.roadrunner.Localizer;
 import org.firstinspires.ftc.teamcode.roadrunner.ThreeDeadWheelLocalizer;
@@ -84,7 +84,7 @@ public final class AutoMecanumDrive {
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(Params.minProfileAccel, Params.maxProfileAccel);
 
-    public final org.firstinspires.ftc.teamcode.mechanism.MecanumDrive drive;
+    public final org.firstinspires.ftc.teamcode.subsystem.MecanumDrive drive;
 
     public final VoltageSensor voltageSensor;
 
@@ -98,7 +98,7 @@ public final class AutoMecanumDrive {
 
     public AutoMecanumDrive(HardwareMap hardwareMap, Pose2d pose) {
         this.pose = pose;
-        this.drive = MyRobot.getInstance().mecanumDrive;
+        this.drive = Robot.getInstance().mecanumDrive;
 
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 

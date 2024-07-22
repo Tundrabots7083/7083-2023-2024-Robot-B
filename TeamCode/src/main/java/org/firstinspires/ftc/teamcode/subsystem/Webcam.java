@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.sensor;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 
@@ -13,7 +13,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
  * A vision sensor used to create and obtain data from a vision processor and determine the
  * location of the team prop.
  */
-public class VisionSensor implements Sensor {
+public class Webcam extends SubsystemBaseEx {
 
     private final VisionProcessor visionProcessor;
     private VisionPortal webcamPortal;
@@ -24,7 +24,7 @@ public class VisionSensor implements Sensor {
      * @param webcamName the name of the webcam.
      * @param telemetry  the telemetry used to provide output on the driver station.
      */
-    public VisionSensor(WebcamName webcamName, Telemetry telemetry) {
+    public Webcam(WebcamName webcamName, Telemetry telemetry) {
         visionProcessor = new VisionProcessor(telemetry);
         webcamPortal = VisionPortal.easyCreateWithDefaults(webcamName, visionProcessor);
         FtcDashboard.getInstance().startCameraStream(webcamPortal, 0);
@@ -32,7 +32,7 @@ public class VisionSensor implements Sensor {
     }
 
     @Override
-    public void update() {
+    public void execute() {
         // NO-OP
     }
 

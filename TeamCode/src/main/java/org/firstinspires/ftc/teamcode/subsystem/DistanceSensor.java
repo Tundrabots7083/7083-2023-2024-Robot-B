@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.sensor;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.feedback.KalmanFilter;
  * Obtains the distance from the sensor to the object in front of the sensor.
  */
 @Config
-public class DistanceSensor implements Sensor {
+public class DistanceSensor extends SubsystemBaseEx {
     // Kalman filter initial values
     public static double INITIAL_STATE = 0.0;
     public static double INITIAL_ERROR_COVARIANCE = 1.0;
