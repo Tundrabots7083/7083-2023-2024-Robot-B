@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
 
 import org.firstinspires.ftc.teamcode.action.DisplayAction;
-import org.firstinspires.ftc.teamcode.action.SleepAction;
 
 public class PixelCollector {
     private final Location location;
@@ -15,8 +14,7 @@ public class PixelCollector {
 
     public Action depositPixel() {
         return new SequentialAction(
-                new DisplayAction("Deposit " + location + " pixel"),
-                new SleepAction(1.5)
+                new DisplayAction("Deposit " + location + " pixel")
         );
     }
 

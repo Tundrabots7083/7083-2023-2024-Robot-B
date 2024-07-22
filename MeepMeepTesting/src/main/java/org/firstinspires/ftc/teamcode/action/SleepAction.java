@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.action;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 
+import org.firstinspires.ftc.teamcode.command.CommandEx;
 import org.jetbrains.annotations.NotNull;
 
-public class SleepAction implements Action {
+public class SleepAction implements Action, CommandEx {
     private final long dt;
     private long beginTs = -1;
 
@@ -37,6 +38,16 @@ public class SleepAction implements Action {
 
     private long now() {
         return System.currentTimeMillis();
+    }
+
+    /**
+     * Returns this action.
+     *
+     * @return this action.
+     */
+    @Override
+    public Action toAction() {
+        return this;
     }
 }
 

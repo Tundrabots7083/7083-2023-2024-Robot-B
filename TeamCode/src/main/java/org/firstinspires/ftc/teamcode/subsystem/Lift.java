@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.command.CommandBaseEx;
+import org.firstinspires.ftc.teamcode.command.CommandEx;
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
 import org.firstinspires.ftc.teamcode.feedback.PIDControllerEx;
 
@@ -165,17 +163,16 @@ public class Lift extends Subsystem {
      * @param position the position to which to set the lift.
      * @return the action to set the lift to the target position.
      */
-    public Action setToPosition(int position) {
+    public CommandEx setToPosition(int position) {
         return new SetToPosition(this, position);
     }
 
     /**
      * Action used to set the lift to the target position.
      */
-    private static class SetToPosition implements Action {
+    private static class SetToPosition extends CommandBaseEx {
         private final Lift lift;
         private final int position;
-        private boolean initialized = false;
 
         /**
          * Instantiates an action to move the lift to the target position.
@@ -197,19 +194,21 @@ public class Lift extends Subsystem {
 
         /**
          * Adjust the lift's position until it reaches the target position.
-         *
-         * @param telemetryPacket the telemetry to use for displaying output.
-         * @return <code>true</code> if the lift is not at the target position;
-         * <code>false</code> if the lift is at the target position.
          */
         @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (!initialized) {
-                initialize();
-                initialized = true;
-            }
+        public void execute() {
             lift.execute();
-            return !lift.isAtTarget();
+        }
+
+        /**
+         * Returns an indication as to whether the lift has reached the target.
+         *
+         * @return <code>true</code> if the lift is at the target position;
+         * <code>false</code> if the lift is not at the target position.
+         */
+        @Override
+        public boolean isFinished() {
+            return super.isFinished();
         }
     }
 }

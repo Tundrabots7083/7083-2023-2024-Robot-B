@@ -1,15 +1,13 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.command.CommandBaseEx;
+import org.firstinspires.ftc.teamcode.command.CommandEx;
 import org.firstinspires.ftc.teamcode.feedback.MotionProfile;
 import org.firstinspires.ftc.teamcode.feedback.PIDController;
 
@@ -134,7 +132,7 @@ public class Arm extends Subsystem {
      *
      * @return an action to raise the arm to the scoring position.
      */
-    public Action raiseArm() {
+    public CommandEx raiseArm() {
         return new SetToPosition(this, SCORE_POSITION);
     }
 
@@ -143,14 +141,14 @@ public class Arm extends Subsystem {
      *
      * @return an action to lower the arm to the intake position.
      */
-    public Action lowerArm() {
+    public CommandEx lowerArm() {
         return new SetToPosition(this, INTAKE_POSITION);
     }
 
     /**
      * Action used to set the arm to the target position.
      */
-    private static class SetToPosition implements Action {
+    private static class SetToPosition extends CommandBaseEx {
         private final Arm arm;
         private final int position;
         private boolean initialized = false;
@@ -169,25 +167,25 @@ public class Arm extends Subsystem {
         /**
          * Initialize the action.
          */
+        @Override
         public void initialize() {
             arm.setPosition(position);
         }
 
+        @Override
+        public void execute() {
+            arm.execute();
+        }
+
         /**
-         * Adjust the lift's position until it reaches the target position.
+         * Returns an indication as to whether the arm has reached the target position.
          *
-         * @param telemetryPacket the telemetry to use for displaying output.
-         * @return <code>true</code> if the lift is not at the target position;
-         * <code>false</code> if the lift is at the target position.
+         * @return <code>true</code> if the lift is at the target position;
+         * <code>false</code> if the lift is not at the target position.
          */
         @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (!initialized) {
-                initialize();
-                initialized = true;
-            }
-            arm.execute();
-            return !arm.isAtTarget();
+        public boolean isFinished() {
+            return super.isFinished();
         }
     }
 }

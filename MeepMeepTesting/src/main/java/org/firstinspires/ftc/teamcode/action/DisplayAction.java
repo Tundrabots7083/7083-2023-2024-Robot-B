@@ -3,12 +3,13 @@ package org.firstinspires.ftc.teamcode.action;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 
+import org.firstinspires.ftc.teamcode.command.CommandEx;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Sends the text to the telemetry (doesn't seem to do anything right now)
  */
-public class DisplayAction implements Action {
+public class DisplayAction implements Action, CommandEx {
     private final String message;
 
     /**
@@ -30,5 +31,15 @@ public class DisplayAction implements Action {
     public boolean run(@NotNull TelemetryPacket telemetryPacket) {
         telemetryPacket.addLine(message);
         return false;
+    }
+
+    /**
+     * Returns the action
+     *
+     * @return This action
+     */
+    @Override
+    public Action toAction() {
+        return this;
     }
 }

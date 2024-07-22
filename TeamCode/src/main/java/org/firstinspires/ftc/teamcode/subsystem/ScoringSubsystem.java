@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.command.SequentialCommandGroupEx;
 
 /**
  * A collection of components used for scoring. For CenterStage, this includes the lift and arm.
@@ -87,37 +86,39 @@ public class ScoringSubsystem extends Subsystem {
      * @param position the position to which to move the lift and arm.
      * @return the action to move the lift and arm to the target positions.
      */
-    public Action setTo(Position position) {
-        final Action action;
+    public SequentialCommandGroupEx setTo(Position position) {
+        SequentialCommandGroupEx command = new SequentialCommandGroupEx();
+        command.addRequirements(this);
+
         switch (position) {
             case SCORE_LOW:
             case AUTONOMOUS_FRONTSTAGE:
-                action = new ParallelAction(
+                command.addCommands(
                         lift.setToPosition(Lift.SCORE_LOW_POSITION),
                         arm.raiseArm()
                 );
                 break;
             case SCORE_MEDIUM:
             case AUTONOMOUS_BACKSTAGE:
-                action = new ParallelAction(
+                command.addCommands(
                         lift.setToPosition(Lift.SCORE_MEDIUM_POSITION),
                         arm.raiseArm()
                 );
                 break;
             case SCORE_HIGH:
-                action = new ParallelAction(
+                command.addCommands(
                         lift.setToPosition(Lift.SCORE_HIGH_POSITION),
                         arm.raiseArm()
                 );
                 break;
             case HANG_START:
-                action = new ParallelAction(
+                command.addCommands(
                         lift.setToPosition(Lift.HANG_START_POSITION),
                         arm.lowerArm()
                 );
                 break;
             case LAUNCH_DRONE:
-                action = new ParallelAction(
+                command.addCommands(
                         lift.setToPosition(Lift.DRONE_LAUNCH_POSITION),
                         arm.lowerArm()
                 );
@@ -125,12 +126,12 @@ public class ScoringSubsystem extends Subsystem {
             case INTAKE:
             case HANG_END:
             default:
-                action = new ParallelAction(
+                command.addCommands(
                         lift.setToPosition(Lift.INTAKE_POSITION),
                         arm.lowerArm()
                 );
         }
-        return action;
+        return command;
     }
 
     /**
