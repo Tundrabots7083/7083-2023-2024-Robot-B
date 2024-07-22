@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.sensor.VisionSensor;
 /**
  * WebCam attached to the robot
  */
-public class Camera extends Subsystem {
+public class WebCam extends Subsystem {
     private final VisionSensor visionSensor;
 
     /**
@@ -20,7 +20,7 @@ public class Camera extends Subsystem {
      * @param hardwareMap mapping of the hardware on the robot
      * @param telemetry   telemetry to be used for outputing data.
      */
-    public Camera(String deviceName, HardwareMap hardwareMap, Telemetry telemetry) {
+    public WebCam(String deviceName, HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
 
         this.visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, deviceName), telemetry);

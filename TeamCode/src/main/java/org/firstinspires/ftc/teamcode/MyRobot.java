@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystem.Arm;
-import org.firstinspires.ftc.teamcode.subsystem.Camera;
+import org.firstinspires.ftc.teamcode.subsystem.WebCam;
 import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 import org.firstinspires.ftc.teamcode.subsystem.Lift;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
@@ -23,7 +23,7 @@ public class MyRobot {
     public final MecanumDrive mecanumDrive;
     public final DroneLauncher droneLauncher;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
-    public final Camera webCam;
+    public final WebCam webCam;
     public final Arm arm;
     public final Lift lift;
 
@@ -47,7 +47,7 @@ public class MyRobot {
         leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
         rightPixelCollector = new PixelCollector(PixelCollector.Location.RIGHT, hardwareMap, telemetry);
         droneLauncher = new DroneLauncher(hardwareMap, telemetry);
-        webCam = opModeType == OpModeType.AUTO ? new Camera("Webcam Front", hardwareMap, telemetry) : null;
+        webCam = opModeType == OpModeType.AUTO ? new WebCam("Webcam Front", hardwareMap, telemetry) : null;
 
         scoringSubsystem = new ScoringSubsystem(arm, lift, telemetry);
 
