@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystem;
-
-import com.qualcomm.robotcore.hardware.HardwareMap;
+package org.firstinspires.ftc.teamcode.controller.subsystem;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.command.SequentialCommandGroupEx;
@@ -9,20 +7,23 @@ import org.firstinspires.ftc.teamcode.command.SequentialCommandGroupEx;
  * A collection of components used for scoring. For CenterStage, this includes the lift and arm.
  */
 public class ScoringSubsystem extends Subsystem {
-    public final Lift lift;
-    public final Arm arm;
+    private final Arm arm;
+    private final Lift lift;
 
     /**
      * Creates a new subsystem that uses the supplied telemetry for displaying output.
      *
-     * @param hardwareMap the mapping of hardware for the robot
+     * @param arm       The robot arm, used for moving the pixel collector from the intake position
+     *                  to the scoring position and vice-versa.
+     * @param lift      The robot lift, used for elevating the pixel collector, as well as to hang
+     *                  robot.
      * @param telemetry the telemetry to use for output.
      */
-    public ScoringSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+    public ScoringSubsystem(Arm arm, Lift lift, Telemetry telemetry) {
         super(telemetry);
 
-        this.lift = new Lift(hardwareMap, telemetry);
-        this.arm = new Arm(hardwareMap, telemetry);
+        this.arm = arm;
+        this.lift = lift;
     }
 
     /**

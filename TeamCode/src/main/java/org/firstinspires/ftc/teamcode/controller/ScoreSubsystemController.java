@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MyRobot;
-import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
+import org.firstinspires.ftc.teamcode.controller.subsystem.ScoringSubsystem;
 
 /**
  * Uses the gamepad controller to set the position of the arm and container servo.
@@ -31,6 +31,7 @@ public class ScoreSubsystemController implements Controller {
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
         Telemetry telemetry = MyRobot.getInstance().telemetry;
+        MyRobot robot = MyRobot.getInstance();
 
         // Automatic update of controls
         if (gamepad1.dpad_down) {
@@ -59,13 +60,13 @@ public class ScoreSubsystemController implements Controller {
         if (manualOverride || (gamepad1.right_trigger != 0.0 || gamepad1.left_trigger != 0.0)) {
             manualOverride = true;
             if (gamepad1.left_trigger > 0.0) {
-                scoringSubsystem.lift.setPower(gamepad1.left_trigger, gamepad1.left_trigger);
+                robot.lift.setPower(gamepad1.left_trigger, gamepad1.left_trigger);
                 telemetry.addData("[LIFT] Power", gamepad1.left_trigger);
             } else if (gamepad1.right_trigger > 0.0) {
-                scoringSubsystem.lift.setPower(-gamepad1.right_trigger, -gamepad1.right_trigger);
+                robot.lift.setPower(-gamepad1.right_trigger, -gamepad1.right_trigger);
                 telemetry.addData("[LIFT] Power", -gamepad1.right_trigger);
             } else {
-                scoringSubsystem.lift.setPower(0.0, 0.0);
+                robot.lift.setPower(0.0, 0.0);
                 telemetry.addData("[ARM] Power", 0.0);
             }
             return;

@@ -15,6 +15,7 @@ public class ActionWrapper implements Action {
 
     /**
      * Instantiates the Action interface for an FTCLib command.
+     *
      * @param command
      */
     public ActionWrapper(Command command) {

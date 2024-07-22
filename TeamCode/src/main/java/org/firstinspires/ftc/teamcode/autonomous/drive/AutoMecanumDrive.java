@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.controller.subsystem.MecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.Drawing;
 import org.firstinspires.ftc.teamcode.roadrunner.Localizer;
 import org.firstinspires.ftc.teamcode.roadrunner.ThreeDeadWheelLocalizer;
@@ -84,7 +85,7 @@ public final class AutoMecanumDrive {
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(Params.minProfileAccel, Params.maxProfileAccel);
 
-    public final org.firstinspires.ftc.teamcode.subsystem.MecanumDrive drive;
+    public final MecanumDrive drive;
 
     public final VoltageSensor voltageSensor;
 

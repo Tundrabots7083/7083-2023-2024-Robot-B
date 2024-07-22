@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MyRobot;
-import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
+import org.firstinspires.ftc.teamcode.controller.subsystem.PixelCollector;
 
 /**
  * Controller for a pixel collector. This class takes input from the gamepads and translates
