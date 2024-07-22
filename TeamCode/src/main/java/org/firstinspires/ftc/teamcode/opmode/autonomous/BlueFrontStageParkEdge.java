@@ -6,12 +6,12 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.Robot;
 
 @Config
 @Autonomous(name = "Blue Front Stage Park Edge", group = "Autonomous", preselectTeleOp = "Primary TeleOp")
 public class BlueFrontStageParkEdge extends LinearOpMode {
-    private MyRobot robot;
+    private Robot robot;
 
     /**
      * @throws InterruptedException
@@ -19,7 +19,7 @@ public class BlueFrontStageParkEdge extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robot = MyRobot.init(hardwareMap, telemetry, MyRobot.OpModeType.AUTO);
+        robot = Robot.init(hardwareMap, telemetry, Robot.OpModeType.AUTO);
 
         while (!robot.webCam.isInitialized()) {
             // No-Op

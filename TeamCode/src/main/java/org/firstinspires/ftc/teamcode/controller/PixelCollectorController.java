@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
 /**
@@ -36,7 +36,7 @@ public class PixelCollectorController implements Controller {
      * @param depositingPressed the depositing button is pressed
      */
     private void setState(boolean intakePressed, boolean depositingPressed) {
-        Telemetry telemetry = MyRobot.getInstance().telemetry;
+        Telemetry telemetry = Robot.getInstance().telemetry;
         String collectorName = "[PC " + pixelCollector.getLocation() + "]";
 
         if (intakePressed) {

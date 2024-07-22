@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 
 /**
@@ -43,7 +43,7 @@ public class MecanumDriveController implements Controller {
     }
 
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
-        Telemetry telemetry = MyRobot.getInstance().telemetry;
+        Telemetry telemetry = Robot.getInstance().telemetry;
 
         setGain(gamepad1);
 

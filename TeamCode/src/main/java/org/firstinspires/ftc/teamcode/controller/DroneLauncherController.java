@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.controller;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.MyRobot;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 
 /**
@@ -31,7 +31,7 @@ public class DroneLauncherController implements Controller {
      */
     @Override
     public void execute(Gamepad gamepad1, Gamepad gamepad2) {
-        Telemetry telemetry = MyRobot.getInstance().telemetry;
+        Telemetry telemetry = Robot.getInstance().telemetry;
 
         if (gamepad2.x) {
             droneLauncher.setToLaunchAngle();

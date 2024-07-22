@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.command.Robot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,8 +14,8 @@ import org.firstinspires.ftc.teamcode.subsystem.WebCam;
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
  */
-public class MyRobot extends Robot {
-    private static MyRobot robot = null;
+public class Robot {
+    private static Robot robot = null;
 
     public final Telemetry telemetry;
 
@@ -37,7 +36,7 @@ public class MyRobot extends Robot {
      * @param telemetry   telemetry class for displaying data.
      * @param opModeType  Autonomous or TeleOp OpMode
      */
-    private MyRobot(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opModeType) {
+    private Robot(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opModeType) {
         robot = this;
         this.telemetry = telemetry;
 
@@ -63,7 +62,7 @@ public class MyRobot extends Robot {
      * @param telemetry   telemetry class for displaying data.
      * @return the robot instance
      */
-    public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry) {
+    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry) {
         return init(hardwareMap, telemetry, OpModeType.TELEOP);
     }
 
@@ -76,8 +75,8 @@ public class MyRobot extends Robot {
      * @param opmodeType  Autonomous or TeleOp OpMode.
      * @return the robot instance
      */
-    public static MyRobot init(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opmodeType) {
-        robot = new MyRobot(hardwareMap, telemetry, opmodeType);
+    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opmodeType) {
+        robot = new Robot(hardwareMap, telemetry, opmodeType);
         return robot;
     }
 
@@ -86,7 +85,7 @@ public class MyRobot extends Robot {
      *
      * @return the robot instance.
      */
-    public static MyRobot getInstance() {
+    public static Robot getInstance() {
         return robot;
     }
 
