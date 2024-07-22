@@ -58,13 +58,12 @@ public class Arm extends SubsystemBaseEx {
      */
     public void setTarget(Position position) {
         if (targetPosition != position) {
-            double pos = targetPosition == Position.INTAKE ? INTAKE_POSITION : SCORING_POSITION;
 
             targetPosition = position;
-            telemetry.addData("[ARM] Set Position", pos);
+            telemetry.addData("[ARM] Set Position", position.getValue());
 
             // Build the motion profile to move the arm to the target position
-            motionProfile = new MotionProfile(MAX_ACCELERATION, MAX_VELOCITY, motor.getCurrentPosition(), pos);
+            motionProfile = new MotionProfile(MAX_ACCELERATION, MAX_VELOCITY, motor.getCurrentPosition(), position.getValue());
 
             // Reset the PID controller
             pidController.reset();
@@ -134,6 +133,17 @@ public class Arm extends SubsystemBaseEx {
      */
     public enum Position {
         INTAKE,
-        SCORING
+        SCORING;
+
+        /**
+         * Returns the integer value related to the position. Ideally, this would be included as
+         * a parameter for the Position enum, but doing so won't allow the values to be edited
+         * in FTC Dashboard.
+         *
+         * @return the integer value related to the position
+         */
+        public int getValue() {
+            return this == INTAKE ? INTAKE_POSITION : SCORING_POSITION;
+        }
     }
 }

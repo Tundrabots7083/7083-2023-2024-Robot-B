@@ -77,11 +77,11 @@ public class Lift extends SubsystemBaseEx {
     public void setTarget(Position position) {
         if (targetPosition != position) {
             targetPosition = position;
-            int pos = getPositionalValue(position);
+            int pos = position.getValue();
             telemetry.addData("[LIFT] Set Position", targetPosition);
 
             // Build the motion profile to move the lift to the target position
-            liftProfile = new MotionProfile(MAX_ACCELERATION, MAX_VELOCITY, leftMotor.getCurrentPosition(), getPositionalValue(position));
+            liftProfile = new MotionProfile(MAX_ACCELERATION, MAX_VELOCITY, leftMotor.getCurrentPosition(), position.getValue());
 
             // Reset the PID controllers
             leftController.reset();
@@ -158,51 +158,6 @@ public class Lift extends SubsystemBaseEx {
     }
 
     /**
-     * Gets the numerical value for the position. This is done via a switch statement so that
-     * FTC Dashboard can edit the values; otherwise, it would make sense to include them within
-     * the enum itself.
-     *
-     * @param position the position for the lift
-     * @return the numeric value corresponding to the lift position
-     */
-    private int getPositionalValue(Position position) {
-        final int pos;
-        switch (position) {
-            case INTAKE:
-                pos = INTAKE_POSITION;
-                break;
-            case AUTONOMOUS_BACKSTAGE:
-                pos = SCORE_AUTONOMOUS_BACKSTAGE_POSITION;
-                break;
-            case AUTONOMOUS_FRONTSTAGE:
-                pos = SCORE_AUTONOMOUS_FRONTSTAGE_POSITION;
-                break;
-            case SCORE_LOW:
-                pos = SCORE_LOW_POSITION;
-                break;
-            case SCORE_MEDIUM:
-                pos = SCORE_MEDIUM_POSITION;
-                break;
-            case SCORE_HIGH:
-                pos = SCORE_HIGH_POSITION;
-                break;
-            case HANG_START:
-                pos = HANG_START_POSITION;
-                break;
-            case HANG_END:
-                pos = HANG_END_POSITION;
-                break;
-            case LAUNCH_DRONE:
-                pos = DRONE_LAUNCH_POSITION;
-                break;
-            default:
-                pos = 0;
-        }
-
-        return pos;
-    }
-
-    /**
      * Position to which to move the lift
      */
     public enum Position {
@@ -214,6 +169,50 @@ public class Lift extends SubsystemBaseEx {
         SCORE_HIGH,
         HANG_START,
         HANG_END,
-        LAUNCH_DRONE
+        LAUNCH_DRONE;
+
+        /**
+         * Gets the numerical value for the position. This is done via a switch statement so that
+         * FTC Dashboard can edit the values; otherwise, it would make sense to include them within
+         * the enum itself.
+         *
+         * @return the numeric value corresponding to the lift position
+         */
+        public int getValue() {
+            final int pos;
+            switch (this) {
+                case INTAKE:
+                    pos = INTAKE_POSITION;
+                    break;
+                case AUTONOMOUS_BACKSTAGE:
+                    pos = SCORE_AUTONOMOUS_BACKSTAGE_POSITION;
+                    break;
+                case AUTONOMOUS_FRONTSTAGE:
+                    pos = SCORE_AUTONOMOUS_FRONTSTAGE_POSITION;
+                    break;
+                case SCORE_LOW:
+                    pos = SCORE_LOW_POSITION;
+                    break;
+                case SCORE_MEDIUM:
+                    pos = SCORE_MEDIUM_POSITION;
+                    break;
+                case SCORE_HIGH:
+                    pos = SCORE_HIGH_POSITION;
+                    break;
+                case HANG_START:
+                    pos = HANG_START_POSITION;
+                    break;
+                case HANG_END:
+                    pos = HANG_END_POSITION;
+                    break;
+                case LAUNCH_DRONE:
+                    pos = DRONE_LAUNCH_POSITION;
+                    break;
+                default:
+                    pos = 0;
+            }
+
+            return pos;
+        }
     }
 }

@@ -31,48 +31,15 @@ public class ScoringSubsystem extends SubsystemBaseEx {
         this.lift = lift;
     }
 
+    /**
+     * Sets the target position for the lift subsystem.
+     *
+     * @param position the target position
+     */
     public void setTarget(Position position) {
         if (targetPosition != position) {
-            switch (position) {
-                case INTAKE:
-                    lift.setTarget(Lift.Position.INTAKE);
-                    arm.setTarget(Arm.Position.INTAKE);
-                    break;
-                case AUTONOMOUS_BACKSTAGE:
-                    lift.setTarget(Lift.Position.AUTONOMOUS_BACKSTAGE);
-                    arm.setTarget(Arm.Position.SCORING);
-                    break;
-                case AUTONOMOUS_FRONTSTAGE:
-                    lift.setTarget(Lift.Position.AUTONOMOUS_FRONTSTAGE);
-                    arm.setTarget(Arm.Position.SCORING);
-                    break;
-                case SCORE_LOW:
-                    lift.setTarget(Lift.Position.SCORE_LOW);
-                    arm.setTarget(Arm.Position.SCORING);
-                    break;
-                case SCORE_MEDIUM:
-                    lift.setTarget(Lift.Position.SCORE_MEDIUM);
-                    arm.setTarget(Arm.Position.SCORING);
-                    break;
-                case SCORE_HIGH:
-                    lift.setTarget(Lift.Position.SCORE_HIGH);
-                    arm.setTarget(Arm.Position.SCORING);
-                    break;
-                case HANG_START:
-                    lift.setTarget(Lift.Position.HANG_START);
-                    arm.setTarget(Arm.Position.INTAKE);
-                    break;
-                case HANG_END:
-                    lift.setTarget(Lift.Position.HANG_END);
-                    arm.setTarget(Arm.Position.INTAKE);
-                    break;
-                case LAUNCH_DRONE:
-                    lift.setTarget(Lift.Position.LAUNCH_DRONE);
-                    arm.setTarget(Arm.Position.INTAKE);
-                    break;
-            }
-
-            targetPosition = position;
+            lift.setTarget(position.liftPosition);
+            arm.setTarget(position.armPosition);
         }
     }
 
@@ -99,15 +66,47 @@ public class ScoringSubsystem extends SubsystemBaseEx {
      * Position to which to move the scoring subsystem
      */
     public enum Position {
-        INTAKE,
-        AUTONOMOUS_BACKSTAGE,
-        AUTONOMOUS_FRONTSTAGE,
-        SCORE_LOW,
-        SCORE_MEDIUM,
-        SCORE_HIGH,
-        HANG_START,
-        HANG_END,
-        LAUNCH_DRONE
+        INTAKE(Arm.Position.INTAKE, Lift.Position.INTAKE),
+        AUTONOMOUS_BACKSTAGE(Arm.Position.SCORING, Lift.Position.AUTONOMOUS_BACKSTAGE),
+        AUTONOMOUS_FRONTSTAGE(Arm.Position.SCORING, Lift.Position.AUTONOMOUS_FRONTSTAGE),
+        SCORE_LOW(Arm.Position.SCORING, Lift.Position.SCORE_LOW),
+        SCORE_MEDIUM(Arm.Position.SCORING, Lift.Position.SCORE_MEDIUM),
+        SCORE_HIGH(Arm.Position.SCORING, Lift.Position.SCORE_HIGH),
+        HANG_START(Arm.Position.INTAKE, Lift.Position.HANG_START),
+        HANG_END(Arm.Position.INTAKE, Lift.Position.HANG_END),
+        LAUNCH_DRONE(Arm.Position.INTAKE, Lift.Position.LAUNCH_DRONE);
+
+        private final Arm.Position armPosition;
+        private final Lift.Position liftPosition;
+
+        /**
+         * Instantiate a Position enum with the given arm and lift positions.
+         *
+         * @param armPosition   the corresponding arm position
+         * @param liftPosition the corresponding lift position
+         */
+        private Position(Arm.Position armPosition, Lift.Position liftPosition) {
+            this.armPosition = armPosition;
+            this.liftPosition = liftPosition;
+        }
+
+        /**
+         * Get the arm position that is used for this scoring subsystem position.
+         *
+         * @return the arm position
+         */
+        public Arm.Position getArmPosition() {
+            return armPosition;
+        }
+
+        /**
+         * Get the lift position that is used for this scoring subsystem position.
+         *
+         * @return the lift position
+         */
+        public Lift.Position getLiftPosition() {
+            return liftPosition;
+        }
     }
 
     /**
