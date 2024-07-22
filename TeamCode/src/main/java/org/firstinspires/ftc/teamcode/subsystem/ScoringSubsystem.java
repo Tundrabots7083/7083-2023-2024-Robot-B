@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.command.SequentialCommandGroupEx;
+import org.firstinspires.ftc.teamcode.command.CommandEx;
+import org.firstinspires.ftc.teamcode.command.ParallelCommandGroupEx;
 
 /**
  * A collection of components used for scoring. For CenterStage, this includes the lift and arm.
@@ -89,10 +90,8 @@ public class ScoringSubsystem extends Subsystem {
      * @param position the position to which to move the lift and arm.
      * @return the action to move the lift and arm to the target positions.
      */
-    public SequentialCommandGroupEx setToPosition(Position position) {
-        SequentialCommandGroupEx command = new SequentialCommandGroupEx();
-        command.addRequirements(this);
-
+    public CommandEx setToPosition(Position position) {
+        ParallelCommandGroupEx command = new ParallelCommandGroupEx();
         switch (position) {
             case INTAKE:
                 command.addCommands(
@@ -138,6 +137,8 @@ public class ScoringSubsystem extends Subsystem {
                 );
                 break;
         }
+
+        command.addRequirements(this, arm, lift);
         return command;
     }
 

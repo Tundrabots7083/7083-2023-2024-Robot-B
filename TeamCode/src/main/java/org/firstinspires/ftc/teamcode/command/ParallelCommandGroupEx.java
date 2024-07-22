@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.command;
 import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 
-public abstract class ParallelCommandGroupEx extends ParallelCommandGroup implements CommandEx {
+public class ParallelCommandGroupEx extends ParallelCommandGroup implements CommandEx {
 
     /**
      * Provides an Action facade for an FTCLib command.

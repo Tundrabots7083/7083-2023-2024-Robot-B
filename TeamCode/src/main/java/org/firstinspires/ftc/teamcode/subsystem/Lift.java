@@ -183,6 +183,8 @@ public class Lift extends Subsystem {
         public SetToPosition(Lift lift, int position) {
             this.lift = lift;
             this.position = position;
+
+            addRequirements(lift);
         }
 
         /**

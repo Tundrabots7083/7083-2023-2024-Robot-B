@@ -162,6 +162,8 @@ public class Arm extends Subsystem {
         public SetToPosition(Arm arm, int position) {
             this.arm = arm;
             this.position = position;
+
+            addRequirements(arm);
         }
 
         /**
