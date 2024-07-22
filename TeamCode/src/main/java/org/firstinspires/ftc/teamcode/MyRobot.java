@@ -1,20 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.command.Robot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystem.Arm;
-import org.firstinspires.ftc.teamcode.subsystem.WebCam;
 import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 import org.firstinspires.ftc.teamcode.subsystem.Lift;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.WebCam;
 
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
  */
-public class MyRobot {
+public class MyRobot extends Robot {
     private static MyRobot robot = null;
 
     public final Telemetry telemetry;
