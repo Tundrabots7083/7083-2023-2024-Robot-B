@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MyRobot;
-import org.firstinspires.ftc.teamcode.controller.subsystem.ScoringSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
 
 /**
  * Uses the gamepad controller to set the position of the arm and container servo.

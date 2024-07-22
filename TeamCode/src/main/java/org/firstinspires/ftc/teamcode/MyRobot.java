@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.controller.subsystem.Arm;
-import org.firstinspires.ftc.teamcode.controller.subsystem.Camera;
-import org.firstinspires.ftc.teamcode.controller.subsystem.DroneLauncher;
-import org.firstinspires.ftc.teamcode.controller.subsystem.Lift;
-import org.firstinspires.ftc.teamcode.controller.subsystem.MecanumDrive;
-import org.firstinspires.ftc.teamcode.controller.subsystem.PixelCollector;
-import org.firstinspires.ftc.teamcode.controller.subsystem.ScoringSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.Arm;
+import org.firstinspires.ftc.teamcode.subsystem.Camera;
+import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystem.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
+import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
 
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.

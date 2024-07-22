@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controller.subsystem;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;

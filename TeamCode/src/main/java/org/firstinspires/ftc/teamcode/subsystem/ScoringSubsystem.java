@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controller.subsystem;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.command.SequentialCommandGroupEx;

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MyRobot;
-import org.firstinspires.ftc.teamcode.controller.subsystem.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 
 /**
  * A controller for a mecanum drive chassis.
