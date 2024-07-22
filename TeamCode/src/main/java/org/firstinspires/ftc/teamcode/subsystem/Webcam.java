@@ -22,9 +22,9 @@ public class Webcam extends SubsystemBaseEx {
     /**
      * Creates a new vision sensor for the webcam with the given name.
      *
-     * @param deviceName name of the webcam
+     * @param deviceName  name of the webcam
      * @param hardwareMap mapping of all the hardware on the robot
-     * @param telemetry  the telemetry used to provide output on the driver station.
+     * @param telemetry   the telemetry used to provide output on the driver station.
      */
     public Webcam(String deviceName, HardwareMap hardwareMap, Telemetry telemetry) {
 
