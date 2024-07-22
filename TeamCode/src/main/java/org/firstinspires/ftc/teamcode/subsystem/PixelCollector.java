@@ -19,14 +19,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 @Config
 public class PixelCollector extends SubsystemBaseEx {
-    /**
-     * The number of milliseconds to delay between changing the flap servo and changing the spinner servo
-     */
+    public static double SPINNER_COLLECT_POWER = -0.3;
+    public static double SPINNER_DEPOSIT_POWER = 0.09;
+    public static double SPINNER_OFF_POWER = 0.0;
+    public static double FLAP_OPENED_POSITION = 0.0;
+    public static double FLAP_CLOSED_POSITION = 0.65;
+
     public static long SPINNER_DELAY = 250;
-    public static long FLAP_DELAY = 250;
     public static long DEPOSIT_PIXEL_TIME = 1750;
-    private final String deviceName;
-    private final String description;
     private final Telemetry telemetry;
     private final CRServo spinner;
     private final Servo flap;
@@ -43,9 +43,6 @@ public class PixelCollector extends SubsystemBaseEx {
      * @param reverseFlapServo whether the servo runs forward or reverse.
      */
     public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean reverseFlapServo) {
-        this.deviceName = deviceName;
-        this.description = description;
-
         this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
         this.flap = hardwareMap.get(Servo.class, deviceName + "Flap");
         this.telemetry = telemetry;
@@ -56,8 +53,8 @@ public class PixelCollector extends SubsystemBaseEx {
         }
 
         this.state = PixelCollectorState.CLOSED;
-        this.flap.setPosition(this.state.flapPosition);
-        this.spinner.setPower(this.state.spinnerPower);
+        this.flap.setPosition(FLAP_CLOSED_POSITION);
+        this.spinner.setPower(SPINNER_OFF_POWER);
 
         spinnerDelayTime = System.currentTimeMillis();
     }
@@ -68,8 +65,10 @@ public class PixelCollector extends SubsystemBaseEx {
      * @param state the state for the pixel collector.
      */
     public void setState(PixelCollectorState state) {
-        this.state = state;
-        spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
+        if (this.state != state) {
+            this.state = state;
+            spinnerDelayTime = System.currentTimeMillis() + SPINNER_DELAY;
+        }
     }
 
     /**
@@ -78,19 +77,25 @@ public class PixelCollector extends SubsystemBaseEx {
     @Override
     public void execute() {
         long currentTime = System.currentTimeMillis();
-        if (state == PixelCollectorState.CLOSED) {
-            spinner.setPower(state.spinnerPower);
-            if (currentTime > spinnerDelayTime) {
-                flap.setPosition(state.flapPosition);
-            }
-        } else {
-            // Set the flap servo position to the current target
-            flap.setPosition(state.flapPosition);
-
-            // Check if we can set the spinner position yet
-            if (currentTime > spinnerDelayTime) {
-                spinner.setPower(state.spinnerPower);
-            }
+        switch (state) {
+            case CLOSED:
+                spinner.setPower(SPINNER_OFF_POWER);
+                if (currentTime > spinnerDelayTime) {
+                    flap.setPosition(FLAP_CLOSED_POSITION);
+                }
+                break;
+            case DEPOSITING:
+                flap.setPosition(FLAP_OPENED_POSITION);
+                if (currentTime > spinnerDelayTime) {
+                    spinner.setPower(SPINNER_DEPOSIT_POWER);
+                }
+                break;
+            case COLLECTING:
+                flap.setPosition(FLAP_OPENED_POSITION);
+                if (currentTime > spinnerDelayTime) {
+                    spinner.setPower(SPINNER_COLLECT_POWER);
+                }
+                break;
         }
     }
 
@@ -107,26 +112,12 @@ public class PixelCollector extends SubsystemBaseEx {
      * The state for the pixel collector.
      */
     public enum PixelCollectorState {
-        /**
-         * Collecting pixels from the field
-         */
-        COLLECTING(-0.3, 0),
-        /**
-         * Depositing pixels on the field
-         */
-        DEPOSITING(0.09, 0),
-        /**
-         * The spinner is off and the flap door is closed
-         */
-        CLOSED(0, 0.65);
-
-        public final double spinnerPower;
-        public final double flapPosition;
-
-        PixelCollectorState(double spinnerPower, double flapPosition) {
-            this.spinnerPower = spinnerPower;
-            this.flapPosition = flapPosition;
-        }
+        /** Collecting pixels from the field */
+        COLLECTING,
+        /** Depositing pixels on the field */
+        DEPOSITING,
+        /** The spinner is off and the flap door is closed */
+        CLOSED,
     }
 
     /**
@@ -154,14 +145,16 @@ public class PixelCollector extends SubsystemBaseEx {
          */
         private void initialize() {
             pixelCollector.setState(PixelCollectorState.DEPOSITING);
+            pixelCollector.execute();
             timer.reset();
         }
 
         /**
          * Deposits a pixel from the collector and then turns closes the pixel collector.
          *
-         * @param telemetryPacket
-         * @return
+         * @param telemetryPacket telemetry used to display output
+         * @return <code>false</code> if the pixel has been deposited;
+         * <code>true</code> if the action needs to continue running to deposit the pixel.
          */
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -185,6 +178,8 @@ public class PixelCollector extends SubsystemBaseEx {
                 default:
                     isFinished = true;
             }
+
+            pixelCollector.execute();
 
             return !isFinished;
         }
