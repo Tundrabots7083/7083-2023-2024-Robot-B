@@ -23,9 +23,9 @@ public class MyRobot {
     public final MecanumDrive mecanumDrive;
     public final DroneLauncher droneLauncher;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
-    public final WebCam webCam;
     public final Arm arm;
     public final Lift lift;
+    public final WebCam webCam;
 
     public final ScoringSubsystem scoringSubsystem;
 
