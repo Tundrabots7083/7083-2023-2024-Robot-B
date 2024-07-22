@@ -36,6 +36,9 @@ public class Webcam extends SubsystemBaseEx {
         CameraStreamServer.getInstance().setSource(webcamPortal);
     }
 
+    /**
+     * Update the video stream for the webcam
+     */
     @Override
     public void execute() {
         // NO-OP
