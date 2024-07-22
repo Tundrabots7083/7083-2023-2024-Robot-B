@@ -12,6 +12,6 @@ public class SequentialCommandGroupEx extends SequentialCommandGroup implements 
      */
     @Override
     public Action asAction() {
-        return new ActionWrapper(this);
+        return new CommandAction(this);
     }
 }

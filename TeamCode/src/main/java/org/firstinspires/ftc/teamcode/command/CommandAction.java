@@ -9,7 +9,7 @@ import com.arcrobotics.ftclib.command.Command;
 /**
  * Provide a RoadRunner Action interface to an FTCLib command.
  */
-public class ActionWrapper implements Action {
+public class CommandAction implements Action {
     private final Command command;
     private boolean initialized = false;
 
@@ -18,7 +18,7 @@ public class ActionWrapper implements Action {
      *
      * @param command
      */
-    public ActionWrapper(Command command) {
+    public CommandAction(Command command) {
         this.command = command;
     }
 

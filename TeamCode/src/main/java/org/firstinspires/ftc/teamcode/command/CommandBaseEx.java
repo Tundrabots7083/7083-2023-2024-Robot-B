@@ -16,6 +16,6 @@ public abstract class CommandBaseEx extends CommandBase implements CommandEx {
      */
     @Override
     public Action asAction() {
-        return new ActionWrapper(this);
+        return new CommandAction(this);
     }
 }

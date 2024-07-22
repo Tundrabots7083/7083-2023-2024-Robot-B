@@ -12,6 +12,6 @@ public class ParallelCommandGroupEx extends ParallelCommandGroup implements Comm
      */
     @Override
     public Action asAction() {
-        return new ActionWrapper(this);
+        return new CommandAction(this);
     }
 }
