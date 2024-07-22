@@ -50,35 +50,7 @@ public class ScoringSubsystem extends Subsystem {
      * @param position the position to set the scoring position to
      */
     public void setPosition(Position position) {
-        switch (position) {
-            case SCORE_LOW:
-            case AUTONOMOUS_FRONTSTAGE:
-                lift.setPosition(Lift.SCORE_LOW_POSITION);
-                arm.setPosition(Arm.SCORE_POSITION);
-                break;
-            case SCORE_MEDIUM:
-            case AUTONOMOUS_BACKSTAGE:
-                lift.setPosition(Lift.SCORE_MEDIUM_POSITION);
-                arm.setPosition(Arm.SCORE_POSITION);
-                break;
-            case SCORE_HIGH:
-                lift.setPosition(Lift.SCORE_HIGH_POSITION);
-                arm.setPosition(Arm.SCORE_POSITION);
-                break;
-            case HANG_START:
-                lift.setPosition(Lift.HANG_START_POSITION);
-                arm.setPosition(Arm.INTAKE_POSITION);
-                break;
-            case LAUNCH_DRONE:
-                lift.setPosition(Lift.DRONE_LAUNCH_POSITION);
-                arm.setPosition(Arm.INTAKE_POSITION);
-                break;
-            case INTAKE:
-            case HANG_END:
-            default:
-                lift.setPosition(Lift.INTAKE_POSITION);
-                arm.setPosition(Arm.INTAKE_POSITION);
-        }
+        setToPosition(position).execute();
     }
 
     /**
@@ -87,11 +59,16 @@ public class ScoringSubsystem extends Subsystem {
      * @param position the position to which to move the lift and arm.
      * @return the action to move the lift and arm to the target positions.
      */
-    public SequentialCommandGroupEx setTo(Position position) {
+    public SequentialCommandGroupEx setToPosition(Position position) {
         SequentialCommandGroupEx command = new SequentialCommandGroupEx();
         command.addRequirements(this);
 
         switch (position) {
+            case INTAKE:
+                command.addCommands(
+                        lift.setToPosition(Lift.INTAKE_POSITION),
+                        arm.lowerArm()
+                );
             case SCORE_LOW:
             case AUTONOMOUS_FRONTSTAGE:
                 command.addCommands(
@@ -118,19 +95,18 @@ public class ScoringSubsystem extends Subsystem {
                         arm.lowerArm()
                 );
                 break;
+            case HANG_END:
+                command.addCommands(
+                        lift.setToPosition(Lift.HANG_END_POSITION),
+                        arm.lowerArm()
+                );
+                break;
             case LAUNCH_DRONE:
                 command.addCommands(
                         lift.setToPosition(Lift.DRONE_LAUNCH_POSITION),
                         arm.lowerArm()
                 );
                 break;
-            case INTAKE:
-            case HANG_END:
-            default:
-                command.addCommands(
-                        lift.setToPosition(Lift.INTAKE_POSITION),
-                        arm.lowerArm()
-                );
         }
         return command;
     }
