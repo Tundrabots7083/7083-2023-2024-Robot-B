@@ -63,6 +63,16 @@ public class ScoringSubsystem extends SubsystemBaseEx {
     }
 
     /**
+     * Gets an action to set the scoring subsystem to the target position.
+     *
+     * @param position the position to which to set the scoring subsystem.
+     * @return the action to set the scoring subsystem to the target position.
+     */
+    public Action setTo(Position position) {
+        return null;
+    }
+
+    /**
      * Position to which to move the scoring subsystem
      */
     public enum Position {
@@ -107,16 +117,6 @@ public class ScoringSubsystem extends SubsystemBaseEx {
         public Lift.Position getLiftPosition() {
             return liftPosition;
         }
-    }
-
-    /**
-     * Gets an action to set the scoring subsystem to the target position.
-     *
-     * @param position the position to which to set the scoring subsystem.
-     * @return the action to set the scoring subsystem to the target position.
-     */
-    public Action setTo(Position position) {
-        return null;
     }
 
     /**
