@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.action.DisplayAction;
 import org.firstinspires.ftc.teamcode.action.SleepAction;
 
 public class ScoringSubsystem {
-    public Action setLiftTo(Position position) {
+    public Action setTo(Position position) {
         return new SequentialAction(
                 new DisplayAction("Set Lift to " + position),
                 new SleepAction(1.5)
