@@ -81,7 +81,6 @@ public class MyRobot extends Robot {
         return robot;
     }
 
-
     /**
      * Gets the singleton instance of the robot.
      *
