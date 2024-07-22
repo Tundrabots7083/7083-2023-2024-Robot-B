@@ -50,7 +50,37 @@ public class ScoringSubsystem extends Subsystem {
      * @param position the position to set the scoring position to
      */
     public void setPosition(Position position) {
-        setToPosition(position).execute();
+        switch (position) {
+            case INTAKE:
+                lift.setPosition(Lift.INTAKE_POSITION);
+                arm.setPosition(Arm.INTAKE_POSITION);
+            case SCORE_LOW:
+            case AUTONOMOUS_FRONTSTAGE:
+                lift.setPosition(Lift.SCORE_LOW_POSITION);
+                arm.setPosition(Arm.SCORE_POSITION);
+                break;
+            case SCORE_MEDIUM:
+            case AUTONOMOUS_BACKSTAGE:
+                lift.setPosition(Lift.SCORE_MEDIUM_POSITION);
+                arm.setPosition(Arm.SCORE_POSITION);
+                break;
+            case SCORE_HIGH:
+                lift.setPosition(Lift.SCORE_HIGH_POSITION);
+                arm.setPosition(Arm.SCORE_POSITION);
+                break;
+            case HANG_START:
+                lift.setPosition(Lift.HANG_START_POSITION);
+                arm.setPosition(Arm.INTAKE_POSITION);
+                break;
+            case HANG_END:
+                lift.setPosition(Lift.HANG_END_POSITION);
+                arm.setPosition(Arm.INTAKE_POSITION);
+                break;
+            case LAUNCH_DRONE:
+                lift.setPosition(Lift.DRONE_LAUNCH_POSITION);
+                arm.setPosition(Arm.INTAKE_POSITION);
+                break;
+        }
     }
 
     /**
