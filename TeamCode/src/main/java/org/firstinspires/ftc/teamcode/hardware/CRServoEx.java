@@ -77,11 +77,11 @@ public class CRServoEx extends CRServo implements PwmControl {
 
     /**
      * Sets the power level of the motor, expressed as a fraction of the maximum possible power / speed
-     * supported according to the run mode in which the motor is operating.
+     * supported according to the run mode in which the servo is operating.
      * <p>
-     * Setting a power level of zero will brake the motor
+     * Setting a power level of zero will brake the servo.
      *
-     * @param output the new power level of the motor, a value in the interval [-1.0, 1.0]
+     * @param output the new power level of the servo, a value in the interval [-1.0, 1.0]
      */
     @Override
     public void set(double output) {
