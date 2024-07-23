@@ -60,7 +60,7 @@ public class PixelCollector extends SubsystemBaseEx {
         }
 
         // Initialize the pixel collector state
-        state = PixelCollectorState.IDLE;
+        state = PixelCollectorState.STOPPED;
         flap.setPosition(FLAP_CLOSED_POSITION);
         spinner.set(SPINNER_OFF_POWER);
 
@@ -86,7 +86,7 @@ public class PixelCollector extends SubsystemBaseEx {
     public void execute() {
         long currentTime = System.currentTimeMillis();
         switch (state) {
-            case IDLE:
+            case STOPPED:
                 // Turn off the power to the spinner, and wait for it to stop before closing the
                 // pixel collector flap
                 spinner.set(SPINNER_OFF_POWER);
@@ -137,7 +137,7 @@ public class PixelCollector extends SubsystemBaseEx {
         /**
          * The spinner is off and the flap door is closed
          */
-        IDLE,
+        STOPPED,
     }
 
     /**
@@ -195,12 +195,12 @@ public class PixelCollector extends SubsystemBaseEx {
             switch (pixelCollector.state) {
                 case DEPOSITING:
                     if (timer.milliseconds() > DEPOSIT_PIXEL_TIME) {
-                        pixelCollector.setState(PixelCollectorState.IDLE);
+                        pixelCollector.setState(PixelCollectorState.STOPPED);
                         timer.reset();
                     }
                     isFinished = false;
                     break;
-                case IDLE:
+                case STOPPED:
                     isFinished = timer.milliseconds() > SPINNER_DELAY;
                     break;
                 default:

@@ -14,6 +14,8 @@ public class ScoringSubsystem extends SubsystemBaseEx {
     private final Telemetry telemetry;
     private final Arm arm;
     private final Lift lift;
+    private final PixelCollector leftPixelCollector;
+    private final PixelCollector rightPixelCollector;
     private Position targetPosition = Position.INTAKE;
 
     /**
@@ -23,12 +25,16 @@ public class ScoringSubsystem extends SubsystemBaseEx {
      * @param lift      the lift used to raise and lower the pixel collectors
      * @param arm       the arm used to swing the pixel collectors between the scoring position and
      *                  the intake position
+     * @param leftPixelCollector the left pixel collector
+     * @param rightPixelCollector the right pixel collector
      * @param telemetry the telemetry used to display data on the driver station.
      */
-    public ScoringSubsystem(Lift lift, Arm arm, Telemetry telemetry) {
+    public ScoringSubsystem(Lift lift, Arm arm, PixelCollector leftPixelCollector, PixelCollector rightPixelCollector, Telemetry telemetry) {
         this.telemetry = telemetry;
         this.arm = arm;
         this.lift = lift;
+        this.leftPixelCollector = leftPixelCollector;
+        this.rightPixelCollector = rightPixelCollector;
     }
 
     /**
@@ -55,12 +61,44 @@ public class ScoringSubsystem extends SubsystemBaseEx {
     }
 
     /**
-     * Updates the position of the arm and lift to match the target position.
+     * Have one of the pixel collectors deposit a pixel. This opens the flap door on the pixel
+     * collector and turns on the spinner.
+     *
+     * @param location the <em>left</em> or <em>right</em> pixel collector
+     */
+    public void depositPixel(PixelCollector.Location location) {
+        lift.setTarget(Lift.Position.INTAKE);
+        arm.setTarget(Arm.Position.INTAKE);
+
+        if (location == PixelCollector.Location.LEFT) {
+            leftPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+        } else {
+            rightPixelCollector.setState(PixelCollector.PixelCollectorState.DEPOSITING);
+        }
+    }
+
+    /**
+     * Turn off the pixel collector, stopping the spinner and closing the flap door.
+     *
+     * @param location the <em>left</em> or <em>right</em> pixel collector
+     */
+    public void stop(PixelCollector.Location location) {
+        if (location == PixelCollector.Location.LEFT) {
+            leftPixelCollector.setState(PixelCollector.PixelCollectorState.STOPPED);
+        } else {
+            rightPixelCollector.setState(PixelCollector.PixelCollectorState.STOPPED);
+        }
+    }
+
+    /**
+     * Updates the position of the arm, lift and pixel collectors to match the target state.
      */
     @Override
     public void execute() {
         arm.execute();
         lift.execute();
+        leftPixelCollector.execute();
+        rightPixelCollector.execute();
     }
 
     /**
@@ -70,7 +108,7 @@ public class ScoringSubsystem extends SubsystemBaseEx {
      * @return the action to set the scoring subsystem to the target position.
      */
     public Action setTo(Position position) {
-        return null;
+        return new SetPosition(this, position);
     }
 
     /**

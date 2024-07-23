@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystem.Arm;
 import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystem.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystem.Lift;
 import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
@@ -24,9 +25,11 @@ public class Robot {
     public final DroneLauncher droneLauncher;
     public final Arm arm;
     public final Lift lift;
-    public final ScoringSubsystem scoringSubsystem;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
     public final Webcam webcam;
+
+    public final ScoringSubsystem scoringSubsystem;
+    public final IntakeSubsystem intakeSubsystem;
 
     /**
      * Creates a new instance of the robot.
@@ -47,8 +50,10 @@ public class Robot {
         leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
         rightPixelCollector = new PixelCollector(PixelCollector.Location.RIGHT, hardwareMap, telemetry);
 
-        // Instantiate the scoring subsystem that manages the lift and arm
-        scoringSubsystem = new ScoringSubsystem(lift, arm, telemetry);
+        // Instantiate the scoring subsystem and intake subsystem that manages the lift, arm and
+        // pixel collectors
+        scoringSubsystem = new ScoringSubsystem(lift, arm, leftPixelCollector, rightPixelCollector, telemetry);
+        intakeSubsystem = new IntakeSubsystem(lift, arm, leftPixelCollector, rightPixelCollector, telemetry);
 
         if (opModeType == OpModeType.AUTO) {
             // Create the vision sensor
