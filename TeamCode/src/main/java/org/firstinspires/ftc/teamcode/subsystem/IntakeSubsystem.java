@@ -7,9 +7,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * may be scored by the <code>ScoringSubsystem</code>.
  */
 public class IntakeSubsystem extends SubsystemBaseEx {
+    private final Telemetry telemetry;
     private final Lift lift;
     private final Arm arm;
-    private final Telemetry telemetry;
     private final PixelCollector leftPixelCollector;
     private final PixelCollector rightPixelCollector;
 
