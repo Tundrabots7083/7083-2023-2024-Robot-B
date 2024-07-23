@@ -55,10 +55,9 @@ public class Lift extends SubsystemBaseEx {
 
         leftMotor = new Motor(hardwareMap, "leftLift");
         leftMotor.stopAndResetEncoder();
-        ;
+
         rightMotor = new Motor(hardwareMap, "rightLift");
         rightMotor.stopAndResetEncoder();
-        ;
 
         leftController = new PIDControllerEx(KP, KI, KD, -KG);
         rightController = new PIDControllerEx(KP, KI, KD, -KG);

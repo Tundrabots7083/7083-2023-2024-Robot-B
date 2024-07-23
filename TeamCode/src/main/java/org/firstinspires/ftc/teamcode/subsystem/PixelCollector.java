@@ -5,9 +5,10 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
+import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -27,34 +28,39 @@ public class PixelCollector extends SubsystemBaseEx {
 
     public static long SPINNER_DELAY = 250;
     public static long DEPOSIT_PIXEL_TIME = 1750;
+
+    public static double MIN_ANGLE = 0;
+    public static double MAX_ANGLE = 180;
+
     private final Telemetry telemetry;
     private final CRServo spinner;
-    private final Servo flap;
+    private final ServoEx flap;
+
     private long spinnerDelayTime;
     private PixelCollectorState state;
 
     /**
      * Creates an instance of a pixel collector.
      *
-     * @param deviceName       the device name for the pixel collector.
-     * @param description      the description of the pixel collector.
+     * @param location         location of the pixel collector on the robot
      * @param hardwareMap      the mapping of all hardware on the bot.
      * @param telemetry        the telemetry used to display data on the driver station.
-     * @param reverseFlapServo whether the servo runs forward or reverse.
      */
-    public PixelCollector(String deviceName, String description, HardwareMap hardwareMap, Telemetry telemetry, boolean reverseFlapServo) {
-        this.spinner = hardwareMap.get(CRServo.class, deviceName + "Spinner");
-        this.flap = hardwareMap.get(Servo.class, deviceName + "Flap");
+    public PixelCollector(Location location, HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        if (reverseFlapServo) {
-            this.flap.setDirection(Servo.Direction.REVERSE);
-            this.spinner.setDirection(CRServo.Direction.REVERSE);
+        String deviceName = location == Location.LEFT ? "collectorLeft" : "collectorRight";
+        spinner = new CRServo(hardwareMap, deviceName + "Spinner");
+        flap = new SimpleServo(hardwareMap, deviceName + "Flap", MIN_ANGLE, MAX_ANGLE);
+
+        if (location == Location.LEFT) {
+            flap.setInverted(true);
+            spinner.setInverted(true);
         }
 
         this.state = PixelCollectorState.CLOSED;
         this.flap.setPosition(FLAP_CLOSED_POSITION);
-        this.spinner.setPower(SPINNER_OFF_POWER);
+        this.spinner.set(SPINNER_OFF_POWER);
 
         spinnerDelayTime = System.currentTimeMillis();
     }
@@ -79,7 +85,7 @@ public class PixelCollector extends SubsystemBaseEx {
         long currentTime = System.currentTimeMillis();
         switch (state) {
             case CLOSED:
-                spinner.setPower(SPINNER_OFF_POWER);
+                spinner.set(SPINNER_OFF_POWER);
                 if (currentTime > spinnerDelayTime) {
                     flap.setPosition(FLAP_CLOSED_POSITION);
                 }
@@ -87,13 +93,13 @@ public class PixelCollector extends SubsystemBaseEx {
             case DEPOSITING:
                 flap.setPosition(FLAP_OPENED_POSITION);
                 if (currentTime > spinnerDelayTime) {
-                    spinner.setPower(SPINNER_DEPOSIT_POWER);
+                    spinner.set(SPINNER_DEPOSIT_POWER);
                 }
                 break;
             case COLLECTING:
                 flap.setPosition(FLAP_OPENED_POSITION);
                 if (currentTime > spinnerDelayTime) {
-                    spinner.setPower(SPINNER_COLLECT_POWER);
+                    spinner.set(SPINNER_COLLECT_POWER);
                 }
                 break;
         }
@@ -118,6 +124,14 @@ public class PixelCollector extends SubsystemBaseEx {
         DEPOSITING,
         /** The spinner is off and the flap door is closed */
         CLOSED,
+    }
+
+    /**
+     * Location of the pixel collector on the robot
+     */
+    public enum Location {
+        LEFT,
+        RIGHT
     }
 
     /**

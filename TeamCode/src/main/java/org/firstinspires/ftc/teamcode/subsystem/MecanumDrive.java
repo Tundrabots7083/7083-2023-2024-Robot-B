@@ -18,8 +18,6 @@ import java.util.Collection;
 @Config
 public class MecanumDrive extends SubsystemBaseEx {
     private final Telemetry telemetry;
-    private final String deviceName;
-    private final String description;
     private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
 
     /**
@@ -30,8 +28,6 @@ public class MecanumDrive extends SubsystemBaseEx {
      */
     public MecanumDrive(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        this.deviceName = "driveTrain";
-        this.description = "Mecanum Drive Train";
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");

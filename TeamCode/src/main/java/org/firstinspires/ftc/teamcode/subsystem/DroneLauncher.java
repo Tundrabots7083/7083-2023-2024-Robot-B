@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -18,11 +19,14 @@ public class DroneLauncher extends SubsystemBaseEx {
     public static boolean SERVO_LAUNCH_ANGLE_USE_HIGH_ANGLE = true;
     public static double SERVO_RELEASE_POS = 0.1;
 
+    public static double MIN_RELEASE_ANGLE = 0.0;
+    public static double MAX_RELEASE_ANGLE = 0.5;
+    public static double MIN_LAUNCH_ANGLE = 0.0;
+    public static double MAX_LAUNCH_ANGLE = 0.5;
+
     private final Telemetry telemetry;
-    private final String deviceName;
-    private final String description;
-    private final Servo releaseServo;
-    private final Servo angleServo;
+    private final ServoEx releaseServo;
+    private final ServoEx angleServo;
 
     /**
      * Creates the drone launcher
@@ -32,14 +36,12 @@ public class DroneLauncher extends SubsystemBaseEx {
      */
     public DroneLauncher(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        this.deviceName = "droneLauncher";
-        this.description = "Drone Launcher";
 
-        releaseServo = hardwareMap.get(Servo.class, "droneLauncher");
-        releaseServo.setDirection(Servo.Direction.FORWARD);
+        releaseServo = new SimpleServo(hardwareMap, "droneLauncher", MIN_RELEASE_ANGLE, MAX_RELEASE_ANGLE);
+        releaseServo.setInverted(false);
 
-        angleServo = hardwareMap.get(Servo.class, "dronePosition");
-        angleServo.setDirection(Servo.Direction.REVERSE);
+        angleServo = new SimpleServo(hardwareMap, "dronePosition", MIN_LAUNCH_ANGLE, MAX_LAUNCH_ANGLE);
+        angleServo.setInverted(true);
         angleServo.setPosition(SERVO_LAUNCH_START_ANGLE);
     }
 

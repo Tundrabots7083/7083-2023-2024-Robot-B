@@ -44,8 +44,8 @@ public class Robot {
         droneLauncher = new DroneLauncher(hardwareMap, telemetry);
         arm = new Arm(hardwareMap, telemetry);
         lift = new Lift(hardwareMap, telemetry);
-        leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
-        rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
+        leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
+        rightPixelCollector = new PixelCollector(PixelCollector.Location.RIGHT, hardwareMap, telemetry);
 
         // Instantiate the scoring subsystem that manages the lift and arm
         scoringSubsystem = new ScoringSubsystem(lift, arm, telemetry);
