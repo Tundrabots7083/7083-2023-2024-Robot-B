@@ -63,7 +63,6 @@ public class PixelCollector extends SubsystemBaseEx {
         state = PixelCollectorState.IDLE;
         flap.setPosition(FLAP_CLOSED_POSITION);
         spinner.set(SPINNER_OFF_POWER);
-        spinner.setPwmDisable();
 
         spinnerDelayTime = System.currentTimeMillis();
     }
@@ -91,7 +90,6 @@ public class PixelCollector extends SubsystemBaseEx {
                 // Turn off the power to the spinner, and wait for it to stop before closing the
                 // pixel collector flap
                 spinner.set(SPINNER_OFF_POWER);
-                spinner.setPwmDisable();
                 if (currentTime > spinnerDelayTime) {
                     flap.setPosition(FLAP_CLOSED_POSITION);
                 }

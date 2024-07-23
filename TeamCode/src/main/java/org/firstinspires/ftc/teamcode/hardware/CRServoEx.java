@@ -73,4 +73,21 @@ public class CRServoEx extends CRServo implements PwmControl {
         CRServoImplEx crServoEx = (CRServoImplEx) crServo;
         return crServoEx.isPwmEnabled();
     }
+
+
+    /**
+     * Sets the power level of the motor, expressed as a fraction of the maximum possible power / speed
+     * supported according to the run mode in which the motor is operating.
+     *
+     * Setting a power level of zero will brake the motor
+     *
+     * @param output the new power level of the motor, a value in the interval [-1.0, 1.0]
+     */
+    @Override
+    public void set(double output) {
+        crServo.setPower(output);
+        if (output == 0) {
+            setPwmDisable();
+        }
+    }
 }
