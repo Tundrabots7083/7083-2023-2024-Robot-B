@@ -8,6 +8,11 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 /**
  * An extended version of the FTCLib CRServo class that includes pulse width modulation (PWM)
  * capabilities.
+ * <p>
+ * For FTC, servo ports are managed as a pair. Disabling PWM for one port will
+ * disable it for the other as well, and enabling PWM for one port enables it for both. Be
+ * careful when using this class for your CR servo. If you do not want nor need PWM management
+ * for the servo port pair, use <code>CRServo</code>provided by FTCLib.
  */
 public class CRServoEx extends CRServo implements PwmControl {
     /**
