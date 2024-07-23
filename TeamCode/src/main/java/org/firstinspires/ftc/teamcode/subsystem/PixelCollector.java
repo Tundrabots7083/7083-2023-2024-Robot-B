@@ -7,11 +7,11 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
-import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.hardware.CRServoEx;
 
 /**
  * Class for controlling a single pixel collector.
@@ -33,7 +33,7 @@ public class PixelCollector extends SubsystemBaseEx {
     public static double MAX_ANGLE = 180;
 
     private final Telemetry telemetry;
-    private final CRServo spinner;
+    private final CRServoEx spinner;
     private final ServoEx flap;
 
     private long spinnerDelayTime;
@@ -50,7 +50,7 @@ public class PixelCollector extends SubsystemBaseEx {
         this.telemetry = telemetry;
 
         String deviceName = location == Location.LEFT ? "collectorLeft" : "collectorRight";
-        spinner = new CRServo(hardwareMap, deviceName + "Spinner");
+        spinner = new CRServoEx(hardwareMap, deviceName + "Spinner");
         flap = new SimpleServo(hardwareMap, deviceName + "Flap", MIN_ANGLE, MAX_ANGLE);
 
         // The left pixel collector is reversed; the right pixel collector is not
@@ -60,9 +60,10 @@ public class PixelCollector extends SubsystemBaseEx {
         }
 
         // Initialize the pixel collector state
-        this.state = PixelCollectorState.IDLE;
-        this.flap.setPosition(FLAP_CLOSED_POSITION);
-        this.spinner.set(SPINNER_OFF_POWER);
+        state = PixelCollectorState.IDLE;
+        flap.setPosition(FLAP_CLOSED_POSITION);
+        spinner.set(SPINNER_OFF_POWER);
+        spinner.setPwmDisable();
 
         spinnerDelayTime = System.currentTimeMillis();
     }
@@ -90,6 +91,7 @@ public class PixelCollector extends SubsystemBaseEx {
                 // Turn off the power to the spinner, and wait for it to stop before closing the
                 // pixel collector flap
                 spinner.set(SPINNER_OFF_POWER);
+                spinner.setPwmDisable();
                 if (currentTime > spinnerDelayTime) {
                     flap.setPosition(FLAP_CLOSED_POSITION);
                 }
