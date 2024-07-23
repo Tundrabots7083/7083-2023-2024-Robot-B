@@ -20,6 +20,7 @@ public class CRServoEx extends CRServo implements PwmControl {
         super(hardwareMap, id);
 
         // Override the CRServo implementation in the superclass with one with PWM management support
+        // Since CRServoImplEx extends CRServoImpl this operation is safe to perform.
         crServo = hardwareMap.get(CRServoImplEx.class, id);
     }
 
@@ -73,7 +74,7 @@ public class CRServoEx extends CRServo implements PwmControl {
         CRServoImplEx crServoEx = (CRServoImplEx) crServo;
         return crServoEx.isPwmEnabled();
     }
-    
+
     /**
      * Sets the power level of the motor, expressed as a fraction of the maximum possible power / speed
      * supported according to the run mode in which the motor is operating.
