@@ -20,10 +20,10 @@ public class ScoringSubsystem extends SubsystemBaseEx {
      * Creates a new Lift hardware mechanism that controls both the two lift motors and the arm
      * motor.
      *
-     * @param lift the lift used to raise and lower the pixel collectors
-     * @param  arm the arm used to swing the pixel collectors between the scoring position and
-     *             the intake position
-     * @param telemetry   the telemetry used to display data on the driver station.
+     * @param lift      the lift used to raise and lower the pixel collectors
+     * @param arm       the arm used to swing the pixel collectors between the scoring position and
+     *                  the intake position
+     * @param telemetry the telemetry used to display data on the driver station.
      */
     public ScoringSubsystem(Lift lift, Arm arm, Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -38,6 +38,7 @@ public class ScoringSubsystem extends SubsystemBaseEx {
      */
     public void setTarget(Position position) {
         if (targetPosition != position) {
+            targetPosition = position;
             lift.setTarget(position.liftPosition);
             arm.setTarget(position.armPosition);
         }
@@ -92,10 +93,10 @@ public class ScoringSubsystem extends SubsystemBaseEx {
         /**
          * Instantiate a Position enum with the given arm and lift positions.
          *
-         * @param armPosition   the corresponding arm position
+         * @param armPosition  the corresponding arm position
          * @param liftPosition the corresponding lift position
          */
-        private Position(Arm.Position armPosition, Lift.Position liftPosition) {
+        Position(Arm.Position armPosition, Lift.Position liftPosition) {
             this.armPosition = armPosition;
             this.liftPosition = liftPosition;
         }
