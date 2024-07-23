@@ -42,9 +42,9 @@ public class PixelCollector extends SubsystemBaseEx {
     /**
      * Creates an instance of a pixel collector.
      *
-     * @param location         location of the pixel collector on the robot
-     * @param hardwareMap      the mapping of all hardware on the bot.
-     * @param telemetry        the telemetry used to display data on the driver station.
+     * @param location    location of the pixel collector on the robot
+     * @param hardwareMap the mapping of all hardware on the bot.
+     * @param telemetry   the telemetry used to display data on the driver station.
      */
     public PixelCollector(Location location, HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -53,12 +53,14 @@ public class PixelCollector extends SubsystemBaseEx {
         spinner = new CRServo(hardwareMap, deviceName + "Spinner");
         flap = new SimpleServo(hardwareMap, deviceName + "Flap", MIN_ANGLE, MAX_ANGLE);
 
+        // The left pixel collector is reversed; the right pixel collector is not
         if (location == Location.LEFT) {
             flap.setInverted(true);
             spinner.setInverted(true);
         }
 
-        this.state = PixelCollectorState.CLOSED;
+        // Initialize the pixel collector state
+        this.state = PixelCollectorState.IDLE;
         this.flap.setPosition(FLAP_CLOSED_POSITION);
         this.spinner.set(SPINNER_OFF_POWER);
 
@@ -84,19 +86,25 @@ public class PixelCollector extends SubsystemBaseEx {
     public void execute() {
         long currentTime = System.currentTimeMillis();
         switch (state) {
-            case CLOSED:
+            case IDLE:
+                // Turn off the power to the spinner, and wait for it to stop before closing the
+                // pixel collector flap
                 spinner.set(SPINNER_OFF_POWER);
                 if (currentTime > spinnerDelayTime) {
                     flap.setPosition(FLAP_CLOSED_POSITION);
                 }
                 break;
             case DEPOSITING:
+                // Open the pixel collector flap, and wait for it to be fully opened before starting
+                // the spinner
                 flap.setPosition(FLAP_OPENED_POSITION);
                 if (currentTime > spinnerDelayTime) {
                     spinner.set(SPINNER_DEPOSIT_POWER);
                 }
                 break;
             case COLLECTING:
+                // Open the pixel collector flap, and wait for it to be fully opened before starting
+                // the spinner
                 flap.setPosition(FLAP_OPENED_POSITION);
                 if (currentTime > spinnerDelayTime) {
                     spinner.set(SPINNER_COLLECT_POWER);
@@ -118,12 +126,18 @@ public class PixelCollector extends SubsystemBaseEx {
      * The state for the pixel collector.
      */
     public enum PixelCollectorState {
-        /** Collecting pixels from the field */
+        /**
+         * Collecting pixels from the field
+         */
         COLLECTING,
-        /** Depositing pixels on the field */
+        /**
+         * Depositing pixels on the field
+         */
         DEPOSITING,
-        /** The spinner is off and the flap door is closed */
-        CLOSED,
+        /**
+         * The spinner is off and the flap door is closed
+         */
+        IDLE,
     }
 
     /**
@@ -181,12 +195,12 @@ public class PixelCollector extends SubsystemBaseEx {
             switch (pixelCollector.state) {
                 case DEPOSITING:
                     if (timer.milliseconds() > DEPOSIT_PIXEL_TIME) {
-                        pixelCollector.setState(PixelCollectorState.CLOSED);
+                        pixelCollector.setState(PixelCollectorState.IDLE);
                         timer.reset();
                     }
                     isFinished = false;
                     break;
-                case CLOSED:
+                case IDLE:
                     isFinished = timer.milliseconds() > SPINNER_DELAY;
                     break;
                 default:

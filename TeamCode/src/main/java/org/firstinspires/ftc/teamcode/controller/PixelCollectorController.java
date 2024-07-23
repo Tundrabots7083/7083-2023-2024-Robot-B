@@ -38,7 +38,7 @@ public class PixelCollectorController implements Controller {
             // Toggle depositing on or off
         } else if (!intakePressed && !depositingPressed && (previousIntakePressed || previousDepositingPressed)) {
             telemetry.addLine(collectorName + "Set to closed");
-            pixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+            pixelCollector.setState(PixelCollector.PixelCollectorState.IDLE);
         }
     }
 
