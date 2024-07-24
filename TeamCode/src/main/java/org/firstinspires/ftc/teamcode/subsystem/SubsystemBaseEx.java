@@ -10,9 +10,11 @@ public abstract class SubsystemBaseEx extends SubsystemBase implements Subsystem
 
     /**
      * Modifies the power value so that it is between the minimum and maximum values.
-     * @param power
-     * @param minPower
-     * @return
+     *
+     * @param power    the power to apply to the motor
+     * @param minPower the minimum amount of power that must be applied. If the amount of power
+     *                 is less than the minimum, the power is set to zero.
+     * @return the power, or if less than the minimum amount, 0 (zero).
      */
     protected double modifyMotorPower(double power, double minPower) {
         // Cap the motor power at 1 and -1

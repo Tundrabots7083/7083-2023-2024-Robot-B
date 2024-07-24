@@ -18,7 +18,7 @@ import java.util.Collection;
 @Config
 public class MecanumDrive extends SubsystemBaseEx {
     private final Telemetry telemetry;
-    private final DcMotorEx rightFront, rightRear, leftFront, leftRear;
+    public final DcMotorEx rightFront, rightRear, leftFront, leftRear;
 
     /**
      * MecanumDrive initializes a new mecanum drive train.
