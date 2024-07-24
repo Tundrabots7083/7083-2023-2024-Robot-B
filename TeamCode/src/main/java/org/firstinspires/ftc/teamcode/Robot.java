@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
-import org.firstinspires.ftc.teamcode.mechanism.Lift;
-import org.firstinspires.ftc.teamcode.mechanism.MecanumDrive;
-import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
-import org.firstinspires.ftc.teamcode.sensor.VisionSensor;
+import org.firstinspires.ftc.teamcode.subsystem.Arm;
+import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystem.IntakeSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
+import org.firstinspires.ftc.teamcode.subsystem.ScoringSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.Webcam;
 
 /**
  * The Robot. This is implemented as a singleton, meaning there is one robot instance that exists.
@@ -21,35 +23,43 @@ public class Robot {
     // Mechanisms
     public final MecanumDrive mecanumDrive;
     public final DroneLauncher droneLauncher;
+    public final Arm arm;
     public final Lift lift;
     public final PixelCollector leftPixelCollector, rightPixelCollector;
-    public final VisionSensor visionSensor;
+    public final Webcam webcam;
+
+    public final ScoringSubsystem scoringSubsystem;
+    public final IntakeSubsystem intakeSubsystem;
 
     /**
      * Creates a new instance of the robot.
      *
      * @param hardwareMap hardware map for the robot.
      * @param telemetry   telemetry class for displaying data.
-     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
-     *                           <code>false</code> otherwise.
+     * @param opModeType  the type of opmode the robot is being used for
      */
-    private Robot(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
+    private Robot(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opModeType) {
         robot = this;
         this.telemetry = telemetry;
 
         // Instantiate all the hardware on the robot
         mecanumDrive = new MecanumDrive(hardwareMap, telemetry);
-        lift = new Lift(hardwareMap, telemetry);
         droneLauncher = new DroneLauncher(hardwareMap, telemetry);
+        arm = new Arm(hardwareMap, telemetry);
+        lift = new Lift(hardwareMap, telemetry);
+        leftPixelCollector = new PixelCollector(PixelCollector.Location.LEFT, hardwareMap, telemetry);
+        rightPixelCollector = new PixelCollector(PixelCollector.Location.RIGHT, hardwareMap, telemetry);
 
-        leftPixelCollector = new PixelCollector("collectorLeft", "Left pixel collector", hardwareMap, telemetry, true);
-        rightPixelCollector = new PixelCollector("collectorRight", "Right pixel collector", hardwareMap, telemetry, false);
+        // Instantiate the scoring subsystem and intake subsystem that manages the lift, arm and
+        // pixel collectors
+        scoringSubsystem = new ScoringSubsystem(lift, arm, leftPixelCollector, rightPixelCollector, telemetry);
+        intakeSubsystem = new IntakeSubsystem(lift, arm, leftPixelCollector, rightPixelCollector, telemetry);
 
-        if (createVisionSensor) {
+        if (opModeType == OpModeType.AUTO) {
             // Create the vision sensor
-            visionSensor = new VisionSensor(hardwareMap.get(WebcamName.class, "Webcam Front"), telemetry);
+            webcam = new Webcam("Webcam Front", hardwareMap, telemetry);
         } else {
-            visionSensor = null;
+            webcam = null;
         }
 
         this.telemetry.addLine("[Robot] initialized");
@@ -65,7 +75,7 @@ public class Robot {
      * @return the robot instance
      */
     public static Robot init(HardwareMap hardwareMap, Telemetry telemetry) {
-        return init(hardwareMap, telemetry, false);
+        return init(hardwareMap, telemetry, OpModeType.TELEOP);
     }
 
     /**
@@ -74,41 +84,24 @@ public class Robot {
      *
      * @param hardwareMap hardware map for the robot.
      * @param telemetry   telemetry class for displaying data.
-     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
-     *                           <code>false</code> otherwise.
-     *
+     * @param opModeType  the type of opmode the robot is being used for
      * @return the robot instance
      */
-    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
-        robot = new Robot(hardwareMap, telemetry, createVisionSensor);
+    public static Robot init(HardwareMap hardwareMap, Telemetry telemetry, OpModeType opModeType) {
+        robot = new Robot(hardwareMap, telemetry, opModeType);
         return robot;
-    }
-
-    /**
-     * Gets the singleton instance of the robot. The vision sensor is not created when calling
-     * this method.
-     *
-     * @param hardwareMap hardware map for the robot.
-     * @param telemetry   telemetry class for displaying data.
-     */
-    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry) {
-        return getInstance(hardwareMap, telemetry, false);
     }
 
     /**
      * Gets the singleton instance of the robot.
-     *
-     * @param hardwareMap hardware map for the robot.
-     * @param telemetry   telemetry class for displaying data.
-     * @param createVisionSensor <code>true</code> if the vision sensor is to be created;
-     *                           <code>false</code> otherwise.
-     *
-     * @return the robot instance
      */
-    public static Robot getInstance(HardwareMap hardwareMap, Telemetry telemetry, boolean createVisionSensor) {
-        if (robot == null) {
-            robot = Robot.init(hardwareMap, telemetry, createVisionSensor);
-        }
+    public static Robot getInstance() {
         return robot;
+    }
+
+    // enum to specify opmode type
+    public enum OpModeType {
+        TELEOP,
+        AUTO
     }
 }

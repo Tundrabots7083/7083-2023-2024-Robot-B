@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.controller;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanism.PixelCollector;
+import org.firstinspires.ftc.teamcode.subsystem.PixelCollector;
 
 public class PixelCollectorController implements Controller {
 
@@ -38,7 +38,7 @@ public class PixelCollectorController implements Controller {
             // Toggle depositing on or off
         } else if (!intakePressed && !depositingPressed && (previousIntakePressed || previousDepositingPressed)) {
             telemetry.addLine(collectorName + "Set to closed");
-            pixelCollector.setState(PixelCollector.PixelCollectorState.CLOSED);
+            pixelCollector.setState(PixelCollector.PixelCollectorState.STOPPED);
         }
     }
 
@@ -51,8 +51,8 @@ public class PixelCollectorController implements Controller {
         setState(leftPixelCollector, gamepad2.dpad_down, previousGamepad2.dpad_down, gamepad2.dpad_right, previousGamepad2.dpad_right);
         setState(rightPixelCollector, gamepad2.a, previousGamepad2.a, gamepad2.b, previousGamepad2.b);
 
-        leftPixelCollector.update();
-        rightPixelCollector.update();
+        leftPixelCollector.execute();
+        rightPixelCollector.execute();
 
         previousGamepad2.copy(gamepad2);
     }

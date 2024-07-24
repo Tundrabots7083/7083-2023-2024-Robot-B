@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.controller;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 
 /**
  * DroneLauncherController processes the input to tell when to position the arm to the correct
