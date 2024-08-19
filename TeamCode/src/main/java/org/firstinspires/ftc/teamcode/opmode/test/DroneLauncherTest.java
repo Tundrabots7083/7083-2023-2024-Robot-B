@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechanism.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystem.DroneLauncher;
 
 @TeleOp(name = "Drone Launcher Test", group = "test")
 public class DroneLauncherTest extends LinearOpMode {

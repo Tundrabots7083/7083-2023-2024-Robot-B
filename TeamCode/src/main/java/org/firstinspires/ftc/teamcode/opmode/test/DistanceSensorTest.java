@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.sensor.DistanceSensor;
+import org.firstinspires.ftc.teamcode.subsystem.DistanceSensor;
 
 @TeleOp(name = "Distance Sensor Test", group = "test")
 public class DistanceSensorTest extends OpMode {
