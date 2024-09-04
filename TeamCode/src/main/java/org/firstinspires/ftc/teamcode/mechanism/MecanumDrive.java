@@ -85,10 +85,10 @@ public class MecanumDrive implements Mechanism {
 
         // Reduce the power until we hit a maximum amount
         if ((power + Math.abs(turn)) > 1) {
-            leftFrontPower /= power + turn;
-            rightFrontPower /= power + turn;
-            leftRearPower /= power + turn;
-            rightRearPower /= power + turn;
+            leftFrontPower /= power + Math.abs(turn);
+            rightFrontPower /= power + Math.abs(turn);
+            leftRearPower /= power + Math.abs(turn);
+            rightRearPower /= power + Math.abs(turn);
         }
 
         // Adjust the power to give a curve for ramping up power input
